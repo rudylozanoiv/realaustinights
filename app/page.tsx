@@ -932,6 +932,7 @@ export default function RealAustiNightsV7() {
   const [showQuePasaFull, setShowQuePasaFull] = useState(false);
   const [showCommunityFull, setShowCommunityFull] = useState(false);
   const [showPupperFull, setShowPupperFull] = useState(false);
+  const [showDealsFull, setShowDealsFull] = useState(false);
   const [quePasaComment, setQuePasaComment] = useState('');
 
   // Track actual signup (not just browsing mode)
@@ -1175,7 +1176,7 @@ export default function RealAustiNightsV7() {
           </div>
 
           {/* ── DEALS ── */}
-          <div style={{ background: 'white', borderRadius: 12, padding: 14, marginBottom: 20, border: '1px solid ' + S.border }}>
+          <div onClick={() => setShowDealsFull(true)} style={{ cursor: 'pointer', background: 'white', borderRadius: 12, padding: 14, marginBottom: 20, border: '1px solid ' + S.border }}>
             <div style={{ fontFamily: S.font, fontWeight: 800, fontSize: 13, color: '#15803D', marginBottom: 10 }}>
               &#128176; DEALS
               <span style={{ fontSize: 10, color: S.textLight, fontWeight: 400, marginLeft: 6 }}>Local savings</span>
@@ -1604,6 +1605,74 @@ export default function RealAustiNightsV7() {
           </div>
         </div>
       )}
+      {/* ── DEALS FULLSCREEN ── */}
+      {showDealsFull && (
+        <div style={{
+          position: 'fixed', inset: 0, background: '#FFFAF3', zIndex: 999,
+          overflowY: 'auto',
+        }}>
+          <div style={{
+            maxWidth: 1100, margin: '0 auto', padding: '24px 32px',
+            borderBottom: '4px double #15803D',
+          }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <div>
+                <h1 style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: 42, fontWeight: 900, color: '#15803D', margin: 0 }}>
+                  Austin Deals
+                </h1>
+                <p style={{ fontFamily: S.fontBody, fontSize: 14, color: S.textMid, margin: '4px 0 0' }}>
+                  Local savings from businesses you trust.
+                </p>
+              </div>
+              <button onClick={() => setShowDealsFull(false)} style={{
+                background: '#15803D', color: 'white', border: 'none', padding: '10px 20px', borderRadius: 12,
+                fontSize: 14, fontWeight: 700, cursor: 'pointer', fontFamily: S.font,
+              }}>&#10005; Close</button>
+            </div>
+          </div>
+          <div style={{ maxWidth: 1100, margin: '24px auto', padding: '0 32px' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: 20 }}>
+              {[
+                { name: 'Jiffy Lube S. Lamar', deal: '$20 off full service oil change', category: 'Auto', icon: '&#128663;' },
+                { name: 'Martinizing Dry Clean', deal: '20% off first dry cleaning order', category: 'Services', icon: '&#128085;' },
+                { name: 'H-E-B Mueller', deal: 'BOGO deli sandwiches all week', category: 'Grocery', icon: '&#128722;' },
+                { name: 'SuperCuts Burnet', deal: '$5 off any haircut', category: 'Beauty', icon: '&#128136;' },
+                { name: 'Pep Boys N. Lamar', deal: 'Free brake inspection + 15% off pads', category: 'Auto', icon: '&#128663;' },
+                { name: 'Austin Pet Ranch', deal: 'Buy 2 bags of food, get 1 free', category: 'Pets', icon: '&#128054;' },
+                { name: 'Great Clips Anderson', deal: '$3 off any haircut with check-in', category: 'Beauty', icon: '&#128136;' },
+                { name: 'Lone Star Cleaners', deal: '30% off comforters and blankets', category: 'Services', icon: '&#128085;' },
+                { name: 'Randalls Westlake', deal: '$10 off $50 grocery order', category: 'Grocery', icon: '&#128722;' },
+              ].map((d, i) => (
+                <div key={i} style={{
+                  background: 'white', borderRadius: 16, padding: 24,
+                  boxShadow: '0 2px 12px rgba(0,0,0,0.08)', display: 'flex', flexDirection: 'column',
+                }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
+                    <span style={{ fontSize: 11, background: '#E8F5E9', color: '#15803D', padding: '4px 10px', borderRadius: 8, fontWeight: 700 }}>{d.category}</span>
+                    <span dangerouslySetInnerHTML={{ __html: d.icon }} style={{ fontSize: 24 }} />
+                  </div>
+                  <div style={{ fontFamily: S.font, fontWeight: 700, fontSize: 17, color: '#1B2A4A', marginBottom: 8 }}>{d.name}</div>
+                  <div style={{ fontSize: 14, color: '#15803D', fontWeight: 700, marginBottom: 4 }}>{d.deal}</div>
+                  <div style={{ fontSize: 12, color: S.textLight, marginTop: 'auto', paddingTop: 8 }}>Show this screen at checkout</div>
+                </div>
+              ))}
+            </div>
+            <div style={{ textAlign: 'center', padding: '32px 0', marginTop: 20, borderTop: '2px solid #15803D' }}>
+              <p style={{ fontFamily: S.font, fontSize: 18, fontWeight: 700, color: '#1B2A4A' }}>
+                Own a business? Get your deals in front of Austin.
+              </p>
+              <button onClick={() => { if (requireLogin()) return; }} style={{
+                background: '#15803D', color: 'white', border: 'none', padding: '14px 32px',
+                borderRadius: 14, fontSize: 15, fontWeight: 700, cursor: 'pointer', fontFamily: S.font,
+                boxShadow: '0 4px 14px rgba(21,128,61,0.3)', marginTop: 12,
+              }}>
+                List Your Business
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
 
 
       {/* ── FOOTER ── */}

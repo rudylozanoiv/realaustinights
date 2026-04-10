@@ -1108,7 +1108,7 @@ export default function RealAustiNightsV7() {
               }}
             >
               <div style={{ fontFamily: S.font, fontWeight: 800, fontSize: 11, color: S.teal, marginBottom: 6 }}>
-                ¿¿Que Pasa? 📸
+                ¿Que Pasa? 📸
               </div>
               <div style={{
                 flex: 1, borderRadius: 10, overflow: 'hidden', position: 'relative' as const,
@@ -1431,7 +1431,7 @@ export default function RealAustiNightsV7() {
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <div>
                 <h1 style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: 42, fontWeight: 900, color: '#1B2A4A', margin: 0, letterSpacing: '-0.02em' }}>
-                  &#191;Que Pasa, Austin?
+                  ¿Que Pasa, Austin?
                 </h1>
                 <p style={{ fontFamily: S.fontBody, fontSize: 14, color: S.textMid, margin: '4px 0 0' }}>
                   Real photos from real locals. What's happening right now.

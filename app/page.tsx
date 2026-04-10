@@ -1081,17 +1081,7 @@ export default function RealAustiNightsV7() {
           })()}
 
           
-          {/* Search */}
-          <input
-            type="text" placeholder="What Y'all Looking For?"
-            style={{
-              width: '100%', padding: '12px 18px', borderRadius: 12,
-              border: `1.5px solid ${S.border}`, fontSize: 14, fontFamily: S.fontBody,
-              background: S.bg, outline: 'none', marginBottom: 24,
-            }}
-            onFocus={e => e.target.style.borderColor = S.orange}
-            onBlur={e => e.target.style.borderColor = S.border}
-          />
+
 
           
           {/* ── QUE PASA + COMMUNITY SPLIT (top of sidebar) ── */}

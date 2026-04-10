@@ -1425,11 +1425,11 @@ export default function RealAustiNightsV7() {
                 <h1 style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: 42, fontWeight: 900, color: '#1B2A4A', margin: 0, letterSpacing: '-0.02em' }}>
                   ¿Que Pasa, Austin?
                 </h1>
-                <img src="/logo.png" alt="Real AustiNights" style={{ height: 60, position: 'absolute', right: 80, top: 24 }} />
                 <p style={{ fontFamily: S.fontBody, fontSize: 14, color: S.textMid, margin: '4px 0 0' }}>
                   Real photos from real locals. What's happening right now.
                 </p>
               </div>
+              <img src="/logo.png" alt="Real AustiNights" style={{ height: 80 }} />
               <button onClick={() => setShowQuePasaFull(false)} style={{
                 background: '#1B2A4A', color: 'white', border: 'none', padding: '10px 20px', borderRadius: 12,
                 fontSize: 14, fontWeight: 700, cursor: 'pointer', fontFamily: S.font,
@@ -1503,11 +1503,11 @@ export default function RealAustiNightsV7() {
                 <h1 style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: 42, fontWeight: 900, color: '#1B2A4A', margin: 0 }}>
                   Community
                 </h1>
-                <img src="/logo.png" alt="Real AustiNights" style={{ height: 60, position: 'absolute', right: 80, top: 24 }} />
                 <p style={{ fontFamily: S.fontBody, fontSize: 14, color: S.textMid, margin: '4px 0 0' }}>
                   Real talk from real AustiNites. What's on your mind?
                 </p>
               </div>
+              <img src="/logo.png" alt="Real AustiNights" style={{ height: 80 }} />
               <button onClick={() => setShowCommunityFull(false)} style={{
                 background: '#1B2A4A', color: 'white', border: 'none', padding: '10px 20px', borderRadius: 12,
                 fontSize: 14, fontWeight: 700, cursor: 'pointer', fontFamily: S.font,
@@ -1558,11 +1558,11 @@ export default function RealAustiNightsV7() {
                 <h1 style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: 42, fontWeight: 900, color: '#1B2A4A', margin: 0 }}>
                   Pupper Weekly
                 </h1>
-                <img src="/logo.png" alt="Real AustiNights" style={{ height: 60, position: 'absolute', right: 80, top: 24 }} />
                 <p style={{ fontFamily: S.fontBody, fontSize: 14, color: S.textMid, margin: '4px 0 0' }}>
                   Austin's cutest pups. Powered by Barkingham Place.
                 </p>
               </div>
+              <img src="/logo.png" alt="Real AustiNights" style={{ height: 80 }} />
               <button onClick={() => setShowPupperFull(false)} style={{
                 background: '#1B2A4A', color: 'white', border: 'none', padding: '10px 20px', borderRadius: 12,
                 fontSize: 14, fontWeight: 700, cursor: 'pointer', fontFamily: S.font,
@@ -1623,11 +1623,11 @@ export default function RealAustiNightsV7() {
                 <h1 style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: 42, fontWeight: 900, color: '#15803D', margin: 0 }}>
                   Austin Deals
                 </h1>
-                <img src="/logo.png" alt="Real AustiNights" style={{ height: 60, position: 'absolute', right: 80, top: 24 }} />
                 <p style={{ fontFamily: S.fontBody, fontSize: 14, color: S.textMid, margin: '4px 0 0' }}>
                   Local savings from businesses you trust.
                 </p>
               </div>
+              <img src="/logo.png" alt="Real AustiNights" style={{ height: 80 }} />
               <button onClick={() => setShowDealsFull(false)} style={{
                 background: '#15803D', color: 'white', border: 'none', padding: '10px 20px', borderRadius: 12,
                 fontSize: 14, fontWeight: 700, cursor: 'pointer', fontFamily: S.font,

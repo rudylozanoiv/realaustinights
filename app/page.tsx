@@ -1453,15 +1453,15 @@ export default function RealAustiNightsV7() {
                   boxShadow: '0 2px 12px rgba(0,0,0,0.08)', transition: 'transform 0.2s',
                 }}>
                   <div style={{
-                    width: '100%', height: 280, background: 'url(' + photo.url + ') center/cover',
+                    width: '100%', height: 280, background: 'url(' + photo.photoUrl + ') center/cover',
                   }} />
                   <div style={{ padding: 16 }}>
                     <div style={{ fontFamily: S.font, fontWeight: 700, fontSize: 15, color: '#1B2A4A', marginBottom: 4 }}>
                       {photo.caption}
                     </div>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 8 }}>
-                      <span style={{ fontSize: 12, color: S.teal, fontWeight: 600 }}>@{photo.user}</span>
-                      <span style={{ fontSize: 11, color: S.textLight }}>{photo.venue}</span>
+                      <span style={{ fontSize: 12, color: S.teal, fontWeight: 600 }}>@{photo.username}</span>
+                      <span style={{ fontSize: 11, color: S.textLight }}>{photo.venueName}</span>
                     </div>
                     <div style={{ display: 'flex', gap: 12, marginTop: 10, fontSize: 12, color: S.textMid }}>
                       <span>&#10084; {photo.likes || 0}</span>

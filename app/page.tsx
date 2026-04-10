@@ -1013,7 +1013,7 @@ export default function RealAustiNightsV7() {
 
         <nav style={{ padding: '8px 24px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: '#FFFAF3' }}>
           <div style={{ background: 'transparent' }}>
-            <img src="/logo.png" alt="Real AustiNights" style={{ height: 180, width: 720, objectFit: 'contain' }} />
+            <img src="/logo.png" alt="Real AustiNights" style={{ height: 200, width: 400, objectFit: 'contain' }} />
           </div>
 
           <div style={{ display: 'flex', gap: 20, alignItems: 'center', fontSize: 14, fontWeight: 600, fontFamily: S.font }}>
@@ -1429,7 +1429,7 @@ export default function RealAustiNightsV7() {
                   Real photos from real locals. What's happening right now.
                 </p>
               </div>
-              <img src="/logo.png" alt="Real AustiNights" style={{ height: 180, width: 960, objectFit: 'contain' }} />
+              <img src="/logo.png" alt="Real AustiNights" style={{ height: 120, width: 300, objectFit: 'contain' }} />
               <button onClick={() => setShowQuePasaFull(false)} style={{
                 background: '#1B2A4A', color: 'white', border: 'none', padding: '10px 20px', borderRadius: 12,
                 fontSize: 14, fontWeight: 700, cursor: 'pointer', fontFamily: S.font,
@@ -1507,7 +1507,7 @@ export default function RealAustiNightsV7() {
                   Real talk from real AustiNites. What's on your mind?
                 </p>
               </div>
-              <img src="/logo.png" alt="Real AustiNights" style={{ height: 180, width: 960, objectFit: 'contain' }} />
+              <img src="/logo.png" alt="Real AustiNights" style={{ height: 120, width: 300, objectFit: 'contain' }} />
               <button onClick={() => setShowCommunityFull(false)} style={{
                 background: '#1B2A4A', color: 'white', border: 'none', padding: '10px 20px', borderRadius: 12,
                 fontSize: 14, fontWeight: 700, cursor: 'pointer', fontFamily: S.font,
@@ -1562,7 +1562,7 @@ export default function RealAustiNightsV7() {
                   Austin's cutest pups. Powered by Barkingham Place.
                 </p>
               </div>
-              <img src="/logo.png" alt="Real AustiNights" style={{ height: 180, width: 960, objectFit: 'contain' }} />
+              <img src="/logo.png" alt="Real AustiNights" style={{ height: 120, width: 300, objectFit: 'contain' }} />
               <button onClick={() => setShowPupperFull(false)} style={{
                 background: '#1B2A4A', color: 'white', border: 'none', padding: '10px 20px', borderRadius: 12,
                 fontSize: 14, fontWeight: 700, cursor: 'pointer', fontFamily: S.font,
@@ -1627,7 +1627,7 @@ export default function RealAustiNightsV7() {
                   Local savings from businesses you trust.
                 </p>
               </div>
-              <img src="/logo.png" alt="Real AustiNights" style={{ height: 180, width: 960, objectFit: 'contain' }} />
+              <img src="/logo.png" alt="Real AustiNights" style={{ height: 120, width: 300, objectFit: 'contain' }} />
               <button onClick={() => setShowDealsFull(false)} style={{
                 background: '#15803D', color: 'white', border: 'none', padding: '10px 20px', borderRadius: 12,
                 fontSize: 14, fontWeight: 700, cursor: 'pointer', fontFamily: S.font,

@@ -1417,7 +1417,7 @@ export default function RealAustiNightsV7() {
         }}>
           {/* Newspaper Header */}
           <div style={{
-            maxWidth: 1100, margin: '0 auto', padding: '24px 32px',
+            maxWidth: 1100, margin: '0 auto', padding: '24px 32px', position: 'relative' as const,
             borderBottom: '4px double #1B2A4A',
           }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -1425,6 +1425,7 @@ export default function RealAustiNightsV7() {
                 <h1 style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: 42, fontWeight: 900, color: '#1B2A4A', margin: 0, letterSpacing: '-0.02em' }}>
                   ¿Que Pasa, Austin?
                 </h1>
+                <img src="/logo.png" alt="Real AustiNights" style={{ height: 60, position: 'absolute', right: 80, top: 24 }} />
                 <p style={{ fontFamily: S.fontBody, fontSize: 14, color: S.textMid, margin: '4px 0 0' }}>
                   Real photos from real locals. What's happening right now.
                 </p>
@@ -1494,7 +1495,7 @@ export default function RealAustiNightsV7() {
           overflowY: 'auto',
         }}>
           <div style={{
-            maxWidth: 1100, margin: '0 auto', padding: '24px 32px',
+            maxWidth: 1100, margin: '0 auto', padding: '24px 32px', position: 'relative' as const,
             borderBottom: '4px double #1B2A4A',
           }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -1502,6 +1503,7 @@ export default function RealAustiNightsV7() {
                 <h1 style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: 42, fontWeight: 900, color: '#1B2A4A', margin: 0 }}>
                   Community
                 </h1>
+                <img src="/logo.png" alt="Real AustiNights" style={{ height: 60, position: 'absolute', right: 80, top: 24 }} />
                 <p style={{ fontFamily: S.fontBody, fontSize: 14, color: S.textMid, margin: '4px 0 0' }}>
                   Real talk from real AustiNites. What's on your mind?
                 </p>
@@ -1548,7 +1550,7 @@ export default function RealAustiNightsV7() {
           overflowY: 'auto',
         }}>
           <div style={{
-            maxWidth: 1100, margin: '0 auto', padding: '24px 32px',
+            maxWidth: 1100, margin: '0 auto', padding: '24px 32px', position: 'relative' as const,
             borderBottom: '4px double #1B2A4A',
           }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -1556,6 +1558,7 @@ export default function RealAustiNightsV7() {
                 <h1 style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: 42, fontWeight: 900, color: '#1B2A4A', margin: 0 }}>
                   Pupper Weekly
                 </h1>
+                <img src="/logo.png" alt="Real AustiNights" style={{ height: 60, position: 'absolute', right: 80, top: 24 }} />
                 <p style={{ fontFamily: S.fontBody, fontSize: 14, color: S.textMid, margin: '4px 0 0' }}>
                   Austin's cutest pups. Powered by Barkingham Place.
                 </p>
@@ -1612,7 +1615,7 @@ export default function RealAustiNightsV7() {
           overflowY: 'auto',
         }}>
           <div style={{
-            maxWidth: 1100, margin: '0 auto', padding: '24px 32px',
+            maxWidth: 1100, margin: '0 auto', padding: '24px 32px', position: 'relative' as const,
             borderBottom: '4px double #15803D',
           }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -1620,6 +1623,7 @@ export default function RealAustiNightsV7() {
                 <h1 style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: 42, fontWeight: 900, color: '#15803D', margin: 0 }}>
                   Austin Deals
                 </h1>
+                <img src="/logo.png" alt="Real AustiNights" style={{ height: 60, position: 'absolute', right: 80, top: 24 }} />
                 <p style={{ fontFamily: S.fontBody, fontSize: 14, color: S.textMid, margin: '4px 0 0' }}>
                   Local savings from businesses you trust.
                 </p>

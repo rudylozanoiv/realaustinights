@@ -1015,7 +1015,7 @@ export default function RealAustiNightsV7() {
           </div>
 
           <div style={{ display: 'flex', gap: 20, alignItems: 'center', fontSize: 14, fontWeight: 600, fontFamily: S.font }}>
-            <span style={{ color: S.textMid, cursor: 'pointer' }} onClick={() => { setCats(['All']); setTab('Today'); document.getElementById('feed')?.scrollIntoView({ behavior: 'smooth' }); }}>Explore</span>
+            <input type="text" placeholder="What Y'all Looking For?" style={{ padding: '8px 16px', borderRadius: 20, border: '1.5px solid ' + S.border, fontSize: 13, fontFamily: S.fontBody, outline: 'none', width: 200, background: S.bg }} onFocus={e => e.target.style.borderColor = S.orange} onBlur={e => e.target.style.borderColor = S.border} />
             <span style={{ color: S.orange, cursor: 'pointer' }} onClick={() => { setTab('Tonight'); document.getElementById('feed')?.scrollIntoView({ behavior: 'smooth' }); }}>Tonight</span>
             <span style={{ color: S.textMid, cursor: 'pointer' }} onClick={() => { setCats(['Hidden Gems']); document.getElementById('feed')?.scrollIntoView({ behavior: 'smooth' }); }}>Hidden Gems</span>
             <span style={{ color: S.violet, cursor: 'pointer' }} onClick={() => document.getElementById('partner-cta')?.scrollIntoView({ behavior: 'smooth' })}>For Business</span>

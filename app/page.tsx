@@ -1489,65 +1489,53 @@ export default function RealAustiNightsV7() {
       {/* ── COMMUNITY FULLSCREEN MODAL ── */}
       {showCommunityFull && (
         <div style={{
-          position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.85)', zIndex: 999,
-          display: 'flex', flexDirection: 'column' as const, overflow: 'auto',
+          position: 'fixed', inset: 0, background: '#FFFAF3', zIndex: 999,
+          overflowY: 'auto',
         }}>
           <div style={{
-            maxWidth: 600, width: '95%', margin: '40px auto', background: 'white',
-            borderRadius: 24, overflow: 'hidden',
+            maxWidth: 1100, margin: '0 auto', padding: '24px 32px',
+            borderBottom: '4px double #1B2A4A',
           }}>
-            <div style={{
-              padding: '16px 24px', borderBottom: '3px solid #1B2A4A', boxShadow: 'none', border: 'none',
-              display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-            }}>
-              <div style={{ fontFamily: S.font, fontWeight: 800, fontSize: 20 }}>
-                Community 💬
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <div>
+                <h1 style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: 42, fontWeight: 900, color: '#1B2A4A', margin: 0 }}>
+                  Community
+                </h1>
+                <p style={{ fontFamily: S.fontBody, fontSize: 14, color: S.textMid, margin: '4px 0 0' }}>
+                  Real talk from real AustiNites. What's on your mind?
+                </p>
               </div>
               <button onClick={() => setShowCommunityFull(false)} style={{
-                background: S.bg, border: 'none', padding: '8px 16px', borderRadius: 10,
-                fontSize: 13, fontWeight: 600, cursor: 'pointer', fontFamily: S.font,
-              }}>Close &times;</button>
+                background: '#1B2A4A', color: 'white', border: 'none', padding: '10px 20px', borderRadius: 12,
+                fontSize: 14, fontWeight: 700, cursor: 'pointer', fontFamily: S.font,
+              }}>&#10005; Close</button>
             </div>
-            <div style={{ maxHeight: '70vh', overflowY: 'auto' as const, padding: 24 }}>
-              {/* Post input */}
-              <div style={{ display: 'flex', gap: 10, marginBottom: 20 }}>
-                <input
-                  type="text" placeholder="Share something with the community..." onFocus={(e) => { if (requireLogin()) e.target.blur(); }}
-                  style={{
-                    flex: 1, padding: '12px 16px', borderRadius: 12,
-                    border: `1.5px solid ${S.border}`, fontSize: 13, fontFamily: S.fontBody,
-                    outline: 'none', background: S.bg,
-                  }}
-                />
-                <button style={{
-                  background: S.violet, color: 'white', border: 'none', padding: '12px 20px',
-                  borderRadius: 12, fontSize: 13, fontWeight: 700, cursor: 'pointer', fontFamily: S.font,
-                }}>Post</button>
-              </div>
-
-              {/* Community posts */}
-              {COMMUNITY_POSTS.map(post => (
-                <div key={post.id} style={{
-                  padding: '14px 0', borderBottom: '3px solid #1B2A4A', boxShadow: 'none', border: 'none',
-                }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 4 }}>
-                    <span style={{ fontFamily: S.font, fontWeight: 700, fontSize: 13, color: S.teal }}>
-                      {post.username}
-                    </span>
-                    <span style={{ fontSize: 11, color: S.textLight }}>{post.timeAgo}</span>
-                  </div>
-                  <p style={{ fontSize: 14, color: S.textMid, lineHeight: 1.6, margin: '4px 0 8px' }}>
-                    {post.message}
-                  </p>
-                  <span style={{ fontSize: 12, color: S.textLight }}>
-                    &hearts; {post.likes}
-                  </span>
+          </div>
+          <div style={{ maxWidth: 1100, margin: '24px auto', padding: '0 32px' }}>
+            {COMMUNITY_POSTS.map(post => (
+              <div key={post.id} style={{
+                background: 'white', borderRadius: 16, padding: 24, marginBottom: 16,
+                boxShadow: '0 2px 12px rgba(0,0,0,0.08)',
+              }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8 }}>
+                  <span style={{ fontFamily: S.font, fontWeight: 700, fontSize: 15, color: S.teal }}>{post.username}</span>
+                  <span style={{ fontSize: 12, color: S.textLight }}>{post.timeAgo}</span>
                 </div>
-              ))}
-
-              <div style={{ fontSize: 11, color: S.textLight, marginTop: 16, textAlign: 'center' as const }}>
-                Verified AustiNites only. Keep it weird, keep it kind.
+                <p style={{ fontSize: 16, color: '#1B2A4A', lineHeight: 1.7, margin: '8px 0' }}>{post.message}</p>
+                <div style={{ fontSize: 13, color: S.textMid }}>&#10084; {post.likes}</div>
               </div>
+            ))}
+            <div style={{ textAlign: 'center', padding: '32px 0', marginTop: 20, borderTop: '2px solid #1B2A4A' }}>
+              <p style={{ fontFamily: S.font, fontSize: 18, fontWeight: 700, color: '#1B2A4A' }}>
+                Got something to say? Join the conversation.
+              </p>
+              <button onClick={() => { if (requireLogin()) return; }} style={{
+                background: '#1B2A4A', color: 'white', border: 'none', padding: '14px 32px',
+                borderRadius: 14, fontSize: 15, fontWeight: 700, cursor: 'pointer', fontFamily: S.font,
+                boxShadow: '0 4px 14px rgba(27,42,74,0.3)', marginTop: 12,
+              }}>
+                Sign Up to Post
+              </button>
             </div>
           </div>
         </div>

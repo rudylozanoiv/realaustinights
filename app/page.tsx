@@ -931,6 +931,7 @@ export default function RealAustiNightsV7() {
   const [mounted, setMounted] = useState(false);
   const [showQuePasaFull, setShowQuePasaFull] = useState(false);
   const [showCommunityFull, setShowCommunityFull] = useState(false);
+  const [showPupperFull, setShowPupperFull] = useState(false);
   const [quePasaComment, setQuePasaComment] = useState('');
 
   // Track actual signup (not just browsing mode)
@@ -1150,7 +1151,7 @@ export default function RealAustiNightsV7() {
           </div>
 
           {/* ── PUPPER WEEKLY POST ── */}
-          <div style={{
+          <div onClick={() => setShowPupperFull(true)} style={{ cursor: 'pointer',
             background: `linear-gradient(135deg, ${S.tealLight}, ${S.orangeLight})`, borderRadius: 12,
             padding: 12, marginBottom: 20, border: `1px solid ${S.border}`,
           }}>
@@ -1551,6 +1552,71 @@ export default function RealAustiNightsV7() {
           </div>
         </div>
       )}
+      {/* ── PUPPER WEEKLY FULLSCREEN ── */}
+      {showPupperFull && (
+        <div style={{
+          position: 'fixed', inset: 0, background: '#FFFAF3', zIndex: 999,
+          overflowY: 'auto',
+        }}>
+          <div style={{
+            maxWidth: 1100, margin: '0 auto', padding: '24px 32px',
+            borderBottom: '4px double #1B2A4A',
+          }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <div>
+                <h1 style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: 42, fontWeight: 900, color: '#1B2A4A', margin: 0 }}>
+                  Pupper Weekly
+                </h1>
+                <p style={{ fontFamily: S.fontBody, fontSize: 14, color: S.textMid, margin: '4px 0 0' }}>
+                  Austin's cutest pups. Powered by Barkingham Place.
+                </p>
+              </div>
+              <button onClick={() => setShowPupperFull(false)} style={{
+                background: '#1B2A4A', color: 'white', border: 'none', padding: '10px 20px', borderRadius: 12,
+                fontSize: 14, fontWeight: 700, cursor: 'pointer', fontFamily: S.font,
+              }}>&#10005; Close</button>
+            </div>
+          </div>
+          <div style={{ maxWidth: 1100, margin: '24px auto', padding: '0 32px' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: 20 }}>
+              <div style={{ background: 'white', borderRadius: 16, overflow: 'hidden', boxShadow: '0 2px 12px rgba(0,0,0,0.08)' }}>
+                <div style={{ width: '100%', height: 280, background: 'url(https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=600&q=80) center/cover' }} />
+                <div style={{ padding: 16 }}>
+                  <div style={{ fontFamily: S.font, fontWeight: 700, fontSize: 15, color: '#1B2A4A' }}>Zeta's Big Week at Barkingham Place</div>
+                  <div style={{ fontSize: 12, color: S.teal, fontWeight: 600, marginTop: 6 }}>@ Barkingham Place</div>
+                </div>
+              </div>
+              <div style={{ background: 'white', borderRadius: 16, overflow: 'hidden', boxShadow: '0 2px 12px rgba(0,0,0,0.08)' }}>
+                <div style={{ width: '100%', height: 280, background: 'url(https://images.unsplash.com/photo-1558788353-f76d92427f16?w=600&q=80) center/cover' }} />
+                <div style={{ padding: 16 }}>
+                  <div style={{ fontFamily: S.font, fontWeight: 700, fontSize: 15, color: '#1B2A4A' }}>Max the Golden at Zilker Park</div>
+                  <div style={{ fontSize: 12, color: S.teal, fontWeight: 600, marginTop: 6 }}>@ Zilker Park</div>
+                </div>
+              </div>
+              <div style={{ background: 'white', borderRadius: 16, overflow: 'hidden', boxShadow: '0 2px 12px rgba(0,0,0,0.08)' }}>
+                <div style={{ width: '100%', height: 280, background: 'url(https://images.unsplash.com/photo-1544568100-847a948585b9?w=600&q=80) center/cover' }} />
+                <div style={{ padding: 16 }}>
+                  <div style={{ fontFamily: S.font, fontWeight: 700, fontSize: 15, color: '#1B2A4A' }}>Luna loves Lady Bird Lake trails</div>
+                  <div style={{ fontSize: 12, color: S.teal, fontWeight: 600, marginTop: 6 }}>@ Lady Bird Lake</div>
+                </div>
+              </div>
+            </div>
+            <div style={{ textAlign: 'center', padding: '32px 0', marginTop: 20, borderTop: '2px solid #1B2A4A' }}>
+              <p style={{ fontFamily: S.font, fontSize: 18, fontWeight: 700, color: '#1B2A4A' }}>
+                Got a cute pup? Share your Austin dog!
+              </p>
+              <button onClick={() => { if (requireLogin()) return; }} style={{
+                background: S.orange, color: 'white', border: 'none', padding: '14px 32px',
+                borderRadius: 14, fontSize: 15, fontWeight: 700, cursor: 'pointer', fontFamily: S.font,
+                boxShadow: '0 4px 14px rgba(255,140,0,0.3)', marginTop: 12,
+              }}>
+                Sign Up to Post Your Pup
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
 
       {/* ── FOOTER ── */}
       <footer style={{ background: S.teal, color: 'white', textAlign: 'center', padding: '28px 24px' }}>

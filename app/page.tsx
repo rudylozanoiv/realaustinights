@@ -1420,50 +1420,76 @@ export default function RealAustiNightsV7() {
       {/* ── QUE PASA FULLSCREEN MODAL ── */}
       {showQuePasaFull && (
         <div style={{
-          position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.85)', zIndex: 999,
-          display: 'flex', flexDirection: 'column' as const, overflow: 'auto',
+          position: 'fixed', inset: 0, background: '#FFFAF3', zIndex: 999,
+          overflowY: 'auto',
         }}>
+          {/* Newspaper Header */}
           <div style={{
-            maxWidth: 700, width: '95%', margin: '40px auto', background: 'white',
-            borderRadius: 24, overflow: 'hidden',
+            maxWidth: 1100, margin: '0 auto', padding: '24px 32px',
+            borderBottom: '4px double #1B2A4A',
           }}>
-            <div style={{
-              padding: '16px 24px', borderBottom: '3px solid #1B2A4A', boxShadow: 'none', border: 'none',
-              display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-            }}>
-              <div style={{ fontFamily: S.font, fontWeight: 800, fontSize: 20 }}>
-                Que Pasa, Austin? 📸
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <div>
+                <h1 style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: 42, fontWeight: 900, color: '#1B2A4A', margin: 0, letterSpacing: '-0.02em' }}>
+                  &#191;Que Pasa, Austin?
+                </h1>
+                <p style={{ fontFamily: S.fontBody, fontSize: 14, color: S.textMid, margin: '4px 0 0' }}>
+                  Real photos from real locals. What's happening right now.
+                </p>
               </div>
               <button onClick={() => setShowQuePasaFull(false)} style={{
-                background: S.bg, border: 'none', padding: '8px 16px', borderRadius: 10,
-                fontSize: 13, fontWeight: 600, cursor: 'pointer', fontFamily: S.font,
-              }}>Close &times;</button>
+                background: '#1B2A4A', color: 'white', border: 'none', padding: '10px 20px', borderRadius: 12,
+                fontSize: 14, fontWeight: 700, cursor: 'pointer', fontFamily: S.font,
+              }}>&#10005; Close</button>
             </div>
-            <div style={{ maxHeight: '70vh', overflowY: 'auto' as const, padding: 24 }}>
-              <QuePasaCarousel photos={QUE_PASA_PHOTOS} S={S} />
-              {/* Comment input */}
-              <div style={{
-                display: 'flex', gap: 10, padding: '16px 0', borderTop: `1px solid ${S.border}`,
-                marginTop: 16,
+          </div>
+
+          {/* Photo Grid - Newspaper Style */}
+          <div style={{ maxWidth: 1100, margin: '24px auto', padding: '0 32px' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: 20 }}>
+              {QUE_PASA_PHOTOS.map((photo, i) => (
+                <div key={i} style={{
+                  background: 'white', borderRadius: 16, overflow: 'hidden',
+                  boxShadow: '0 2px 12px rgba(0,0,0,0.08)', transition: 'transform 0.2s',
+                }}>
+                  <div style={{
+                    width: '100%', height: 280, background: 'url(' + photo.url + ') center/cover',
+                  }} />
+                  <div style={{ padding: 16 }}>
+                    <div style={{ fontFamily: S.font, fontWeight: 700, fontSize: 15, color: '#1B2A4A', marginBottom: 4 }}>
+                      {photo.caption}
+                    </div>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 8 }}>
+                      <span style={{ fontSize: 12, color: S.teal, fontWeight: 600 }}>@{photo.user}</span>
+                      <span style={{ fontSize: 11, color: S.textLight }}>{photo.venue}</span>
+                    </div>
+                    <div style={{ display: 'flex', gap: 12, marginTop: 10, fontSize: 12, color: S.textMid }}>
+                      <span>&#10084; {photo.likes || 0}</span>
+                      <span>&#128172; {photo.comments || 0}</span>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Sign up prompt */}
+            <div style={{
+              textAlign: 'center', padding: '32px 0', marginTop: 20,
+              borderTop: '2px solid #1B2A4A',
+            }}>
+              <p style={{ fontFamily: S.font, fontSize: 18, fontWeight: 700, color: '#1B2A4A' }}>
+                Got a photo? Share what's happening in YOUR Austin.
+              </p>
+              <button onClick={() => { if (requireLogin()) return; }} style={{
+                background: S.teal, color: 'white', border: 'none', padding: '14px 32px',
+                borderRadius: 14, fontSize: 15, fontWeight: 700, cursor: 'pointer', fontFamily: S.font,
+                boxShadow: '0 4px 14px rgba(0,122,122,0.3)', marginTop: 12,
               }}>
-                <input
-                  type="text" placeholder="Drop a comment on this photo..." onFocus={(e) => { if (requireLogin()) e.target.blur(); }}
-                  value={quePasaComment}
-                  onChange={e => setQuePasaComment(e.target.value)}
-                  style={{
-                    flex: 1, padding: '12px 16px', borderRadius: 12,
-                    border: `1.5px solid ${S.border}`, fontSize: 13, fontFamily: S.fontBody,
-                    outline: 'none', background: S.bg,
-                  }}
-                />
-                <button style={{
-                  background: S.teal, color: 'white', border: 'none', padding: '12px 20px',
-                  borderRadius: 12, fontSize: 13, fontWeight: 700, cursor: 'pointer', fontFamily: S.font,
-                }}>Post</button>
-              </div>
-              <div style={{ fontSize: 11, color: S.textLight, marginTop: 4 }}>
+                Sign Up to Post &#128248;
+              </button>
+              <p style={{ fontSize: 12, color: S.textLight, marginTop: 8 }}>
                 Verified AustiNites only. All photos moderated before going live.
-              </div>
+              </p>
             </div>
           </div>
         </div>

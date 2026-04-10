@@ -1013,7 +1013,7 @@ export default function RealAustiNightsV7() {
 
         <nav style={{ padding: '8px 24px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: '#FFFAF3' }}>
           <div style={{ background: 'transparent' }}>
-            <img src="/logo.png" alt="Real AustiNights" style={{ height: 120, width: 'auto', objectFit: 'cover', objectPosition: 'center' }} />
+            <img src="/logo.png" alt="Real AustiNights" style={{ height: 180, width: 360, objectFit: 'contain' }} />
           </div>
 
           <div style={{ display: 'flex', gap: 20, alignItems: 'center', fontSize: 14, fontWeight: 600, fontFamily: S.font }}>

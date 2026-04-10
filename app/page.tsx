@@ -1460,7 +1460,7 @@ export default function RealAustiNightsV7() {
                       {photo.caption}
                     </div>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 8 }}>
-                      <span style={{ fontSize: 12, color: S.teal, fontWeight: 600 }}>@{photo.username}</span>
+                      <span style={{ fontSize: 12, color: S.teal, fontWeight: 600 }}>{photo.username}</span>
                       <span style={{ fontSize: 11, color: S.textLight }}>{photo.venueName}</span>
                     </div>
                     <div style={{ display: 'flex', gap: 12, marginTop: 10, fontSize: 12, color: S.textMid }}>

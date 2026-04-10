@@ -1108,7 +1108,7 @@ export default function RealAustiNightsV7() {
               }}
             >
               <div style={{ fontFamily: S.font, fontWeight: 800, fontSize: 11, color: S.teal, marginBottom: 6 }}>
-                Que Pasa? 📸
+                ¿Que Pasa? 📸
               </div>
               <div style={{
                 flex: 1, borderRadius: 10, overflow: 'hidden', position: 'relative' as const,

@@ -1464,8 +1464,8 @@ export default function RealAustiNightsV7() {
                       <span style={{ fontSize: 11, color: S.textLight }}>{photo.venueName}</span>
                     </div>
                     <div style={{ display: 'flex', gap: 12, marginTop: 10, fontSize: 12, color: S.textMid }}>
-                      <span>&#10084; {photo.likes || 0}</span>
-                      <span>&#128172; {photo.comments || 0}</span>
+                      <span>&#10084; {0}</span>
+                      <span>&#128172; {0}</span>
                     </div>
                   </div>
                 </div>

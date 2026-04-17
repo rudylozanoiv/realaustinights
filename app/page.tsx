@@ -997,6 +997,18 @@ export default function RealAustiNightsV7() {
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-thumb { background: #ddd; border-radius: 3px; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+        .signup-btn { -webkit-appearance: none; appearance: none; }
+        @supports (-webkit-touch-callout: none) {
+          .signup-btn { padding: 10px 24px !important; line-height: 1.2 !important; }
+        }
+        @media (max-width: 768px) {
+          .main-grid { display: grid !important; grid-template-columns: 1fr !important; width: 100% !important; }
+          .main-grid > * { width: 100% !important; min-width: 0 !important; position: relative !important; top: auto !important; height: auto !important; }
+          .signup-btn { padding: 10px 18px !important; }
+          @supports (-webkit-touch-callout: none) {
+            .chrome-qp-fix { position: relative; z-index: 1; }
+          }
+        }
       `}</style>
 
       {/* Onboarding modal */}
@@ -1038,7 +1050,7 @@ export default function RealAustiNightsV7() {
               </button>
             )}
 
-            <button onClick={() => setShowModal(true)} style={{ background: S.orange, color: 'white', border: 'none', padding: '10px 24px', borderRadius: 24, fontWeight: 700, fontSize: 13, cursor: 'pointer', fontFamily: S.font, boxShadow: '0 2px 8px rgba(255,140,0,0.3)' }}>
+            <button className="signup-btn" onClick={() => setShowModal(true)} style={{ background: S.orange, color: 'white', border: 'none', padding: '10px 24px', borderRadius: 24, fontWeight: 700, fontSize: 13, cursor: 'pointer', fontFamily: S.font, boxShadow: '0 2px 8px rgba(255,140,0,0.3)' }}>
               Sign Up
             </button>
           </div>
@@ -1054,7 +1066,7 @@ export default function RealAustiNightsV7() {
       </header>
 
       {/* ── THREE-COLUMN LAYOUT ── */}
-      <div style={{ display: 'grid', gridTemplateColumns: '272px 1fr 312px', minHeight: 'calc(100vh - 130px)' }}>
+      <div className="main-grid" style={{ display: 'grid', gridTemplateColumns: '272px 1fr 312px', minHeight: 'calc(100vh - 130px)' }}>
 
         {/* ── LEFT SIDEBAR ── */}
         <aside style={{
@@ -1087,7 +1099,7 @@ export default function RealAustiNightsV7() {
 
           
           {/* ── QUE PASA + COMMUNITY SPLIT (top of sidebar) ── */}
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8, marginBottom: 16, height: 180 }}>
+          <div className="chrome-qp-fix" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8, marginBottom: 16, height: 180 }}>
             {/* Left half: Que Pasa mini */}
             <div
               onClick={() => setShowQuePasaFull(true)}
@@ -1369,7 +1381,7 @@ export default function RealAustiNightsV7() {
                   <span onClick={() => setShowModal(true)} style={{ marginLeft: 6, cursor: 'pointer', fontWeight: 700, textDecoration: 'underline' }}>Sign in →</span>
                 </div>
               )}
-              <button style={{ width: '100%', marginTop: 20, background: S.orange, color: 'white', border: 'none', padding: '14px', borderRadius: 12, fontWeight: 700, fontSize: 14, cursor: 'pointer', fontFamily: S.font, boxShadow: '0 4px 14px rgba(255,140,0,0.3)' }}>
+              <button className="signup-btn" style={{ width: '100%', marginTop: 20, background: S.orange, color: 'white', border: 'none', padding: '14px', borderRadius: 12, fontWeight: 700, fontSize: 14, cursor: 'pointer', fontFamily: S.font, boxShadow: '0 4px 14px rgba(255,140,0,0.3)' }}>
                 Get a Ride Here 🚗
               </button>
               <div style={{ display: 'flex', gap: 16, marginTop: 14, fontSize: 13, color: S.textLight, justifyContent: 'center' }}>

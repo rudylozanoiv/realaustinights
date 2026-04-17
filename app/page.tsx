@@ -1003,7 +1003,9 @@ export default function RealAustiNightsV7() {
         }
         @media (max-width: 768px) {
           .main-grid { display: grid !important; grid-template-columns: 1fr !important; width: 100% !important; }
-          .main-grid > * { width: 100% !important; min-width: 0 !important; position: relative !important; top: auto !important; height: auto !important; }
+          .main-grid > * { width: 100% !important; min-width: 0 !important; }
+          .main-grid > aside:first-child,
+          .main-grid > aside:last-child { display: none !important; }
           .signup-btn { padding: 10px 18px !important; }
           @supports (-webkit-touch-callout: none) {
             .chrome-qp-fix { position: relative; z-index: 1; }

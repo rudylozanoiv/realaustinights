@@ -934,7 +934,6 @@ export default function RealAustiNightsV7() {
   const [showPupperFull, setShowPupperFull] = useState(false);
   const [showDealsFull, setShowDealsFull] = useState(false);
   const [quePasaComment, setQuePasaComment] = useState('');
-  const [viewportWidth, setViewportWidth] = useState(1280);
 
   // Track actual signup (not just browsing mode)
   const [isSignedUp, setIsSignedUp] = useState(false);
@@ -948,13 +947,7 @@ export default function RealAustiNightsV7() {
     return false;
   };
 
-  useEffect(() => {
-    setMounted(true);
-    const syncViewport = () => setViewportWidth(window.innerWidth);
-    syncViewport();
-    window.addEventListener('resize', syncViewport);
-    return () => window.removeEventListener('resize', syncViewport);
-  }, []);
+  useEffect(() => { setMounted(true); }, []);
 
   useEffect(() => {
     const t = setInterval(() => setHlIdx(i => (i + 1) % HEADLINES.length), 4500);
@@ -994,36 +987,6 @@ export default function RealAustiNightsV7() {
   };
 
   const isAustinNite = userMode === 'austinnite';
-  const isMobile = viewportWidth < 768;
-  const isTablet = viewportWidth >= 768 && viewportWidth < 1100;
-  const shellPadding = isMobile ? 16 : 24;
-  const navGap = isMobile ? 8 : 20;
-  const signupButtonStyle = {
-    background: S.orange,
-    color: 'white',
-    border: 'none',
-    padding: isMobile ? '10px 16px' : '10px 24px',
-    minHeight: 40,
-    borderRadius: 24,
-    fontWeight: 700,
-    fontSize: 13,
-    lineHeight: 1.2,
-    cursor: 'pointer',
-    fontFamily: S.font,
-    boxShadow: '0 2px 8px rgba(255,140,0,0.3)',
-    WebkitAppearance: 'none' as const,
-    appearance: 'none' as const,
-    flexShrink: 0 as const,
-    whiteSpace: 'nowrap' as const,
-  };
-  const pageGridStyle = isMobile
-    ? { display: 'flex', flexDirection: 'column' as const, minHeight: 'calc(100vh - 130px)', width: '100%', maxWidth: '100vw', overflowX: 'hidden' as const }
-    : isTablet
-      ? { display: 'grid', gridTemplateColumns: '240px minmax(0, 1fr)', minHeight: 'calc(100vh - 130px)', width: '100%', maxWidth: '100vw', overflowX: 'hidden' as const }
-      : { display: 'grid', gridTemplateColumns: '272px minmax(0, 1fr) 312px', minHeight: 'calc(100vh - 130px)', width: '100%', maxWidth: '100vw', overflowX: 'hidden' as const };
-  const sidebarBaseStyle = isMobile
-    ? { position: 'relative' as const, top: 'auto', height: 'auto', overflowY: 'visible' as const, width: '100%', maxWidth: '100vw' }
-    : { position: 'sticky' as const, top: 130, height: 'calc(100vh - 130px)', overflowY: 'auto' as const };
 
   return (
     <div style={{ fontFamily: S.fontBody, background: S.bg, color: S.text, minHeight: '100vh' }}>
@@ -1048,16 +1011,16 @@ export default function RealAustiNightsV7() {
           </span>
         </div>
 
-        <nav style={{ padding: `8px ${shellPadding}px`, display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: navGap, flexWrap: isMobile ? 'wrap' : 'nowrap', background: '#FFFAF3' }}>
-          <div style={{ background: 'transparent', flexShrink: 0 }}>
-            <img src="/logo.png" alt="Real AustiNights" style={{ height: isMobile ? 88 : 160, width: isMobile ? 138 : 250, objectFit: 'fill' }} />
+        <nav style={{ padding: '8px 24px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: '#FFFAF3' }}>
+          <div style={{ background: 'transparent' }}>
+            <img src="/logo.png" alt="Real AustiNights" style={{ height: 160, width: 250, objectFit: 'fill' }} />
           </div>
 
-          <div style={{ display: 'flex', gap: navGap, alignItems: 'center', justifyContent: isMobile ? 'space-between' : 'flex-end', flexWrap: isMobile ? 'wrap' : 'nowrap', width: isMobile ? '100%' : 'auto', fontSize: 14, fontWeight: 600, fontFamily: S.font }}>
-            {!isMobile && <input type="text" placeholder="What Y'all Looking For?" style={{ padding: '8px 16px', borderRadius: 20, border: '1.5px solid ' + S.border, fontSize: 13, fontFamily: S.fontBody, outline: 'none', width: isTablet ? 160 : 200, background: S.bg }} onFocus={e => e.target.style.borderColor = S.orange} onBlur={e => e.target.style.borderColor = S.border} />}
-            {!isMobile && <span style={{ color: S.orange, cursor: 'pointer' }} onClick={() => { setTab('Tonight'); document.getElementById('feed')?.scrollIntoView({ behavior: 'smooth' }); }}>Tonight</span>}
-            {!isMobile && <span style={{ color: S.textMid, cursor: 'pointer' }} onClick={() => { setCats(['Hidden Gems']); document.getElementById('feed')?.scrollIntoView({ behavior: 'smooth' }); }}>Hidden Gems</span>}
-            {!isMobile && <span style={{ color: S.violet, cursor: 'pointer' }} onClick={() => document.getElementById('partner-cta')?.scrollIntoView({ behavior: 'smooth' })}>For Business</span>}
+          <div style={{ display: 'flex', gap: 20, alignItems: 'center', fontSize: 14, fontWeight: 600, fontFamily: S.font }}>
+            <input type="text" placeholder="What Y'all Looking For?" style={{ padding: '8px 16px', borderRadius: 20, border: '1.5px solid ' + S.border, fontSize: 13, fontFamily: S.fontBody, outline: 'none', width: 200, background: S.bg }} onFocus={e => e.target.style.borderColor = S.orange} onBlur={e => e.target.style.borderColor = S.border} />
+            <span style={{ color: S.orange, cursor: 'pointer' }} onClick={() => { setTab('Tonight'); document.getElementById('feed')?.scrollIntoView({ behavior: 'smooth' }); }}>Tonight</span>
+            <span style={{ color: S.textMid, cursor: 'pointer' }} onClick={() => { setCats(['Hidden Gems']); document.getElementById('feed')?.scrollIntoView({ behavior: 'smooth' }); }}>Hidden Gems</span>
+            <span style={{ color: S.violet, cursor: 'pointer' }} onClick={() => document.getElementById('partner-cta')?.scrollIntoView({ behavior: 'smooth' })}>For Business</span>
 
             {/* User mode pill */}
             {userMode && (
@@ -1069,14 +1032,13 @@ export default function RealAustiNightsV7() {
                   background: isAustinNite ? S.tealLight : S.orangeLight,
                   color: isAustinNite ? S.teal : S.orange,
                   fontSize: 12, fontWeight: 700, fontFamily: S.font,
-                  flexShrink: 0,
                 }}
               >
                 {isAustinNite ? `🏡 AustiNite${yearsInAustin ? ` · ${yearsInAustin}y` : ''}` : '✈️ Tourist'}
               </button>
             )}
 
-            <button onClick={() => setShowModal(true)} style={signupButtonStyle}>
+            <button onClick={() => setShowModal(true)} style={{ background: S.orange, color: 'white', border: 'none', padding: '10px 24px', borderRadius: 24, fontWeight: 700, fontSize: 13, cursor: 'pointer', fontFamily: S.font, boxShadow: '0 2px 8px rgba(255,140,0,0.3)' }}>
               Sign Up
             </button>
           </div>
@@ -1092,15 +1054,12 @@ export default function RealAustiNightsV7() {
       </header>
 
       {/* ── THREE-COLUMN LAYOUT ── */}
-      <div style={pageGridStyle}>
+      <div style={{ display: 'grid', gridTemplateColumns: '272px 1fr 312px', minHeight: 'calc(100vh - 130px)' }}>
 
         {/* ── LEFT SIDEBAR ── */}
         <aside style={{
-          background: 'white',
-          borderRight: !isMobile ? `1px solid ${S.border}` : 'none',
-          borderBottom: isMobile ? `1px solid ${S.border}` : 'none',
-          padding: isMobile ? 16 : 24,
-          ...sidebarBaseStyle,
+          background: 'white', borderRight: `1px solid ${S.border}`, padding: 24,
+          position: 'sticky', top: 130, height: 'calc(100vh - 130px)', overflowY: 'auto',
         }}>
           {/* Weather widget - dynamic personality */}
           {(() => {
@@ -1128,7 +1087,7 @@ export default function RealAustiNightsV7() {
 
           
           {/* ── QUE PASA + COMMUNITY SPLIT (top of sidebar) ── */}
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8, marginBottom: 16, height: isMobile ? 'auto' : 180, maxWidth: '100%' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8, marginBottom: 16, height: 180 }}>
             {/* Left half: Que Pasa mini */}
             <div
               onClick={() => setShowQuePasaFull(true)}
@@ -1137,7 +1096,7 @@ export default function RealAustiNightsV7() {
                 borderRadius: 14, padding: 10, cursor: 'pointer',
                 border: `1px solid ${S.border}`, overflow: 'hidden',
                 display: 'flex', flexDirection: 'column' as const,
-                transition: 'all 0.2s', minWidth: 0,
+                transition: 'all 0.2s',
               }}
             >
               <div style={{ fontFamily: S.font, fontWeight: 800, fontSize: 11, color: S.teal, marginBottom: 6 }}>
@@ -1145,7 +1104,7 @@ export default function RealAustiNightsV7() {
               </div>
               <div style={{
                 flex: 1, borderRadius: 10, overflow: 'hidden', position: 'relative' as const,
-                background: `url(${QUE_PASA_PHOTOS[0].photoUrl}) center/cover`, minWidth: 0,
+                background: `url(${QUE_PASA_PHOTOS[0].photoUrl}) center/cover`,
               }}>
                 <div style={{
                   position: 'absolute' as const, bottom: 0, left: 0, right: 0,
@@ -1172,7 +1131,7 @@ export default function RealAustiNightsV7() {
                 background: 'white', borderRadius: 14, padding: 10, cursor: 'pointer',
                 border: `1px solid ${S.border}`, overflow: 'hidden',
                 display: 'flex', flexDirection: 'column' as const,
-                transition: 'all 0.2s', minWidth: 0,
+                transition: 'all 0.2s',
               }}
             >
               <div style={{ fontFamily: S.font, fontWeight: 800, fontSize: 11, color: S.violet, marginBottom: 6 }}>
@@ -1272,7 +1231,7 @@ export default function RealAustiNightsV7() {
         </aside>
 
         {/* ── MAIN FEED ── */}
-        <main id="feed" style={{ padding: isMobile ? 16 : 28, overflowY: 'auto', width: '100%', minWidth: 0, order: isMobile ? 2 : 0 }}>
+        <main id="feed" style={{ padding: 28, overflowY: 'auto' }}>
 
           {/* Tourist restriction notice */}
           {userMode === 'tourist' && (
@@ -1381,13 +1340,8 @@ export default function RealAustiNightsV7() {
 
         {/* ── RIGHT SIDEBAR ── */}
         <aside style={{
-          background: 'white',
-          borderLeft: !isMobile && !isTablet ? `1px solid ${S.border}` : 'none',
-          borderTop: isMobile ? `1px solid ${S.border}` : 'none',
-          padding: isMobile ? 16 : 24,
-          ...sidebarBaseStyle,
-          display: isTablet ? 'none' : 'block',
-          order: isMobile ? 3 : 0,
+          background: 'white', borderLeft: `1px solid ${S.border}`, padding: 24,
+          position: 'sticky', top: 130, height: 'calc(100vh - 130px)', overflowY: 'auto',
         }}>
           {selected ? (
             <div style={{ animation: 'fadeIn 0.3s ease' }}>
@@ -1520,10 +1474,8 @@ export default function RealAustiNightsV7() {
                 Got a photo? Share what's happening in YOUR Austin.
               </p>
               <button onClick={() => { if (requireLogin()) return; }} style={{
-                ...signupButtonStyle,
-                background: S.teal,
-                padding: isMobile ? '12px 20px' : '14px 32px',
-                fontSize: 15,
+                background: S.teal, color: 'white', border: 'none', padding: '14px 32px',
+                borderRadius: 14, fontSize: 15, fontWeight: 700, cursor: 'pointer', fontFamily: S.font,
                 boxShadow: '0 4px 14px rgba(0,122,122,0.3)', marginTop: 12,
               }}>
                 Sign Up to Post &#128248;
@@ -1581,10 +1533,8 @@ export default function RealAustiNightsV7() {
                 Got something to say? Join the conversation.
               </p>
               <button onClick={() => { if (requireLogin()) return; }} style={{
-                ...signupButtonStyle,
-                background: '#1B2A4A',
-                padding: isMobile ? '12px 20px' : '14px 32px',
-                fontSize: 15,
+                background: '#1B2A4A', color: 'white', border: 'none', padding: '14px 32px',
+                borderRadius: 14, fontSize: 15, fontWeight: 700, cursor: 'pointer', fontFamily: S.font,
                 boxShadow: '0 4px 14px rgba(27,42,74,0.3)', marginTop: 12,
               }}>
                 Sign Up to Post
@@ -1648,9 +1598,8 @@ export default function RealAustiNightsV7() {
                 Got a cute pup? Share your Austin dog!
               </p>
               <button onClick={() => { if (requireLogin()) return; }} style={{
-                ...signupButtonStyle,
-                padding: isMobile ? '12px 20px' : '14px 32px',
-                fontSize: 15,
+                background: S.orange, color: 'white', border: 'none', padding: '14px 32px',
+                borderRadius: 14, fontSize: 15, fontWeight: 700, cursor: 'pointer', fontFamily: S.font,
                 boxShadow: '0 4px 14px rgba(255,140,0,0.3)', marginTop: 12,
               }}>
                 Sign Up to Post Your Pup

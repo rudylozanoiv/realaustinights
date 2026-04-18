@@ -1,12 +1,12 @@
 import type { Metadata } from 'next';
 
 export const SITE = {
-  name: 'Real AustiNights',
+  name: 'Real AustinNights',
   domain: 'realaustinights.com',
   url: 'https://realaustinights.com',
   tagline: 'Real locals. Real vibes. Real fun.',
   description:
-    "Austin's nightlife, by AustiNights. Live venues, hidden gems, deals, and the city's real-time pulse — curated nightly, AI-assisted, locally verified.",
+    "Austin's nightlife, by AustinNights. Live venues, hidden gems, deals, and the city's real-time pulse — curated nightly, AI-assisted, locally verified.",
   locale: 'en_US',
   ogImage: '/og-default.png',
 } as const;

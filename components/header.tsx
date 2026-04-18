@@ -56,10 +56,10 @@ export function Header({ search, onSearchChange, onSignUpClick, onNavigate }: He
         className="flex items-center justify-between gap-3 bg-cream px-3 py-2 md:px-6"
       >
         {/* Logo */}
-        <a href="/" className="flex items-center" aria-label="Real AustiNights — home">
+        <a href="/" className="flex items-center" aria-label="Real AustinNights — home">
           <Image
             src="/logo.png"
-            alt="Real AustiNights"
+            alt="Real AustinNights"
             width={250}
             height={160}
             priority

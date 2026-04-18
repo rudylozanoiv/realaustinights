@@ -9,7 +9,7 @@ interface VenueDetailCardProps {
   venue: FeedCard;
   onClose?: () => void;
   onSignInRequired?: () => void;
-  isAustinights?: boolean;
+  isAustinight?: boolean;
   /** Show the header bar with "← Back". Defaults to true when onClose is set. */
   showHeader?: boolean;
   className?: string;
@@ -19,7 +19,7 @@ export function VenueDetailCard({
   venue,
   onClose,
   onSignInRequired,
-  isAustinights = false,
+  isAustinight = false,
   showHeader,
   className,
 }: VenueDetailCardProps) {
@@ -105,9 +105,9 @@ export function VenueDetailCard({
           </div>
         </dl>
 
-        {venue.verifiedOnly && !isAustinights && (
+        {venue.verifiedOnly && !isAustinight && (
           <div className="mt-4 rounded-lg bg-sky-100 px-3 py-2.5 text-xs text-sky-700">
-            ✓ Reviews &amp; comments are for verified AustiNights only.
+            ✓ Reviews &amp; comments are for verified AustinNights only.
             {onSignInRequired && (
               <button
                 type="button"

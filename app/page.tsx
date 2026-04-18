@@ -155,7 +155,7 @@ export default function Home() {
               onClick={() => setShowSignup(true)}
               className="font-bold text-teal underline"
             >
-              Sign in as AustiNights →
+              Sign in as AustiNight →
             </button>
           </div>
         </div>
@@ -336,7 +336,7 @@ export default function Home() {
                 venue={selected}
                 onClose={() => setSelected(null)}
                 onSignInRequired={() => setShowSignup(true)}
-                isAustinights={userMode === 'austinights'}
+                isAustinight={userMode === 'austinight'}
               />
             ) : (
               <AustinPulse posts={LIVE_POSTS} />
@@ -371,7 +371,7 @@ export default function Home() {
         venue={selected}
         onClose={() => setSelected(null)}
         onSignInRequired={() => setShowSignup(true)}
-        isAustinights={userMode === 'austinights'}
+        isAustinight={userMode === 'austinight'}
         className="md:hidden"
       />
     </>

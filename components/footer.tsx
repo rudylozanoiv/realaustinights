@@ -9,7 +9,7 @@ export function Footer({ onFoundingClick }: FooterProps) {
     <footer className="bg-teal px-5 py-8 text-center text-white" role="contentinfo">
       <div className="mx-auto max-w-2xl space-y-3">
         <p className="font-display text-xl font-extrabold">
-          Real<span className="text-yellow-300">AustiNights</span>
+          Real<span className="text-yellow-300">AustinNights</span>
         </p>
         <p className="text-sm opacity-80">Real locals. Real vibes. Real fun.</p>
         <p className="text-[11px] opacity-70">🤖 AI-Driven, AustiNight-Approved</p>
@@ -45,12 +45,12 @@ export function Footer({ onFoundingClick }: FooterProps) {
             onClick={onFoundingClick}
             className="mt-2 rounded-full bg-pink px-5 py-2 font-display text-sm font-bold text-white shadow-md hover:brightness-110"
           >
-            🏆 Become a Founding AustiNights
+            🏆 Become a Founding AustiNight
           </button>
         )}
 
         <p className="pt-3 text-[11px] opacity-50">
-          © 2026 Real AustiNights. Keep it weird, y&apos;all. ✝️
+          © 2026 Real AustinNights. Keep it weird, y&apos;all. ✝️
         </p>
       </div>
     </footer>

@@ -1,26 +1,73 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/*
+ * Real AustiNights brand tokens — Tailwind v4 native @theme.
+ * Mirrored in lib/theme.ts for programmatic access (keep in sync).
+ * Pink (#FF69B4) is SACRED — memorial to Rudy's late wife. Decorative use is forbidden.
+ */
+@theme {
+  --color-cream: #FFFAF3;
+  --color-teal: #007A7A;
+  --color-teal-light: #E8F5F5;
+  --color-orange: #FF8C00;
+  --color-orange-light: #FFF4E6;
+  --color-navy: #1B2A4A;
+  --color-navy-light: #E8EDF5;
+  --color-red: #BF0A30;
+  --color-green: #00A86B;
+  --color-pink: #FF69B4;
+  --color-ink: #1B2A4A;
+  --color-ink-mid: #4A5568;
+  --color-ink-light: #A8A29E;
+  --color-hairline: #E8DFD0;
+
+  --font-sans: var(--font-open-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-montserrat), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-playfair), Georgia, serif;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
+/* Reset body defaults so page sections control their own background. */
+html,
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-cream);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+}
+
+/* Accessibility: skip link — visible only when focused. */
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 1000;
+}
+.skip-link:focus {
+  left: 12px;
+  top: 12px;
+  padding: 10px 16px;
+  background: var(--color-navy);
+  color: white;
+  border-radius: 8px;
+  font-weight: 700;
+}
+
+::selection {
+  background: var(--color-orange);
+  color: white;
+}
+
+@keyframes raln-fade-in {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

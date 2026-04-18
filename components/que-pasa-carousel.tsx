@@ -169,7 +169,7 @@ export function QuePasaCarousel({ photos, onSubmitClick, className }: QuePasaCar
           Submit your photo 📸
         </button>
         <p className="mt-1.5 text-[10px] text-ink-light">
-          Verified AustinNights only. All photos moderated before going live.
+          Verified AustiNights only. All photos moderated before going live.
         </p>
       </div>
     </section>

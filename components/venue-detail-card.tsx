@@ -107,7 +107,7 @@ export function VenueDetailCard({
 
         {venue.verifiedOnly && !isAustinight && (
           <div className="mt-4 rounded-lg bg-sky-100 px-3 py-2.5 text-xs text-sky-700">
-            ✓ Reviews &amp; comments are for verified AustinNights only.
+            ✓ Reviews &amp; comments are for verified AustiNights only.
             {onSignInRequired && (
               <button
                 type="button"

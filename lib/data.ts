@@ -381,7 +381,7 @@ export const FEED_CARDS: FeedCard[] = [
 export const LIVE_POSTS: LivePost[] = [
   { id: 'lp1', venue: 'Mohawk ATX', handle: '@mohawkatx', message: 'Wild Child soundcheck DONE. Doors in 45 min. First 50 get free drink tickets!', timeAgo: '2m', type: 'event', emoji: '🎸', likes: 34, isNew: true },
   { id: 'lp2', venue: "Evangeline's", handle: '@evangelinesatx', message: 'Fresh crawfish dropped. Etouffee on the board. Walk-ins til 9:30pm.', timeAgo: '8m', type: 'update', emoji: '🦞', likes: 67, isNew: true },
-  { id: 'lp3', venue: 'AustinNights HQ', handle: '@realaustinights', message: 'MUDDY PAWS ALERT: Rain ~10pm. Rainey covered patios OPEN.', timeAgo: '12m', type: 'alert', emoji: '🌧️', likes: 112 },
+  { id: 'lp3', venue: 'AustiNights HQ', handle: '@realaustinights', message: 'MUDDY PAWS ALERT: Rain ~10pm. Rainey covered patios OPEN.', timeAgo: '12m', type: 'alert', emoji: '🌧️', likes: 112 },
   { id: 'lp4', venue: 'Craft Pride', handle: '@craftprideatx', message: 'Happy Hour EXTENDED til 8pm — $2 off all TX craft drafts. 54 taps.', timeAgo: '19m', type: 'deal', emoji: '🍺', likes: 89 },
   { id: 'lp5', venue: 'Spider House', handle: '@spiderhouse', message: 'Open mic NOW. Next slot 9:15. $3 drafts. Dogs welcome.', timeAgo: '23m', type: 'music', emoji: '🎤', likes: 45 },
   { id: 'lp6', venue: 'Veracruz', handle: '@veracruzatx', message: 'Migas tacos til midnight. Line moving fast. Come hungry.', timeAgo: '31m', type: 'update', emoji: '🌮', likes: 156 },

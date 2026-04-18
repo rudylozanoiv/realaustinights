@@ -36,7 +36,7 @@ export function CommunityFeed({ posts, onPostClick, className }: CommunityFeedPr
           <h2 className="font-display text-base font-extrabold text-ink md:text-lg">
             Community <span aria-hidden>💬</span>
           </h2>
-          <p className="text-[11px] text-ink-light">Real talk from real AustinNights.</p>
+          <p className="text-[11px] text-ink-light">Real talk from real AustiNights.</p>
         </div>
         <button
           type="button"

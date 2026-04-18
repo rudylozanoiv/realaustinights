@@ -135,7 +135,7 @@ export function SignupModal({ open, onClose, onSignedUp }: SignupModalProps) {
           >
             Welcome to{' '}
             <span className="text-teal">Real</span>
-            <span className="text-orange">AustinNights</span>
+            <span className="text-orange">AustiNights</span>
           </h2>
           <button
             type="button"
@@ -158,7 +158,7 @@ export function SignupModal({ open, onClose, onSignedUp }: SignupModalProps) {
 
               {foundingCount !== null && foundingCount <= FOUNDING_CAP && (
                 <p className="mt-4 rounded-lg bg-pink/10 px-3 py-2 text-xs font-bold text-pink">
-                  🏆 #{foundingCount} of {FOUNDING_CAP} Founding AustiNight
+                  🏆 #{foundingCount} of {FOUNDING_CAP} Founding AustiNights
                 </p>
               )}
 
@@ -183,7 +183,7 @@ export function SignupModal({ open, onClose, onSignedUp }: SignupModalProps) {
             <div className="space-y-3">
               {foundingCount !== null && foundingCount <= FOUNDING_CAP && (
                 <p className="rounded-lg bg-pink/10 px-3 py-2 text-center text-xs font-bold text-pink">
-                  🏆 Claim spot #{foundingCount} of {FOUNDING_CAP} Founding AustiNight
+                  🏆 Claim spot #{foundingCount} of {FOUNDING_CAP} Founding AustiNights
                 </p>
               )}
 

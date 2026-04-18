@@ -45,7 +45,7 @@ export function Footer({ onFoundingClick }: FooterProps) {
             onClick={onFoundingClick}
             className="mt-2 rounded-full bg-pink px-5 py-2 font-display text-sm font-bold text-white shadow-md hover:brightness-110"
           >
-            🏆 Become a Founding Austinite
+            🏆 Become a Founding AustiNights
           </button>
         )}
 

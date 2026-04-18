@@ -158,7 +158,7 @@ export function SignupModal({ open, onClose, onSignedUp }: SignupModalProps) {
 
               {foundingCount !== null && foundingCount <= FOUNDING_CAP && (
                 <p className="mt-4 rounded-lg bg-pink/10 px-3 py-2 text-xs font-bold text-pink">
-                  🏆 #{foundingCount} of {FOUNDING_CAP} Founding Austinites
+                  🏆 #{foundingCount} of {FOUNDING_CAP} Founding AustiNights
                 </p>
               )}
 
@@ -183,7 +183,7 @@ export function SignupModal({ open, onClose, onSignedUp }: SignupModalProps) {
             <div className="space-y-3">
               {foundingCount !== null && foundingCount <= FOUNDING_CAP && (
                 <p className="rounded-lg bg-pink/10 px-3 py-2 text-center text-xs font-bold text-pink">
-                  🏆 Claim spot #{foundingCount} of {FOUNDING_CAP} Founding Austinites
+                  🏆 Claim spot #{foundingCount} of {FOUNDING_CAP} Founding AustiNights
                 </p>
               )}
 
@@ -233,17 +233,17 @@ export function SignupModal({ open, onClose, onSignedUp }: SignupModalProps) {
                 <div className="grid grid-cols-2 gap-2">
                   <button
                     type="button"
-                    aria-pressed={mode === 'austinnite'}
-                    onClick={() => setMode('austinnite')}
+                    aria-pressed={mode === 'austinights'}
+                    onClick={() => setMode('austinights')}
                     className={clsx(
                       'rounded-xl border-2 px-3 py-3 text-center transition-colors',
-                      mode === 'austinnite'
+                      mode === 'austinights'
                         ? 'border-teal bg-teal-light'
                         : 'border-hairline bg-white',
                     )}
                   >
                     <div aria-hidden className="text-xl">🏡</div>
-                    <div className="font-display text-xs font-bold text-ink">AustiNite</div>
+                    <div className="font-display text-xs font-bold text-ink">AustiNights</div>
                   </button>
                   <button
                     type="button"
@@ -262,7 +262,7 @@ export function SignupModal({ open, onClose, onSignedUp }: SignupModalProps) {
                 </div>
               </fieldset>
 
-              {mode === 'austinnite' && (
+              {mode === 'austinights' && (
                 <label className="block text-xs">
                   <span className="font-bold text-ink">Years in Austin</span>
                   <input

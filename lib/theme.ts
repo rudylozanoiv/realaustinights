@@ -4,7 +4,7 @@
  * Use these constants only for programmatic access (chart colors, dynamic styles, etc.).
  *
  * PINK (#FF69B4) is SACRED — memorial to Rudy Lozano IV's late wife.
- * Allowed uses: Sign Up CTAs, Featured Partner badges, Founding Austinite badges,
+ * Allowed uses: Sign Up CTAs, Featured Partner badges, Founding AustiNights badges,
  * Pupper Weekly highlights. NEVER decorative.
  */
 export const BRAND = {

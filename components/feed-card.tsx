@@ -86,7 +86,7 @@ export function FeedCard({ card, onViewDetails, onRideClick }: FeedCardProps) {
 
         {card.verifiedOnly && (
           <p className="mt-2.5 inline-flex items-center gap-1 rounded-md bg-sky-100 px-2.5 py-1 text-[11px] text-sky-700">
-            ✓ Reviews &amp; comments for verified AustiNites only
+            ✓ Reviews &amp; comments for verified AustiNights only
           </p>
         )}
 

@@ -21,7 +21,7 @@ export type CategoryFilter =
   | 'Groceries'
   | 'Gyms / Fitness';
 
-export type UserMode = 'austinnite' | 'tourist' | null;
+export type UserMode = 'austinights' | 'tourist' | null;
 
 export type AfterPartyEvent =
   | 'SXSW'

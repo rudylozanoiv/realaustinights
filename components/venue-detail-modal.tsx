@@ -9,7 +9,7 @@ interface VenueDetailModalProps {
   venue: FeedCard | null;
   onClose: () => void;
   onSignInRequired?: () => void;
-  isAustinNite?: boolean;
+  isAustinights?: boolean;
   /** Optional extra class for the outer overlay (e.g. `lg:hidden`). */
   className?: string;
 }
@@ -22,7 +22,7 @@ export function VenueDetailModal({
   venue,
   onClose,
   onSignInRequired,
-  isAustinNite = false,
+  isAustinights = false,
   className,
 }: VenueDetailModalProps) {
   const dialogRef = useRef<HTMLDivElement>(null);
@@ -88,7 +88,7 @@ export function VenueDetailModal({
           venue={venue}
           onClose={onClose}
           onSignInRequired={onSignInRequired}
-          isAustinNite={isAustinNite}
+          isAustinights={isAustinights}
         />
       </div>
     </div>

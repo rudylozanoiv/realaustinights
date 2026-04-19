@@ -27,7 +27,14 @@ export function FeedCard({ card, onViewDetails, onRideClick }: FeedCardProps) {
       )}
       aria-labelledby={`feed-${card.id}-title`}
     >
-      <div className="relative aspect-video w-full bg-hairline/40">
+      {/* Image is an additional tap target — same action as the View Details button below.
+          Badges inside are non-interactive spans, so wrapping in <button> is safe. */}
+      <button
+        type="button"
+        onClick={() => onViewDetails(card)}
+        aria-label={`View details for ${card.venueName}`}
+        className="relative block aspect-video w-full cursor-pointer overflow-hidden bg-hairline/40 text-left focus-visible:outline focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-teal"
+      >
         <Image
           src={card.image}
           alt={`${card.venueName} — ${card.neighborhood}`}
@@ -42,7 +49,7 @@ export function FeedCard({ card, onViewDetails, onRideClick }: FeedCardProps) {
           {card.isHiddenGem && <HiddenGemBadge />}
           {card.petFriendly && <PetFriendlyPill />}
         </div>
-      </div>
+      </button>
 
       <div className="px-4 py-4 md:px-5">
         <div className="flex flex-wrap items-center gap-2">

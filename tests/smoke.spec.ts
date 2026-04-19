@@ -73,14 +73,57 @@ test('search 🔍 submit button exists and is ≥44px', async ({ page }) => {
 
 test('clicking View Details opens the venue detail', async ({ page, isMobile }) => {
   await page.goto('/');
+  // Two buttons share this aria-label now (image + explicit button); pick the
+  // explicit "View Details" text button with .last().
   await page
     .getByRole('button', { name: /view details for mohawk atx/i })
+    .last()
     .click();
   const title = page.getByRole('heading', { level: 2, name: 'Mohawk ATX' });
   await expect(title).toBeVisible();
   if (isMobile) {
     await expect(page.getByRole('dialog', { name: /mohawk atx/i })).toBeVisible();
   }
+});
+
+test('feed card image is an additional tap target for venue detail', async ({
+  page,
+  isMobile,
+}) => {
+  await page.goto('/');
+  // Every FeedCard has TWO controls that open the detail — the image button
+  // and the explicit "View Details" button. Both aria-labelled identically.
+  const labels = page.getByRole('button', {
+    name: /view details for mohawk atx/i,
+  });
+  await expect(labels).toHaveCount(2);
+  // Tap the first one (the image); modal + heading appear.
+  await labels.first().click();
+  await expect(
+    page.getByRole('heading', { level: 2, name: 'Mohawk ATX' }),
+  ).toBeVisible();
+  if (isMobile) {
+    await expect(page.getByRole('dialog', { name: /mohawk atx/i })).toBeVisible();
+  }
+});
+
+test('Comedy card image tap expands details (via outer role=button)', async ({
+  page,
+}) => {
+  await page.goto('/');
+  const comedy = page.locator('#comedy');
+  await comedy.scrollIntoViewIfNeeded();
+  // Tap the image (Next renders an <img> inside the outer role=button card).
+  const firstCardImg = comedy
+    .getByRole('img', { name: /Joe Pera at Cap City/i })
+    .first();
+  await firstCardImg.click();
+  await expect(
+    comedy.getByRole('heading', {
+      level: 3,
+      name: /Joe Pera: Soft Thoughts Tour/i,
+    }),
+  ).toBeVisible();
 });
 
 test("St. Mary Cathedral View Details opens venue modal", async ({
@@ -92,6 +135,7 @@ test("St. Mary Cathedral View Details opens venue modal", async ({
   // View Details must fire, and the modal heading must show the venue name.
   await page
     .getByRole('button', { name: /view details for St\.?\s*Mary Cathedral/i })
+    .last()
     .click();
   await expect(
     page.getByRole('heading', { level: 2, name: 'St. Mary Cathedral' }),

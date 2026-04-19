@@ -149,4 +149,6 @@ export interface MajorEvent {
   startDate: string;
   endDate: string;
   isRecurring: boolean;
+  /** Optional event logo. Renders alongside the "We're Austin — X" headline when present. */
+  logoUrl?: string;
 }

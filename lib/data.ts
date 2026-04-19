@@ -458,7 +458,9 @@ export const DEALS: Deal[] = [
 
 // ──────────────────────────────────────────────
 // MAJOR EVENTS — drive "We're Austin — [X]" headline + AfterThis tab glow.
-// Dates are approximate windows for 2026. Update annually.
+// Only specific 2026 festival windows. Austin FC + Longhorns season-placeholders
+// were removed — Leonardo will scrape per-match dates Sunday and add them
+// (with logoUrl) as discrete entries. Default fallback when none active = "Verdad".
 // ──────────────────────────────────────────────
 export const MAJOR_EVENTS: MajorEvent[] = [
   { id: 'me-sxsw', name: 'SXSW', label: 'SXSW', startDate: '2026-03-13', endDate: '2026-03-22', isRecurring: true },
@@ -466,8 +468,6 @@ export const MAJOR_EVENTS: MajorEvent[] = [
   { id: 'me-cota', name: 'COTA', label: 'COTA', startDate: '2026-10-23', endDate: '2026-10-25', isRecurring: true },
   { id: 'me-acl-w1', name: 'ACL', label: 'ACL', startDate: '2026-10-02', endDate: '2026-10-04', isRecurring: true },
   { id: 'me-acl-w2', name: 'ACL', label: 'ACL', startDate: '2026-10-09', endDate: '2026-10-11', isRecurring: true },
-  { id: 'me-horns-fall', name: 'Longhorns', label: 'Longhorns', startDate: '2026-08-29', endDate: '2026-11-28', isRecurring: true },
-  { id: 'me-afc-season', name: 'Austin FC', label: 'Verde', startDate: '2026-02-21', endDate: '2026-10-18', isRecurring: true },
 ];
 
 /** Pick the highest-priority active event for a given date (or undefined). */

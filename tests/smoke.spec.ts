@@ -160,6 +160,21 @@ test('WFC cancel button clears frozen state and returns to hero', async ({
   }
 });
 
+test("We're Austin defaults to Verdad when no event active", async ({
+  page,
+}) => {
+  // Freeze to mid-April 2026: between Rodeo/SXSW (March) and ACL/COTA (October),
+  // and Austin FC + Longhorns season placeholders are removed → fallback fires.
+  await page.clock.install({ time: new Date('2026-04-19T12:00:00Z') });
+  await page.goto('/');
+  const calendar = page.locator('#were-austin');
+  await calendar.scrollIntoViewIfNeeded();
+  const headline = calendar.getByRole('heading', { level: 2 });
+  await expect(headline).toContainText('Verdad');
+  await expect(headline).not.toContainText('Verde');
+  await expect(headline).not.toContainText('Every Night');
+});
+
 test('date tabs switch feed content', async ({ page }) => {
   await page.goto('/');
   await page.getByRole('tab', { name: 'Today' }).click();

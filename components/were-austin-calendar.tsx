@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import { useMemo, useState } from 'react';
 import clsx from 'clsx';
 import type { MajorEvent } from '@/lib/types';
@@ -57,9 +58,11 @@ export function WereAustinCalendar({
     return Array.from({ length: DAYS }, (_, i) => addDays(today, i));
   }, [today]);
 
-  const headline = useMemo(() => {
+  // Active event drives both the headline label and the optional logo.
+  // Default fallback when nothing's active = "Verdad" (brand: real, true, AustiNight).
+  const activeHeadline = useMemo(() => {
     const todayActive = activeFor(isoDate(today), events);
-    if (todayActive.length === 0) return 'Every Night';
+    if (todayActive.length === 0) return null;
     const priority: MajorEvent['name'][] = [
       'SXSW',
       'ACL',
@@ -68,11 +71,16 @@ export function WereAustinCalendar({
       'Longhorns',
       'Austin FC',
     ];
-    const pick = todayActive.sort(
+    return todayActive.sort(
       (a, b) => priority.indexOf(a.name) - priority.indexOf(b.name),
     )[0];
-    return pick.name === 'Austin FC' ? 'Verde' : pick.label;
   }, [events, today]);
+
+  const headlineText = activeHeadline
+    ? activeHeadline.name === 'Austin FC'
+      ? 'Verde'
+      : activeHeadline.label
+    : 'Verdad';
 
   return (
     <section
@@ -83,8 +91,19 @@ export function WereAustinCalendar({
       )}
     >
       <div className="mb-3">
-        <h2 className="font-display text-lg font-extrabold text-ink md:text-xl">
-          We&apos;re Austin — <span className="text-orange">{headline}</span>
+        <h2 className="flex flex-wrap items-center gap-2 font-display text-lg font-extrabold text-ink md:text-xl">
+          <span>We&apos;re Austin —</span>
+          {activeHeadline?.logoUrl && (
+            <Image
+              src={activeHeadline.logoUrl}
+              alt=""
+              width={28}
+              height={28}
+              unoptimized
+              className="inline-block h-7 w-auto align-middle"
+            />
+          )}
+          <span className="text-orange">{headlineText}</span>
         </h2>
       </div>
 

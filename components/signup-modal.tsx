@@ -14,13 +14,16 @@ interface SignupModalProps {
     email: string;
     instagram: string;
   }) => void;
+  onSignedIn?: (user: { email: string }) => void;
 }
+
+type Tab = 'signup' | 'signin';
 
 const FOCUSABLE =
   'a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex="-1"])';
 
 const FOUNDING_KEY = 'raln:founding_count';
-const FOUNDING_BASE = 246;
+const FOUNDING_BASE = 0;
 const FOUNDING_CAP = 500;
 
 function readCount(): number {
@@ -35,17 +38,30 @@ function writeCount(n: number) {
   window.localStorage.setItem(FOUNDING_KEY, String(n));
 }
 
-export function SignupModal({ open, onClose, onSignedUp }: SignupModalProps) {
+export function SignupModal({
+  open,
+  onClose,
+  onSignedUp,
+  onSignedIn,
+}: SignupModalProps) {
   const dialogRef = useRef<HTMLDivElement>(null);
-  const [step, setStep] = useState<'welcome' | 'signup'>('welcome');
+  const [activeTab, setActiveTab] = useState<Tab>('signup');
+
+  // Sign Up fields
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [instagram, setInstagram] = useState('');
   const [mode, setMode] = useState<Exclude<UserMode, null> | null>(null);
   const [years, setYears] = useState('');
   const [termsOk, setTermsOk] = useState(false);
-  const [captchaOk, setCaptchaOk] = useState(RECAPTCHA_SITE_KEY === '');
+  // Always start unchecked — user must explicitly confirm "not a robot".
+  // Real reCAPTCHA v3 invisible widget wires in when RECAPTCHA_SITE_KEY is set.
+  const [captchaOk, setCaptchaOk] = useState(false);
   const [foundingCount, setFoundingCount] = useState<number | null>(null);
+
+  // Sign In fields
+  const [signinEmail, setSigninEmail] = useState('');
+  const [signinPassword, setSigninPassword] = useState('');
 
   useEffect(() => {
     if (!open) return;
@@ -93,15 +109,18 @@ export function SignupModal({ open, onClose, onSignedUp }: SignupModalProps) {
 
   if (!open) return null;
 
-  const canSubmit =
+  const canSubmitSignup =
     mode !== null &&
     email.trim().length > 0 &&
     password.length >= 6 &&
     termsOk &&
     captchaOk;
 
-  const handleSubmit = () => {
-    if (!canSubmit || !mode) return;
+  const canSubmitSignin =
+    signinEmail.trim().length > 0 && signinPassword.length >= 6;
+
+  const handleSignupSubmit = () => {
+    if (!canSubmitSignup || !mode) return;
     const next = readCount() + 1;
     writeCount(next);
     onSignedUp({
@@ -112,10 +131,22 @@ export function SignupModal({ open, onClose, onSignedUp }: SignupModalProps) {
     });
   };
 
+  const handleSigninSubmit = () => {
+    if (!canSubmitSignin) return;
+    onSignedIn?.({ email: signinEmail.trim() });
+  };
+
+  // Only close when the click starts AND ends on the backdrop itself.
+  // Guards against iOS Safari "ghost click" where a synthesized click fires on
+  // the newly-mounted backdrop at the coordinates of the button that opened the modal.
+  const handleBackdropClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (e.target === e.currentTarget) onClose();
+  };
+
   return (
     <div
       className="fixed inset-0 z-[100] flex items-end justify-center bg-black/50 p-0 md:items-center md:p-4"
-      onClick={onClose}
+      onClick={handleBackdropClick}
     >
       <div
         ref={dialogRef}
@@ -124,7 +155,7 @@ export function SignupModal({ open, onClose, onSignedUp }: SignupModalProps) {
         aria-labelledby="signup-title"
         onClick={e => e.stopPropagation()}
         className={clsx(
-          'relative w-full max-w-md overflow-hidden rounded-t-3xl bg-cream shadow-2xl',
+          'relative max-h-[95vh] w-full max-w-md overflow-y-auto rounded-t-3xl bg-cream shadow-2xl',
           'md:rounded-3xl',
         )}
       >
@@ -140,47 +171,59 @@ export function SignupModal({ open, onClose, onSignedUp }: SignupModalProps) {
           <button
             type="button"
             onClick={onClose}
-            aria-label="Close sign up"
+            aria-label="Close"
             className="grid h-8 w-8 place-items-center rounded-full bg-white text-ink-mid"
           >
             ✕
           </button>
         </div>
 
+        {/* Tabs */}
+        <div
+          role="tablist"
+          aria-label="Authentication"
+          className="grid grid-cols-2 border-b border-hairline bg-white"
+        >
+          <button
+            type="button"
+            role="tab"
+            aria-selected={activeTab === 'signup'}
+            aria-controls="signup-panel"
+            onClick={() => setActiveTab('signup')}
+            className={clsx(
+              'px-4 py-3 font-display text-sm font-bold transition-colors',
+              activeTab === 'signup'
+                ? 'border-b-2 border-teal bg-cream text-teal'
+                : 'text-ink-mid hover:bg-cream',
+            )}
+          >
+            Sign Up
+          </button>
+          <button
+            type="button"
+            role="tab"
+            aria-selected={activeTab === 'signin'}
+            aria-controls="signin-panel"
+            onClick={() => setActiveTab('signin')}
+            className={clsx(
+              'px-4 py-3 font-display text-sm font-bold transition-colors',
+              activeTab === 'signin'
+                ? 'border-b-2 border-teal bg-cream text-teal'
+                : 'text-ink-mid hover:bg-cream',
+            )}
+          >
+            Sign In
+          </button>
+        </div>
+
         <div className="p-5">
-          {step === 'welcome' && (
-            <div className="text-center">
-              <div aria-hidden className="text-4xl">🤠</div>
-              <p className="mt-2 font-display text-sm font-semibold text-ink-mid">
-                Sign up to post, comment, and upload.
-              </p>
-              <p className="mt-1 text-xs text-ink-light">Browse freely without an account.</p>
-
-              {foundingCount !== null && foundingCount <= FOUNDING_CAP && (
-                <p className="mt-4 rounded-lg bg-pink/10 px-3 py-2 text-xs font-bold text-pink">
-                  🏆 #{foundingCount} of {FOUNDING_CAP} Founding AustiNights
-                </p>
-              )}
-
-              <button
-                type="button"
-                onClick={() => setStep('signup')}
-                className="mt-4 w-full rounded-xl bg-teal px-4 py-3 font-display text-sm font-bold text-white shadow hover:brightness-110"
-              >
-                Sign Up Now
-              </button>
-              <button
-                type="button"
-                onClick={onClose}
-                className="mt-2 w-full rounded-xl border-2 border-hairline bg-transparent px-4 py-2.5 font-display text-sm font-semibold text-ink-mid"
-              >
-                Not Now — Just Browsing
-              </button>
-            </div>
-          )}
-
-          {step === 'signup' && (
-            <div className="space-y-3">
+          {activeTab === 'signup' && (
+            <div
+              id="signup-panel"
+              role="tabpanel"
+              aria-labelledby="signup-tab"
+              className="space-y-3"
+            >
               {foundingCount !== null && foundingCount <= FOUNDING_CAP && (
                 <p className="rounded-lg bg-pink/10 px-3 py-2 text-center text-xs font-bold text-pink">
                   🏆 Claim spot #{foundingCount} of {FOUNDING_CAP} Founding AustiNights
@@ -283,9 +326,7 @@ export function SignupModal({ open, onClose, onSignedUp }: SignupModalProps) {
                   onChange={e => setTermsOk(e.target.checked)}
                   className="mt-0.5"
                 />
-                <span>
-                  I agree to the community guidelines and terms.
-                </span>
+                <span>I agree to the community guidelines and terms.</span>
               </label>
 
               <label className="flex items-center gap-2 rounded-md border border-hairline bg-white px-3 py-2 text-xs">
@@ -302,20 +343,73 @@ export function SignupModal({ open, onClose, onSignedUp }: SignupModalProps) {
 
               <button
                 type="button"
-                disabled={!canSubmit}
-                onClick={handleSubmit}
-                className="w-full rounded-xl bg-pink px-4 py-3 font-display text-sm font-bold text-white shadow disabled:cursor-not-allowed disabled:bg-gray-300 disabled:shadow-none"
+                disabled={!canSubmitSignup}
+                onClick={handleSignupSubmit}
+                className="w-full rounded-xl bg-pink px-4 py-3 font-display text-sm font-bold text-white shadow focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pink disabled:cursor-not-allowed disabled:bg-gray-300 disabled:shadow-none"
               >
                 🤠 Let&apos;s Go!
               </button>
+            </div>
+          )}
+
+          {activeTab === 'signin' && (
+            <div
+              id="signin-panel"
+              role="tabpanel"
+              aria-labelledby="signin-tab"
+              className="space-y-3"
+            >
+              <p className="text-center text-xs text-ink-mid">
+                Welcome back, AustiNight. Sign in to post, comment, and upload.
+              </p>
+
+              <label className="block text-xs">
+                <span className="font-bold text-ink">
+                  Phone or Email <span className="text-orange">*</span>
+                </span>
+                <input
+                  type="text"
+                  autoComplete="email"
+                  value={signinEmail}
+                  onChange={e => setSigninEmail(e.target.value)}
+                  placeholder="Phone number or email"
+                  className="mt-1 w-full rounded-xl border-[1.5px] border-hairline bg-white px-3 py-2 text-sm outline-none focus:border-teal"
+                />
+              </label>
+
+              <label className="block text-xs">
+                <span className="font-bold text-ink">
+                  Password <span className="text-orange">*</span>
+                </span>
+                <input
+                  type="password"
+                  autoComplete="current-password"
+                  value={signinPassword}
+                  onChange={e => setSigninPassword(e.target.value)}
+                  placeholder="Your password"
+                  className="mt-1 w-full rounded-xl border-[1.5px] border-hairline bg-white px-3 py-2 text-sm outline-none focus:border-teal"
+                />
+              </label>
 
               <button
                 type="button"
-                onClick={() => setStep('welcome')}
-                className="w-full py-1 text-center text-xs text-ink-light hover:underline"
+                disabled={!canSubmitSignin}
+                onClick={handleSigninSubmit}
+                className="w-full rounded-xl bg-pink px-4 py-3 font-display text-sm font-bold text-white shadow focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pink disabled:cursor-not-allowed disabled:bg-gray-300 disabled:shadow-none"
               >
-                ← Back
+                Sign In
               </button>
+
+              <p className="pt-1 text-center text-[11px] text-ink-light">
+                New here?{' '}
+                <button
+                  type="button"
+                  onClick={() => setActiveTab('signup')}
+                  className="font-bold text-teal hover:underline"
+                >
+                  Create an account →
+                </button>
+              </p>
             </div>
           )}
         </div>

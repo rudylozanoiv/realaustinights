@@ -3,7 +3,7 @@
 import { useMemo, useState } from 'react';
 import clsx from 'clsx';
 import type { AfterParty, AfterPartyEvent, MajorEvent } from '@/lib/types';
-import { AFTER_PARTY_EVENTS } from '@/lib/data';
+import { AFTER_PARTY_EVENTS, EVENT_OFFICIAL_URLS } from '@/lib/data';
 
 interface AfterThisProps {
   parties: AfterParty[];
@@ -66,8 +66,12 @@ export function AfterThis({ parties, activeEvent, onSubmit, className }: AfterTh
         </button>
       </div>
 
-      {/* Event tabs — glow when that event is currently active. */}
-      <div role="tablist" aria-label="Event" className="mb-4 flex flex-wrap gap-1.5">
+      {/* Event tabs — glow when that event is currently active. Touch targets ≥44px. */}
+      <div
+        role="tablist"
+        aria-label="Event"
+        className="-mx-4 mb-3 flex gap-2 overflow-x-auto px-4 pb-1 md:mx-0 md:flex-wrap md:gap-1.5 md:overflow-visible md:px-0"
+      >
         {AFTER_PARTY_EVENTS.map(ev => {
           const isGlowing =
             activeEvent && EVENT_TO_MAJOR[ev] === activeEvent.name;
@@ -80,19 +84,31 @@ export function AfterThis({ parties, activeEvent, onSubmit, className }: AfterTh
               type="button"
               onClick={() => setTab(ev)}
               className={clsx(
-                'rounded-full px-3 py-1 font-display text-[11px] font-bold transition-colors',
+                'shrink-0 rounded-full px-4 py-2.5 font-display text-xs font-bold transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2',
                 isSelected
                   ? 'bg-navy text-white shadow-md'
                   : 'bg-cream text-ink-mid hover:bg-teal-light',
-                isGlowing && !isSelected && 'ring-2 ring-orange ring-offset-1',
-                isGlowing && isSelected && 'ring-2 ring-orange ring-offset-1',
+                isGlowing && 'ring-2 ring-orange ring-offset-1',
               )}
+              style={{ minHeight: 44 }}
             >
               {ev}
               {isGlowing && <span className="ml-1" aria-label="happening now">🔥</span>}
             </button>
           );
         })}
+      </div>
+
+      {/* Official site link for the currently selected event. */}
+      <div className="mb-4 text-xs">
+        <a
+          href={EVENT_OFFICIAL_URLS[tab]}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-1 rounded-md bg-teal-light px-2.5 py-1 font-bold text-teal hover:bg-teal hover:text-white"
+        >
+          Visit {tab} official site ↗
+        </a>
       </div>
 
       {submitOpen && !submitted && (

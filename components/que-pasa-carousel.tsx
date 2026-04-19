@@ -9,13 +9,14 @@ import { usePrefersReducedMotion } from '@/lib/hooks';
 interface QuePasaCarouselProps {
   photos: QuePasaPhoto[];
   onSubmitClick: () => void;
+  onPhotoClick?: (index: number) => void;
   className?: string;
 }
 
 const AUTO_MS = 4000;
 const SWIPE_THRESHOLD = 40;
 
-export function QuePasaCarousel({ photos, onSubmitClick, className }: QuePasaCarouselProps) {
+export function QuePasaCarousel({ photos, onSubmitClick, onPhotoClick, className }: QuePasaCarouselProps) {
   const [idx, setIdx] = useState(0);
   const reduced = usePrefersReducedMotion();
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
@@ -80,21 +81,29 @@ export function QuePasaCarousel({ photos, onSubmitClick, className }: QuePasaCar
         onTouchStart={onTouchStart}
         onTouchEnd={onTouchEnd}
       >
-        <Image
-          key={photo.id}
-          src={photo.photoUrl}
-          alt={`${photo.caption} — posted by ${photo.username} at ${photo.venueName}`}
-          fill
-          sizes="(max-width: 768px) 100vw, 600px"
-          priority={idx === 0}
-          className="object-cover [animation:raln-fade-in_0.5s_ease] motion-reduce:animate-none"
-        />
-        <div className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/75 to-transparent px-4 pb-3 pt-10 text-white">
-          <p className="text-sm font-semibold">{photo.caption}</p>
-          <p className="mt-0.5 text-[11px] text-white/80">
-            {photo.username} · <span aria-hidden>📍</span> {photo.venueName}
-          </p>
-        </div>
+        {/* Tapping the photo opens the fullscreen modal. */}
+        <button
+          type="button"
+          onClick={() => onPhotoClick?.(idx)}
+          aria-label={`Open ${photo.caption} fullscreen`}
+          className="absolute inset-0 z-0 overflow-hidden focus-visible:outline focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-teal"
+        >
+          <Image
+            key={photo.id}
+            src={photo.photoUrl}
+            alt={`${photo.caption} — posted by ${photo.username} at ${photo.venueName}`}
+            fill
+            sizes="(max-width: 768px) 100vw, 600px"
+            priority={idx === 0}
+            className="object-cover [animation:raln-fade-in_0.5s_ease] motion-reduce:animate-none"
+          />
+          <div className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/75 to-transparent px-4 pb-3 pt-10 text-left text-white">
+            <p className="text-sm font-semibold">{photo.caption}</p>
+            <p className="mt-0.5 text-[11px] text-white/80">
+              {photo.username} · <span aria-hidden>📍</span> {photo.venueName}
+            </p>
+          </div>
+        </button>
 
         <button
           type="button"
@@ -103,7 +112,7 @@ export function QuePasaCarousel({ photos, onSubmitClick, className }: QuePasaCar
             advance(-1);
             resetTimer();
           }}
-          className="absolute left-2 top-1/2 grid h-9 w-9 -translate-y-1/2 place-items-center rounded-lg bg-white/90 text-base shadow focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal"
+          className="absolute left-2 top-1/2 z-10 grid h-9 w-9 -translate-y-1/2 place-items-center rounded-lg bg-white/90 text-base shadow focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal"
         >
           <span aria-hidden>←</span>
         </button>
@@ -114,7 +123,7 @@ export function QuePasaCarousel({ photos, onSubmitClick, className }: QuePasaCar
             advance(1);
             resetTimer();
           }}
-          className="absolute right-2 top-1/2 grid h-9 w-9 -translate-y-1/2 place-items-center rounded-lg bg-white/90 text-base shadow focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal"
+          className="absolute right-2 top-1/2 z-10 grid h-9 w-9 -translate-y-1/2 place-items-center rounded-lg bg-white/90 text-base shadow focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal"
         >
           <span aria-hidden>→</span>
         </button>

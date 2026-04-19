@@ -22,6 +22,13 @@ export default defineConfig({
         ...devices['Pixel 5'],
       },
     },
+    {
+      // Real WebKit at iPhone SE (375px) — catches iOS Safari-specific bugs.
+      name: 'ios',
+      use: {
+        ...devices['iPhone SE'],
+      },
+    },
   ],
   webServer: {
     command: 'npm run dev',

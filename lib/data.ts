@@ -43,18 +43,29 @@ export const AFTER_PARTY_EVENTS: AfterPartyEvent[] = [
   'SXSW', 'ACL', 'COTA', 'Longhorns', 'Austin FC / MLS', 'Rodeo Austin',
 ];
 
+// Official event websites — surfaced from AfterThis tabs so users can jump
+// to ticket / schedule info on the real event site.
+export const EVENT_OFFICIAL_URLS: Record<AfterPartyEvent, string> = {
+  SXSW: 'https://www.sxsw.com',
+  ACL: 'https://www.aclfestival.com',
+  COTA: 'https://circuitoftheamericas.com',
+  Longhorns: 'https://texassports.com',
+  'Austin FC / MLS': 'https://www.austinfc.com',
+  'Rodeo Austin': 'https://www.rodeoaustin.com',
+};
+
 // ──────────────────────────────────────────────
-// LIVE TICKER HEADLINES
+// LIVE TICKER HEADLINES — 5 high-impact lines, rotate every 7s.
+// Every 4th rotation swaps in AI_TAGLINE (handled in Header).
+// 1. Seasonal/current · 2. Live Music City · 3. Trending event ·
+// 4. Founding AustiNight CTA · 5. Community hook.
 // ──────────────────────────────────────────────
 export const HEADLINES: string[] = [
-  '🎸 Austin voted #1 Live Music City — again, obviously',
-  "🌮 Best taco debate: Valentina's vs. Veracruz — fight",
   '🌧️ Muddy Paws Advisory: showers at 10pm — patios ready',
-  '🐓 McConaughey spotted on SoCo — alright alright',
-  '💧 Barton Springs 68 degrees — it\'s always the move',
-  '🐾 Austin #2 most pet-friendly city in TX — we\'re coming',
-  '🎭 Paramount summer lineup dropped — cinema on 6th lives',
-  '🦇 Congress Bridge bats returned early this year',
+  '🎸 Austin voted #1 Live Music City — again, obviously',
+  '🎪 ACL lineup dropped — post your Day 1 picks',
+  '⏰ Only 253 Founding AustiNight spots left — claim yours',
+  "🌙 See what Austin's posting tonight — tap Austin Pulse",
 ];
 
 export const AI_TAGLINE = '🤖 AI-Driven, AustiNight-Approved';
@@ -351,7 +362,8 @@ export const FEED_CARDS: FeedCard[] = [
     likes: 142, comments: 28, category: 'Churches',
     happening: ['Today', 'Tonight', 'This Weekend', 'This Week'],
     address: '203 E 10th St',
-    image: 'https://images.unsplash.com/photo-1548625149-720754763f5e?w=600&q=80',
+    // Previous Unsplash id (photo-1548625149-720754763f5e) returned 404 — swapped to a verified 200.
+    image: 'https://images.unsplash.com/photo-1551038247-3d9af20df552?w=600&q=80',
   },
   {
     id: '12', venueName: 'Whole Foods Market (Flagship)',
@@ -373,7 +385,25 @@ export const FEED_CARDS: FeedCard[] = [
     address: '979 Springdale Rd',
     image: 'https://images.unsplash.com/photo-1522163182402-834f871fd851?w=600&q=80',
   },
+  {
+    id: 'barkingham',
+    venueName: 'Barkingham Place',
+    description: "Austin's premier dog daycare + boarding. Indoor + outdoor play yards, trained handlers, live webcams. Pupper Weekly Featured Partner. Zeta-approved.",
+    vibeTags: ['pet friendly', 'chill'], petFriendly: true,
+    isFeaturedPartner: true, isHiddenGem: true,
+    time: 'Mon-Sat 7am-7pm', price: '$$', neighborhood: 'North Austin',
+    likes: 234, comments: 52, category: 'Hidden Gems',
+    happening: ['Today', 'Tonight', 'This Weekend', 'This Week'],
+    address: '11400 Old Jollyville Rd',
+    // TODO: Replace with Rudy-supplied Barkingham Place photo at go-live.
+    image: 'https://images.unsplash.com/photo-1601758124510-52d02ddb7cbd?w=600&q=80',
+  },
 ];
+
+/** Convenience lookup — id → FeedCard. */
+export const FEED_CARD_BY_ID: Record<string, FeedCard> = Object.fromEntries(
+  FEED_CARDS.map(c => [c.id, c]),
+);
 
 // ──────────────────────────────────────────────
 // LIVE POSTS (Austin Pulse)
@@ -402,6 +432,7 @@ export const COMMUNITY_POSTS: CommunityPost[] = [
 // ──────────────────────────────────────────────
 // ZETA / PUPPER WEEKLY
 // ──────────────────────────────────────────────
+// TODO: Replace with Rudy-supplied Zeta photos at go-live. Stock pup image used meanwhile.
 export const ZETA_POST: ZetaPost = {
   id: 'zeta1',
   photoUrl: 'https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=400&q=80',

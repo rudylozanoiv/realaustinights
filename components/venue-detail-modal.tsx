@@ -71,10 +71,14 @@ export function VenueDetailModal({
 
   if (!venue) return null;
 
+  const handleBackdropClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (e.target === e.currentTarget) onClose();
+  };
+
   return (
     <div
       className={clsx('fixed inset-0 z-[90] bg-black/40', className)}
-      onClick={onClose}
+      onClick={handleBackdropClick}
     >
       <div
         ref={dialogRef}

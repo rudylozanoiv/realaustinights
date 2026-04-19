@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import clsx from 'clsx';
 import type { MajorEvent } from '@/lib/types';
 
@@ -12,7 +12,6 @@ interface WereAustinCalendarProps {
 }
 
 const DAYS = 60;
-
 const MS_PER_DAY = 24 * 60 * 60 * 1000;
 
 function isoDate(d: Date): string {
@@ -36,7 +35,18 @@ const EVENT_COLOR: Record<MajorEvent['name'], string> = {
   'Austin FC': 'bg-green text-white',
 };
 
-export function WereAustinCalendar({ events, now = new Date(), className }: WereAustinCalendarProps) {
+interface SelectedDay {
+  iso: string;
+  events: MajorEvent[];
+}
+
+export function WereAustinCalendar({
+  events,
+  now = new Date(),
+  className,
+}: WereAustinCalendarProps) {
+  const [selected, setSelected] = useState<SelectedDay | null>(null);
+
   const today = useMemo(() => {
     const d = new Date(now);
     d.setHours(0, 0, 0, 0);
@@ -50,9 +60,17 @@ export function WereAustinCalendar({ events, now = new Date(), className }: Were
   const headline = useMemo(() => {
     const todayActive = activeFor(isoDate(today), events);
     if (todayActive.length === 0) return 'Every Night';
-    // Priority festivals first; AFC maps to "Verde".
-    const priority: MajorEvent['name'][] = ['SXSW', 'ACL', 'COTA', 'Rodeo', 'Longhorns', 'Austin FC'];
-    const pick = todayActive.sort((a, b) => priority.indexOf(a.name) - priority.indexOf(b.name))[0];
+    const priority: MajorEvent['name'][] = [
+      'SXSW',
+      'ACL',
+      'COTA',
+      'Rodeo',
+      'Longhorns',
+      'Austin FC',
+    ];
+    const pick = todayActive.sort(
+      (a, b) => priority.indexOf(a.name) - priority.indexOf(b.name),
+    )[0];
     return pick.name === 'Austin FC' ? 'Verde' : pick.label;
   }, [events, today]);
 
@@ -68,7 +86,6 @@ export function WereAustinCalendar({ events, now = new Date(), className }: Were
         <h2 className="font-display text-lg font-extrabold text-ink md:text-xl">
           We&apos;re Austin — <span className="text-orange">{headline}</span>
         </h2>
-        <p className="text-[11px] text-ink-light">Next 60 days · scroll horizontally →</p>
       </div>
 
       <div
@@ -84,9 +101,16 @@ export function WereAustinCalendar({ events, now = new Date(), className }: Were
             const isToday = iso === isoDate(today);
             return (
               <li key={iso} className="shrink-0">
-                <div
+                <button
+                  type="button"
+                  onClick={() => setSelected({ iso, events: active })}
+                  aria-label={`${d.toLocaleDateString('en-US', {
+                    weekday: 'long',
+                    month: 'short',
+                    day: 'numeric',
+                  })}${active.length > 0 ? ` — ${active.map(e => e.name).join(', ')}` : ''}`}
                   className={clsx(
-                    'flex h-20 w-14 flex-col items-center justify-start gap-0.5 rounded-lg border px-1 py-1 text-center',
+                    'flex h-20 w-14 flex-col items-center justify-start gap-0.5 rounded-lg border px-1 py-1 text-center transition-colors hover:bg-teal-light focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal',
                     isToday ? 'border-navy bg-cream' : 'border-hairline bg-white',
                   )}
                 >
@@ -115,12 +139,90 @@ export function WereAustinCalendar({ events, now = new Date(), className }: Were
                       </span>
                     ))}
                   </div>
-                </div>
+                </button>
               </li>
             );
           })}
         </ol>
       </div>
+
+      {/* Placeholder event detail modal. TODO: wire to real event pages. */}
+      {selected && (
+        <DayDetailModal
+          selected={selected}
+          onClose={() => setSelected(null)}
+        />
+      )}
     </section>
+  );
+}
+
+function DayDetailModal({
+  selected,
+  onClose,
+}: {
+  selected: SelectedDay;
+  onClose: () => void;
+}) {
+  const date = new Date(selected.iso + 'T00:00:00');
+  const display = date.toLocaleDateString('en-US', {
+    weekday: 'long',
+    month: 'long',
+    day: 'numeric',
+    year: 'numeric',
+  });
+
+  const handleBackdrop = (e: React.MouseEvent) => {
+    if (e.target === e.currentTarget) onClose();
+  };
+
+  return (
+    <div
+      className="fixed inset-0 z-[95] flex items-end justify-center bg-black/50 p-0 md:items-center md:p-4"
+      onClick={handleBackdrop}
+    >
+      <div
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="day-detail-title"
+        className="w-full max-w-md rounded-t-3xl bg-cream p-5 shadow-2xl md:rounded-3xl"
+      >
+        <div className="flex items-start justify-between gap-3">
+          <h3 id="day-detail-title" className="font-display text-lg font-extrabold text-ink">
+            {display}
+          </h3>
+          <button
+            type="button"
+            onClick={onClose}
+            aria-label="Close"
+            className="grid h-8 w-8 place-items-center rounded-full bg-white text-ink-mid"
+          >
+            ✕
+          </button>
+        </div>
+        {selected.events.length === 0 ? (
+          <p className="mt-3 text-sm text-ink-mid">
+            No major Austin events listed for this day. Check the main feed for tonight&apos;s local action.
+          </p>
+        ) : (
+          <ul className="mt-3 space-y-2">
+            {selected.events.map(ev => (
+              <li
+                key={ev.id}
+                className="rounded-xl border border-hairline bg-white p-3"
+              >
+                <div className="font-display text-sm font-bold text-ink">{ev.name}</div>
+                <div className="text-[11px] text-ink-light">
+                  {ev.startDate} → {ev.endDate}
+                </div>
+                <p className="mt-1 text-xs text-ink-mid">
+                  Details page coming soon. Check the After This section below for after-party venues.
+                </p>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+    </div>
   );
 }

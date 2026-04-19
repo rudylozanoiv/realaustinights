@@ -1,6 +1,5 @@
 'use client';
 
-import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 import { RECAPTCHA_SITE_KEY } from '@/lib/flags';
@@ -12,16 +11,23 @@ const CYCLE_MS = 1500;
 
 interface WeirdFunnyCoolProps {
   className?: string;
+  isSignedIn?: boolean;
   onRequireLogin?: () => void;
 }
 
-export function WeirdFunnyCool({ className, onRequireLogin }: WeirdFunnyCoolProps) {
+export function WeirdFunnyCool({
+  className,
+  isSignedIn = false,
+  onRequireLogin,
+}: WeirdFunnyCoolProps) {
   const [tick, setTick] = useState(0);
   const [frozen, setFrozen] = useState<Label | null>(null);
   const [photoUrl, setPhotoUrl] = useState<string | null>(null);
   const [caption, setCaption] = useState('');
-  const [captchaOk, setCaptchaOk] = useState(RECAPTCHA_SITE_KEY === '');
+  // Always start unchecked — user must explicitly confirm "not a robot".
+  const [captchaOk, setCaptchaOk] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [sharePrompt, setSharePrompt] = useState<'idle' | 'available' | 'unavailable'>('idle');
   const [votes, setVotes] = useState<Record<Label, number>>({ Weird: 0, Funny: 0, Cool: 0 });
   const [userVote, setUserVote] = useState<Label | null>(null);
   const fileRef = useRef<HTMLInputElement>(null);
@@ -41,9 +47,32 @@ export function WeirdFunnyCool({ className, onRequireLogin }: WeirdFunnyCoolProp
     if (file) setPhotoUrl(URL.createObjectURL(file));
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
+    if (!isSignedIn) {
+      onRequireLogin?.();
+      return;
+    }
     if (!photoUrl || !caption || !captchaOk || !frozen) return;
     setSubmitted(true);
+    // Offer native share sheet when available (iOS Safari supports navigator.share).
+    if (typeof navigator !== 'undefined' && typeof navigator.share === 'function') {
+      setSharePrompt('available');
+    } else {
+      setSharePrompt('unavailable');
+    }
+  };
+
+  const handleShare = async () => {
+    if (typeof navigator === 'undefined' || typeof navigator.share !== 'function') return;
+    try {
+      await navigator.share({
+        title: `Austin ${frozen}`,
+        text: caption,
+        url: typeof window !== 'undefined' ? window.location.href : undefined,
+      });
+    } catch {
+      // User cancelled or share failed — silent, nothing to recover.
+    }
   };
 
   const handleVote = (l: Label) => {
@@ -53,47 +82,83 @@ export function WeirdFunnyCool({ className, onRequireLogin }: WeirdFunnyCoolProp
   };
 
   const colorFor = (l: Label) =>
-    l === 'Weird' ? 'text-orange' : l === 'Funny' ? 'text-teal' : 'text-navy';
+    l === 'Weird'
+      ? 'text-orange'
+      : l === 'Funny'
+        ? 'text-teal'
+        : 'text-navy';
+
+  const bgFor = (l: Label) =>
+    l === 'Weird'
+      ? 'bg-orange text-white'
+      : l === 'Funny'
+        ? 'bg-teal text-white'
+        : 'bg-navy text-white';
 
   return (
     <section
-      aria-label="Weird, Funny, Cool submissions"
+      aria-label="Weird, Funny, Cool — see something? share it."
       className={clsx(
-        'rounded-2xl border border-hairline bg-white p-4 shadow-sm md:p-5',
+        'overflow-hidden rounded-2xl border-2 border-hairline bg-gradient-to-br from-cream via-white to-teal-light/30 p-5 shadow-md md:p-6',
         className,
       )}
     >
-      <h2 className="font-display text-base font-extrabold text-ink md:text-lg">
-        Found something{' '}
-        <button
-          type="button"
-          onClick={() => {
-            if (onRequireLogin && !frozen) {
-              // Allow picking even when logged-out; requireLogin fires on submit.
+      <div className="text-center">
+        <p className="font-display text-[10px] font-bold uppercase tracking-widest text-ink-light">
+          See something in Austin?
+        </p>
+        <h2 className="mt-1 font-display text-2xl font-extrabold text-ink md:text-3xl">
+          Found something{' '}
+          <button
+            type="button"
+            onClick={() => setFrozen(frozen ? null : shown)}
+            aria-live="polite"
+            aria-label={
+              frozen
+                ? `Category frozen as ${frozen}. Tap to unfreeze.`
+                : `Cycling category: ${current}. Tap to freeze.`
             }
-            setFrozen(frozen ? null : shown);
-          }}
-          aria-live="polite"
-          aria-label={
-            frozen
-              ? `Category frozen as ${frozen}. Tap to unfreeze.`
-              : `Current category: ${current}. Tap to freeze.`
-          }
-          className={clsx(
-            'font-display font-extrabold underline decoration-dashed underline-offset-4 transition-colors',
-            colorFor(shown),
-            !frozen && 'motion-safe:[animation:raln-fade-in_0.25s_ease]',
-          )}
-        >
-          {shown}
-        </button>
-        ?
-      </h2>
-      <p className="mt-1 text-[11px] text-ink-light">
-        {frozen
-          ? `Category locked as "${frozen}" — submit a photo + caption below.`
-          : 'Tap the word to lock it as your submission category.'}
-      </p>
+            className={clsx(
+              'font-display text-2xl font-extrabold underline decoration-dashed decoration-2 underline-offset-4 transition-colors md:text-3xl',
+              colorFor(shown),
+              !frozen && 'motion-safe:[animation:raln-fade-in_0.25s_ease]',
+            )}
+          >
+            {shown}
+          </button>
+          ?
+        </h2>
+      </div>
+
+      {/* Explicit choice buttons — tap any to lock that category and open the form. */}
+      <div
+        role="group"
+        aria-label="Choose category"
+        className="mt-4 grid grid-cols-3 gap-2"
+      >
+        {LABELS.map(l => {
+          const isActive = frozen === l;
+          return (
+            <button
+              key={l}
+              type="button"
+              onClick={() => setFrozen(isActive ? null : l)}
+              aria-pressed={isActive}
+              className={clsx(
+                'rounded-xl px-3 py-3 font-display text-sm font-extrabold shadow transition-all focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2',
+                isActive
+                  ? `${bgFor(l)} scale-[1.02]`
+                  : 'border-2 border-hairline bg-white text-ink hover:border-teal hover:bg-teal-light/40',
+              )}
+            >
+              <span aria-hidden className="mr-1">
+                {l === 'Weird' ? '🤪' : l === 'Funny' ? '😂' : '😎'}
+              </span>
+              {l}
+            </button>
+          );
+        })}
+      </div>
 
       {frozen && !submitted && (
         <div className="mt-4 space-y-3">
@@ -102,20 +167,23 @@ export function WeirdFunnyCool({ className, onRequireLogin }: WeirdFunnyCoolProp
             onClick={() => fileRef.current?.click()}
             className={clsx(
               'block w-full cursor-pointer rounded-xl border-2 border-dashed p-4 text-center transition-colors',
-              photoUrl ? 'border-teal bg-teal-light' : 'border-hairline bg-cream hover:bg-teal-light/50',
+              photoUrl
+                ? 'border-teal bg-teal-light'
+                : 'border-hairline bg-cream hover:bg-teal-light/50',
             )}
           >
             {photoUrl ? (
+              // eslint-disable-next-line @next/next/no-img-element
               <img
                 src={photoUrl}
                 alt="Selected preview"
-                className="mx-auto max-h-40 rounded-md object-cover"
+                className="mx-auto max-h-52 rounded-md object-cover"
               />
             ) : (
               <>
                 <div aria-hidden className="text-3xl">📷</div>
-                <div className="mt-1 text-xs font-semibold text-ink-mid">Tap to upload</div>
-                <div className="text-[10px] text-ink-light">JPG, PNG, GIF · max 10MB</div>
+                <div className="mt-1 text-sm font-semibold text-ink-mid">Tap to upload</div>
+                <div className="text-[11px] text-ink-light">JPG, PNG, GIF · max 10MB</div>
               </>
             )}
             <input
@@ -137,8 +205,7 @@ export function WeirdFunnyCool({ className, onRequireLogin }: WeirdFunnyCoolProp
             />
           </label>
 
-          {/* reCAPTCHA placeholder — wire real widget once RECAPTCHA_SITE_KEY is set. */}
-          <label className="flex items-center gap-2 rounded-md border border-hairline bg-cream px-3 py-2 text-xs">
+          <label className="flex items-center gap-2 rounded-md border border-hairline bg-white px-3 py-2 text-xs">
             <input
               type="checkbox"
               checked={captchaOk}
@@ -152,17 +219,11 @@ export function WeirdFunnyCool({ className, onRequireLogin }: WeirdFunnyCoolProp
 
           <button
             type="button"
-            onClick={() => {
-              if (onRequireLogin) {
-                onRequireLogin();
-                return;
-              }
-              handleSubmit();
-            }}
+            onClick={handleSubmit}
             disabled={!photoUrl || !caption || !captchaOk}
-            className="w-full rounded-lg bg-orange px-4 py-2.5 font-display text-sm font-bold text-white shadow disabled:cursor-not-allowed disabled:bg-gray-300 disabled:shadow-none"
+            className="w-full rounded-lg bg-orange px-4 py-3 font-display text-sm font-bold text-white shadow disabled:cursor-not-allowed disabled:bg-gray-300 disabled:shadow-none"
           >
-            Submit as {frozen}
+            {isSignedIn ? `Submit as ${frozen}` : 'Sign in to submit'}
           </button>
         </div>
       )}
@@ -173,8 +234,27 @@ export function WeirdFunnyCool({ className, onRequireLogin }: WeirdFunnyCoolProp
           <p className="mt-1 font-display text-sm font-bold text-teal">
             Submitted as {frozen}!
           </p>
-          <p className="mt-1 text-xs text-ink-mid">Austin votes:</p>
-          <div className="mt-3 flex justify-center gap-2">
+
+          {sharePrompt === 'available' && (
+            <div className="mt-3 rounded-lg bg-white/80 p-3">
+              <p className="text-xs text-ink-mid">Share to your Instagram too?</p>
+              <button
+                type="button"
+                onClick={handleShare}
+                className="mt-2 rounded-lg bg-navy px-4 py-2 font-display text-xs font-bold text-white shadow hover:brightness-110"
+              >
+                📲 Open share sheet
+              </button>
+            </div>
+          )}
+          {sharePrompt === 'unavailable' && (
+            <p className="mt-2 text-[11px] text-ink-light">
+              Native share isn&apos;t available on this device — copy the page URL to share.
+            </p>
+          )}
+
+          <p className="mt-3 text-xs text-ink-mid">Austin votes:</p>
+          <div className="mt-2 flex justify-center gap-2">
             {LABELS.map(l => (
               <button
                 key={l}

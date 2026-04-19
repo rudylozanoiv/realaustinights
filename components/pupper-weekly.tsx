@@ -5,14 +5,24 @@ import clsx from 'clsx';
 import type { ZetaPost } from '@/lib/types';
 import { FeaturedPartnerBadge } from './ui/badges';
 
+export interface PupperGalleryItem {
+  id: string;
+  photoUrl: string;
+  name: string;
+  venue: string;
+}
+
 interface PupperWeeklyProps {
   hero: ZetaPost;
-  gallery?: { id: string; photoUrl: string; name: string; venue: string }[];
+  gallery?: PupperGalleryItem[];
   onSubmitClick: () => void;
+  onPhotoClick?: (index: number) => void;
+  onBarkinghamClick?: () => void;
   className?: string;
 }
 
-const DEFAULT_GALLERY = [
+// TODO: Replace with Rudy-supplied Zeta + Barkingham pup photos at go-live.
+const DEFAULT_GALLERY: PupperGalleryItem[] = [
   {
     id: 'p-max',
     photoUrl: 'https://images.unsplash.com/photo-1558788353-f76d92427f16?w=600&q=80',
@@ -31,6 +41,8 @@ export function PupperWeekly({
   hero,
   gallery = DEFAULT_GALLERY,
   onSubmitClick,
+  onPhotoClick,
+  onBarkinghamClick,
   className,
 }: PupperWeeklyProps) {
   return (
@@ -48,15 +60,30 @@ export function PupperWeekly({
           </h2>
           <p className="text-[11px] text-ink-light">Austin&apos;s cutest pups.</p>
         </div>
-        {/* Pupper Weekly highlight — one of the four sacred pink uses. */}
-        <span className="rounded-md bg-pink px-2.5 py-1 font-display text-[10px] font-bold uppercase text-white">
-          Barkingham Place
-        </span>
+        {/* Pupper Weekly highlight — one of the four sacred pink uses. Tappable → Barkingham venue detail.
+            z-10 + min-h 44px so the pill sits above the backdrop-blur parent and meets iOS touch target min. */}
+        <button
+          type="button"
+          onClick={e => {
+            e.stopPropagation();
+            onBarkinghamClick?.();
+          }}
+          aria-label="Open Barkingham Place venue details"
+          className="relative z-10 shrink-0 rounded-full bg-pink px-3 py-2.5 font-display text-[11px] font-bold uppercase text-white shadow hover:brightness-110 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pink"
+          style={{ minHeight: 44 }}
+        >
+          Barkingham Place →
+        </button>
       </div>
 
-      {/* Hero */}
+      {/* Hero — image is tappable to open fullscreen viewer. */}
       <article className="grid gap-4 px-4 py-4 md:grid-cols-[220px_1fr] md:items-center md:px-5">
-        <div className="relative aspect-square w-full overflow-hidden rounded-xl bg-white md:h-[180px]">
+        <button
+          type="button"
+          onClick={() => onPhotoClick?.(0)}
+          aria-label={`Open fullscreen photo of Zeta at ${hero.venue}`}
+          className="relative aspect-square w-full overflow-hidden rounded-xl bg-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal md:h-[180px]"
+        >
           <Image
             src={hero.photoUrl}
             alt={`${hero.caption} at ${hero.venue}`}
@@ -64,7 +91,7 @@ export function PupperWeekly({
             sizes="(max-width: 768px) 100vw, 220px"
             className="object-cover"
           />
-        </div>
+        </button>
         <div>
           <div className="flex items-center gap-2">
             <h3 className="font-display text-lg font-extrabold text-ink">
@@ -77,24 +104,30 @@ export function PupperWeekly({
         </div>
       </article>
 
-      {/* Gallery */}
+      {/* Gallery — each image tappable. Hero is index 0; gallery items follow. */}
       <div className="grid grid-cols-2 gap-3 px-4 pb-4 md:grid-cols-3 md:px-5">
-        {gallery.map(p => (
-          <figure key={p.id} className="overflow-hidden rounded-xl bg-white shadow-sm">
+        {gallery.map((p, i) => (
+          <button
+            key={p.id}
+            type="button"
+            onClick={() => onPhotoClick?.(i + 1)}
+            aria-label={`Open fullscreen photo of ${p.name} at ${p.venue}`}
+            className="group overflow-hidden rounded-xl bg-white text-left shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal"
+          >
             <div className="relative aspect-square w-full">
               <Image
                 src={p.photoUrl}
                 alt={`${p.name} at ${p.venue}`}
                 fill
                 sizes="(max-width: 768px) 50vw, 200px"
-                className="object-cover"
+                className="object-cover transition-transform group-hover:scale-[1.02] motion-reduce:transition-none"
               />
             </div>
-            <figcaption className="px-3 py-2">
+            <div className="px-3 py-2">
               <div className="font-display text-sm font-bold text-ink">{p.name}</div>
               <div className="text-[11px] text-teal">@ {p.venue}</div>
-            </figcaption>
-          </figure>
+            </div>
+          </button>
         ))}
       </div>
 

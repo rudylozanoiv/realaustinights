@@ -120,10 +120,14 @@ export function BusinessPartnerModal({ open, onClose, onSubmit }: BusinessPartne
     setSubmitted(true);
   };
 
+  const handleBackdropClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (e.target === e.currentTarget) onClose();
+  };
+
   return (
     <div
       className="fixed inset-0 z-[100] flex items-end justify-center bg-black/50 p-0 md:items-center md:p-4"
-      onClick={onClose}
+      onClick={handleBackdropClick}
     >
       <div
         ref={dialogRef}
@@ -159,10 +163,22 @@ export function BusinessPartnerModal({ open, onClose, onSubmit }: BusinessPartne
             <p className="mt-1 text-sm text-ink-mid">
               We&apos;ll reach out to {ownerContact}.
             </p>
+            {/* TODO: Wire to Stripe checkout once backend + STRIPE_ENABLED flag is live. */}
+            <button
+              type="button"
+              onClick={() =>
+                alert(
+                  "Stripe checkout isn't live yet — you'll get a payment link via email once we review your listing.",
+                )
+              }
+              className="mt-4 w-full rounded-xl bg-teal px-5 py-3 font-display text-sm font-bold text-white shadow hover:brightness-110"
+            >
+              Continue to Payment →
+            </button>
             <button
               type="button"
               onClick={onClose}
-              className="mt-4 rounded-xl bg-teal px-5 py-2.5 font-display text-sm font-bold text-white"
+              className="mt-2 w-full rounded-xl border border-hairline bg-white px-5 py-2.5 font-display text-sm font-semibold text-ink-mid"
             >
               Close
             </button>

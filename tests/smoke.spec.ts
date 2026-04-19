@@ -161,6 +161,35 @@ test('bottom tab bar appears on mobile and triggers business modal', async ({
   ).toBeVisible();
 });
 
+test('BottomTabBar anchors to viewport bottom across iPhone portrait + landscape', async ({
+  page,
+}) => {
+  // Regression for V8.2.1: md:hidden (768px) stripped the nav in iPhone
+  // landscape (844px). Now lg:hidden (1024px) keeps it on all mobile+tablet.
+  const cases = [
+    { label: 'iPhone 13 portrait', w: 390, h: 844 },
+    { label: 'iPhone 13 landscape', w: 844, h: 390 },
+    { label: 'iPhone 15 Pro Max portrait', w: 430, h: 932 },
+  ];
+  for (const c of cases) {
+    await page.setViewportSize({ width: c.w, height: c.h });
+    await page.goto('/');
+    const nav = page.getByRole('navigation', { name: 'Bottom navigation' });
+    await expect(nav, `nav visible @ ${c.label}`).toBeVisible();
+    const box = await nav.boundingBox();
+    expect(box, `bbox @ ${c.label}`).not.toBeNull();
+    // Bar must sit flush against the viewport bottom (bottom edge at h).
+    expect(
+      Math.round((box!.y + box!.height) - c.h),
+      `bottom edge @ ${c.label}`,
+    ).toBeLessThanOrEqual(1);
+    // Height reasonable (≥60px + maybe safe-area).
+    expect(box!.height, `height @ ${c.label}`).toBeGreaterThanOrEqual(60);
+    // Full width.
+    expect(Math.round(box!.width), `width @ ${c.label}`).toBe(c.w);
+  }
+});
+
 test('QuePasa photo tap opens fullscreen modal', async ({ page }) => {
   await page.goto('/');
   const quePasa = page.locator('#que-pasa');

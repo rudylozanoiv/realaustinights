@@ -34,9 +34,12 @@ export function BottomTabBar({
   };
 
   return (
+    // lg:hidden (not md:hidden) — iPhone landscape is 844px wide, above Tailwind's md
+    // breakpoint (768px), which was stripping the nav entirely in landscape.
+    // z-50 so the bar sits above sidebar/overlay elements at mobile viewports.
     <nav
       aria-label="Bottom navigation"
-      className="fixed inset-x-0 bottom-0 z-30 border-t-[3px] border-navy bg-cream shadow-[0_-4px_12px_rgba(0,0,0,0.05)] md:hidden"
+      className="fixed inset-x-0 bottom-0 z-50 border-t-[3px] border-navy bg-cream shadow-[0_-4px_12px_rgba(0,0,0,0.05)] lg:hidden"
       style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
     >
       <ul className="grid h-[60px] grid-cols-4">

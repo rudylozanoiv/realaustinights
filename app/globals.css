@@ -71,3 +71,12 @@ body {
     scroll-behavior: auto !important;
   }
 }
+
+/* BottomTabBar clearance: below lg the fixed nav covers the last ~60px + home
+ * indicator. Pad the body bottom so Footer / last-section content isn't
+ * hidden behind it. Matches the `lg:hidden` visibility of the bar. */
+@media (max-width: 1023px) {
+  body {
+    padding-bottom: calc(60px + env(safe-area-inset-bottom));
+  }
+}

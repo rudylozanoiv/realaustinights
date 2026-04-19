@@ -162,6 +162,26 @@ export function WeirdFunnyCool({
 
       {frozen && !submitted && (
         <div className="mt-4 space-y-3">
+          {/* Escape hatch: cancel clears all form state and returns to the hero/choice view. */}
+          <div className="flex items-center justify-between">
+            <p className="font-display text-[11px] font-bold uppercase tracking-wide text-ink-mid">
+              Submit as <span className={colorFor(frozen)}>{frozen}</span>
+            </p>
+            <button
+              type="button"
+              onClick={() => {
+                setFrozen(null);
+                setPhotoUrl(null);
+                setCaption('');
+                setCaptchaOk(false);
+              }}
+              aria-label="Cancel submission"
+              className="rounded-md px-2 py-1 font-display text-xs font-semibold text-ink-light transition-colors hover:text-red focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red"
+            >
+              ✕ Cancel
+            </button>
+          </div>
+
           <button
             type="button"
             onClick={() => fileRef.current?.click()}

@@ -131,6 +131,35 @@ test('WFC explicit choice buttons lock category and open form', async ({ page })
   ).toBeVisible();
 });
 
+test('WFC cancel button clears frozen state and returns to hero', async ({
+  page,
+}) => {
+  await page.goto('/');
+  const wfc = page.locator('#weird-funny-cool');
+  await wfc.scrollIntoViewIfNeeded();
+
+  // Lock a category → form opens.
+  await wfc.getByRole('button', { name: 'Funny', exact: true }).click();
+  const cancel = wfc.getByRole('button', { name: 'Cancel submission' });
+  await expect(cancel).toBeVisible();
+  await expect(
+    wfc.getByRole('button', { name: /(submit as funny|sign in to submit)/i }),
+  ).toBeVisible();
+
+  // Tap cancel → form collapses, hero + 3 choice buttons remain.
+  await cancel.click();
+  await expect(cancel).toHaveCount(0);
+  await expect(
+    wfc.getByRole('button', { name: /(submit as funny|sign in to submit)/i }),
+  ).toHaveCount(0);
+  // 3 explicit choice buttons still present and unpressed.
+  for (const label of ['Weird', 'Funny', 'Cool']) {
+    const btn = wfc.getByRole('button', { name: label, exact: true });
+    await expect(btn).toBeVisible();
+    await expect(btn).toHaveAttribute('aria-pressed', 'false');
+  }
+});
+
 test('date tabs switch feed content', async ({ page }) => {
   await page.goto('/');
   await page.getByRole('tab', { name: 'Today' }).click();

@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 import { RECAPTCHA_SITE_KEY } from '@/lib/flags';
 import type { UserMode } from '@/lib/types';
+import { supabase } from '@/lib/supabase';
 
 interface SignupModalProps {
   open: boolean;
@@ -26,109 +27,84 @@ const FOUNDING_KEY = 'raln:founding_count';
 const FOUNDING_BASE = 0;
 const FOUNDING_CAP = 500;
 
-function readCount(): number {
-  if (typeof window === 'undefined') return FOUNDING_BASE;
-  const raw = window.localStorage.getItem(FOUNDING_KEY);
-  const n = raw ? Number.parseInt(raw, 10) : NaN;
-  return Number.isFinite(n) && n >= FOUNDING_BASE ? n : FOUNDING_BASE;
-}
-
-function writeCount(n: number) {
-  if (typeof window === 'undefined') return;
-  window.localStorage.setItem(FOUNDING_KEY, String(n));
-}
-
-export function SignupModal({
+export default function SignupModal({
   open,
   onClose,
   onSignedUp,
   onSignedIn,
 }: SignupModalProps) {
-  const dialogRef = useRef<HTMLDivElement>(null);
-  const [activeTab, setActiveTab] = useState<Tab>('signup');
-
-  // Sign Up fields
+  const [mode, setMode] = useState<Exclude<UserMode, null> | null>(null);
+  const [years, setYears] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [instagram, setInstagram] = useState('');
-  const [mode, setMode] = useState<Exclude<UserMode, null> | null>(null);
-  const [years, setYears] = useState('');
-  const [termsOk, setTermsOk] = useState(false);
-  // Always start unchecked — user must explicitly confirm "not a robot".
-  // Real reCAPTCHA v3 invisible widget wires in when RECAPTCHA_SITE_KEY is set.
-  const [captchaOk, setCaptchaOk] = useState(false);
-  const [foundingCount, setFoundingCount] = useState<number | null>(null);
-
-  // Sign In fields
   const [signinEmail, setSigninEmail] = useState('');
   const [signinPassword, setSigninPassword] = useState('');
+  const [activeTab, setActiveTab] = useState<Tab>('signup');
+  const modalRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    if (!open) return;
-    setFoundingCount(readCount() + 1);
-  }, [open]);
-
-  useEffect(() => {
-    if (!open) return;
-    const prevOverflow = document.body.style.overflow;
-    const prevFocus = document.activeElement as HTMLElement | null;
-    document.body.style.overflow = 'hidden';
-
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') {
-        e.preventDefault();
-        onClose();
-        return;
-      }
-      if (e.key !== 'Tab') return;
-      const root = dialogRef.current;
-      if (!root) return;
-      const focusables = root.querySelectorAll<HTMLElement>(FOCUSABLE);
-      if (focusables.length === 0) return;
-      const first = focusables[0];
-      const last = focusables[focusables.length - 1];
-      if (e.shiftKey && document.activeElement === first) {
-        e.preventDefault();
-        last.focus();
-      } else if (!e.shiftKey && document.activeElement === last) {
-        e.preventDefault();
-        first.focus();
-      }
-    };
-    window.addEventListener('keydown', onKey);
-    const raf = requestAnimationFrame(() => {
-      dialogRef.current?.querySelector<HTMLElement>(FOCUSABLE)?.focus();
-    });
-    return () => {
-      window.removeEventListener('keydown', onKey);
-      cancelAnimationFrame(raf);
-      document.body.style.overflow = prevOverflow;
-      prevFocus?.focus?.();
-    };
-  }, [open, onClose]);
-
-  if (!open) return null;
-
+  // Validation logic
   const canSubmitSignup =
-    mode !== null &&
+    mode &&
     email.trim().length > 0 &&
-    password.length >= 6 &&
-    termsOk &&
-    captchaOk;
+    password.length >= 6;
 
   const canSubmitSignin =
     signinEmail.trim().length > 0 && signinPassword.length >= 6;
 
-  const handleSignupSubmit = () => {
+  const handleSignupSubmit = async () => {
     if (!canSubmitSignup || !mode) return;
-    const next = readCount() + 1;
-    writeCount(next);
-    onSignedUp({
-      mode,
-      years: years ? Number.parseInt(years, 10) : null,
-      email: email.trim(),
-      instagram: instagram.trim(),
-    });
+    
+    try {
+      // Sign up with Supabase Auth
+      const { data: authData, error: authError } = await supabase.auth.signUp({
+        email: email.trim(),
+        password: password.trim(),
+        options: {
+          data: {
+            instagram_handle: instagram.trim() || null,
+          }
+        }
+      });
+      
+      if (authError) throw authError;
+      
+      // Get current user count for founding member logic
+      const { count } = await supabase
+        .from('users')
+        .select('*', { count: 'exact' });
+      
+      const next = (count || 0) + 1;
+      const isFounding = next <= FOUNDING_CAP;
+      
+      // Create user profile in our custom table
+      const { error: profileError } = await supabase
+        .from('users')
+        .insert([
+          {
+            auth_id: authData.user?.id,
+            email: email.trim(),
+            instagram_handle: instagram.trim() || null,
+            is_founding_member: isFounding,
+            founding_member_number: isFounding ? next : null
+          }
+        ]);
+        
+      if (profileError) throw profileError;
+      
+      alert(`Welcome! You're Founding AustiNight #${isFounding ? next : 'TBD'}. Check your email to verify your account.`);
+      
+      onSignedUp({
+        mode,
+        years: years ? Number.parseInt(years, 10) : null,
+        email: email.trim(),
+        instagram: instagram.trim(),
+      });
+    } catch (error) {
+      console.error('Signup error:', error);
+      const message = error instanceof Error ? error.message : String(error);
+      alert('Signup failed: ' + message);
+    }
   };
 
   const handleSigninSubmit = () => {
@@ -136,284 +112,294 @@ export function SignupModal({
     onSignedIn?.({ email: signinEmail.trim() });
   };
 
-  // Only close when the click starts AND ends on the backdrop itself.
-  // Guards against iOS Safari "ghost click" where a synthesized click fires on
-  // the newly-mounted backdrop at the coordinates of the button that opened the modal.
-  const handleBackdropClick = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (e.target === e.currentTarget) onClose();
+  useEffect(() => {
+    if (open && modalRef.current) {
+      const focusable = modalRef.current.querySelectorAll(FOCUSABLE);
+      if (focusable.length > 0) {
+        (focusable[0] as HTMLElement).focus();
+      }
+    }
+  }, [open]);
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Escape') {
+      onClose();
+    }
   };
+
+  const handleBackdropMouseDown = (e: React.MouseEvent) => {
+    if (e.target === e.currentTarget) {
+      e.preventDefault();
+    }
+  };
+
+  const handleBackdropClick = (e: React.MouseEvent) => {
+    if (e.target === e.currentTarget) {
+      onClose();
+    }
+  };
+
+  if (!open) return null;
 
   return (
     <div
-      className="fixed inset-0 z-[100] flex items-end justify-center bg-black/50 p-0 md:items-center md:p-4"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4"
+      onMouseDown={handleBackdropMouseDown}
       onClick={handleBackdropClick}
     >
       <div
-        ref={dialogRef}
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="signup-title"
-        onClick={e => e.stopPropagation()}
-        className={clsx(
-          'relative max-h-[95vh] w-full max-w-md overflow-y-auto rounded-t-3xl bg-cream shadow-2xl',
-          'md:rounded-3xl',
-        )}
+        ref={modalRef}
+        className="w-full max-w-md rounded-lg bg-white shadow-lg"
+        onKeyDown={handleKeyDown}
+        tabIndex={-1}
       >
-        <div className="flex items-center justify-between border-b border-hairline px-5 py-3">
-          <h2
+        <div className="p-6">
+          <h2 
             id="signup-title"
-            className="font-display text-lg font-extrabold text-ink"
+            className="mb-4 text-center text-xl font-bold text-navy"
           >
-            Welcome to{' '}
-            <span className="text-teal">Real</span>
-            <span className="text-orange">AustiNights</span>
+            Welcome to RealAustiNights
           </h2>
+          
           <button
-            type="button"
             onClick={onClose}
-            aria-label="Close"
-            className="grid h-8 w-8 place-items-center rounded-full bg-white text-ink-mid"
+            className="absolute right-4 top-4 text-gray-500 hover:text-gray-700"
           >
             ✕
           </button>
-        </div>
 
-        {/* Tabs */}
-        <div
-          role="tablist"
-          aria-label="Authentication"
-          className="grid grid-cols-2 border-b border-hairline bg-white"
-        >
-          <button
-            type="button"
-            role="tab"
-            aria-selected={activeTab === 'signup'}
-            aria-controls="signup-panel"
-            onClick={() => setActiveTab('signup')}
-            className={clsx(
-              'px-4 py-3 font-display text-sm font-bold transition-colors',
-              activeTab === 'signup'
-                ? 'border-b-2 border-teal bg-cream text-teal'
-                : 'text-ink-mid hover:bg-cream',
-            )}
-          >
-            Sign Up
-          </button>
-          <button
-            type="button"
-            role="tab"
-            aria-selected={activeTab === 'signin'}
-            aria-controls="signin-panel"
-            onClick={() => setActiveTab('signin')}
-            className={clsx(
-              'px-4 py-3 font-display text-sm font-bold transition-colors',
-              activeTab === 'signin'
-                ? 'border-b-2 border-teal bg-cream text-teal'
-                : 'text-ink-mid hover:bg-cream',
-            )}
-          >
-            Sign In
-          </button>
-        </div>
-
-        <div className="p-5">
+          <div className="mb-6">
+            <div className="flex rounded-lg bg-gray-100 p-1">
+              <button
+                type="button"
+                id="signup-tab"
+                className={clsx(
+                  'flex-1 rounded-md px-3 py-2 text-sm font-medium transition-colors',
+                  activeTab === 'signup'
+                    ? 'bg-white text-navy shadow-sm'
+                    : 'text-gray-600 hover:text-gray-900'
+                )}
+                aria-selected={activeTab === 'signup'}
+                aria-controls="signup-panel"
+                onClick={() => setActiveTab('signup')}
+              >
+                Sign Up
+              </button>
+              <button
+                type="button"
+                id="signin-tab"
+                className={clsx(
+                  'flex-1 rounded-md px-3 py-2 text-sm font-medium transition-colors',
+                  activeTab === 'signin'
+                    ? 'bg-white text-navy shadow-sm'
+                    : 'text-gray-600 hover:text-gray-900'
+                )}
+                aria-selected={activeTab === 'signin'}
+                aria-controls="signin-panel"
+                onClick={() => setActiveTab('signin')}
+              >
+                Sign In
+              </button>
+            </div>
+          </div>
           {activeTab === 'signup' && (
             <div
               id="signup-panel"
               role="tabpanel"
               aria-labelledby="signup-tab"
-              className="space-y-3"
             >
-              {foundingCount !== null && foundingCount <= FOUNDING_CAP && (
-                <p className="rounded-lg bg-pink/10 px-3 py-2 text-center text-xs font-bold text-pink">
-                  🏆 Claim spot #{foundingCount} of {FOUNDING_CAP} Founding AustiNights
+              <div className="mb-4 rounded-lg bg-pink p-3">
+                <p className="text-center text-sm font-semibold text-white">
+                  🏆 Claim spot #{1} of 500 Founding AustiNights
                 </p>
-              )}
+              </div>
 
-              <label className="block text-xs">
-                <span className="font-bold text-ink">
-                  Phone or Email <span className="text-orange">*</span>
-                </span>
-                <input
-                  type="text"
-                  autoComplete="email"
-                  value={email}
-                  onChange={e => setEmail(e.target.value)}
-                  placeholder="Phone number or email"
-                  className="mt-1 w-full rounded-xl border-[1.5px] border-hairline bg-white px-3 py-2 text-sm outline-none focus:border-teal"
-                />
-              </label>
-
-              <label className="block text-xs">
-                <span className="font-bold text-ink">
-                  Password <span className="text-orange">*</span>
-                </span>
-                <input
-                  type="password"
-                  autoComplete="new-password"
-                  value={password}
-                  onChange={e => setPassword(e.target.value)}
-                  placeholder="At least 6 characters"
-                  className="mt-1 w-full rounded-xl border-[1.5px] border-hairline bg-white px-3 py-2 text-sm outline-none focus:border-teal"
-                />
-              </label>
-
-              <label className="block text-xs">
-                <span className="font-bold text-ink">
-                  Instagram <span className="text-ink-light">(optional)</span>
-                </span>
-                <input
-                  type="text"
-                  value={instagram}
-                  onChange={e => setInstagram(e.target.value)}
-                  placeholder="@yourusername"
-                  className="mt-1 w-full rounded-xl border-[1.5px] border-hairline bg-white px-3 py-2 text-sm outline-none focus:border-teal"
-                />
-              </label>
-
-              <fieldset className="pt-1">
-                <legend className="mb-1 text-xs font-bold text-ink">I&apos;m a...</legend>
-                <div className="grid grid-cols-2 gap-2">
-                  <button
-                    type="button"
-                    aria-pressed={mode === 'austinight'}
-                    onClick={() => setMode('austinight')}
-                    className={clsx(
-                      'rounded-xl border-2 px-3 py-3 text-center transition-colors',
-                      mode === 'austinight'
-                        ? 'border-teal bg-teal-light'
-                        : 'border-hairline bg-white',
-                    )}
-                  >
-                    <div aria-hidden className="text-xl">🏡</div>
-                    <div className="font-display text-xs font-bold text-ink">AustiNight</div>
-                  </button>
-                  <button
-                    type="button"
-                    aria-pressed={mode === 'tourist'}
-                    onClick={() => setMode('tourist')}
-                    className={clsx(
-                      'rounded-xl border-2 px-3 py-3 text-center transition-colors',
-                      mode === 'tourist'
-                        ? 'border-orange bg-orange-light'
-                        : 'border-hairline bg-white',
-                    )}
-                  >
-                    <div aria-hidden className="text-xl">✈️</div>
-                    <div className="font-display text-xs font-bold text-ink">Tourist</div>
-                  </button>
-                </div>
-              </fieldset>
-
-              {mode === 'austinight' && (
-                <label className="block text-xs">
-                  <span className="font-bold text-ink">Years in Austin</span>
+              <div className="space-y-4">
+                <div>
+                  <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                    Phone or Email *
+                  </label>
                   <input
-                    type="number"
-                    min={0}
-                    value={years}
-                    onChange={e => setYears(e.target.value)}
-                    placeholder="e.g. 5"
-                    className="mt-1 w-full rounded-xl border-[1.5px] border-hairline bg-white px-3 py-2 text-sm outline-none focus:border-teal"
+                    type="email"
+                    id="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-navy focus:outline-none focus:ring-navy sm:text-sm"
+                    placeholder="your@email.com"
+                    required
                   />
-                </label>
-              )}
+                </div>
 
-              <label className="flex items-start gap-2 text-xs text-ink-mid">
-                <input
-                  type="checkbox"
-                  checked={termsOk}
-                  onChange={e => setTermsOk(e.target.checked)}
-                  className="mt-0.5"
-                />
-                <span>I agree to the community guidelines and terms.</span>
-              </label>
+                <div>
+                  <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+                    Password *
+                  </label>
+                  <input
+                    type="password"
+                    id="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-navy focus:outline-none focus:ring-navy sm:text-sm"
+                    placeholder="At least 6 characters"
+                    required
+                    minLength={6}
+                  />
+                </div>
 
-              <label className="flex items-center gap-2 rounded-md border border-hairline bg-white px-3 py-2 text-xs">
-                <input
-                  type="checkbox"
-                  checked={captchaOk}
-                  onChange={e => setCaptchaOk(e.target.checked)}
-                />
-                <span>
-                  I&apos;m not a robot
-                  {RECAPTCHA_SITE_KEY ? ' (reCAPTCHA)' : ' (reCAPTCHA not configured)'}
-                </span>
-              </label>
+                <div>
+                  <label htmlFor="instagram" className="block text-sm font-medium text-gray-700">
+                    Instagram (optional)
+                  </label>
+                  <input
+                    type="text"
+                    id="instagram"
+                    value={instagram}
+                    onChange={(e) => setInstagram(e.target.value)}
+                    className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-navy focus:outline-none focus:ring-navy sm:text-sm"
+                    placeholder="@yourusername"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    I'm a...
+                  </label>
+                  <div className="flex gap-2">
+                    <button
+                      type="button"
+                      className={clsx(
+                        'flex-1 rounded-md border px-3 py-2 text-center text-sm font-medium',
+                        mode === 'austinight'
+                          ? 'border-navy bg-navy text-white'
+                          : 'border-gray-300 bg-white text-gray-700 hover:bg-gray-50'
+                      )}
+                      onClick={() => setMode('austinight')}
+                    >
+                      🏡<br />AustiNight
+                    </button>
+                    <button
+                      type="button"
+                      className={clsx(
+                        'flex-1 rounded-md border px-3 py-2 text-center text-sm font-medium',
+                        mode === 'tourist'
+                          ? 'border-navy bg-navy text-white'
+                          : 'border-gray-300 bg-white text-gray-700 hover:bg-gray-50'
+                      )}
+                      onClick={() => setMode('tourist')}
+                    >
+                      ✈️<br />Tourist
+                    </button>
+                  </div>
+                </div>
 
-              <button
-                type="button"
-                disabled={!canSubmitSignup}
-                onClick={handleSignupSubmit}
-                className="w-full rounded-xl bg-pink px-4 py-3 font-display text-sm font-bold text-white shadow focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pink disabled:cursor-not-allowed disabled:bg-gray-300 disabled:shadow-none"
-              >
-                🤠 Let&apos;s Go!
-              </button>
+                {mode === 'austinight' && (
+                  <div>
+                    <label htmlFor="years" className="block text-sm font-medium text-gray-700">
+                      Years in Austin
+                    </label>
+                    <input
+                      type="number"
+                      id="years"
+                      value={years}
+                      onChange={(e) => setYears(e.target.value)}
+                      className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-navy focus:outline-none focus:ring-navy sm:text-sm"
+                      min="0"
+                      max="100"
+                    />
+                  </div>
+                )}
+
+                <div className="space-y-2">
+                  <label className="flex items-start gap-2">
+                    <input type="checkbox" className="mt-1" required />
+                    <span className="text-sm text-gray-600">
+                      I agree to the community guidelines and terms.
+                    </span>
+                  </label>
+                  <div className="text-sm text-gray-500">
+                    I'm not a robot (reCAPTCHA not configured)
+                  </div>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={handleSignupSubmit}
+                  disabled={!canSubmitSignup}
+                  className={clsx(
+                    'w-full rounded-md px-4 py-2 text-white font-medium',
+                    canSubmitSignup
+                      ? 'bg-pink hover:bg-pink-600'
+                      : 'bg-gray-300 cursor-not-allowed'
+                  )}
+                >
+                  🤠 Let's Go!
+                </button>
+              </div>
             </div>
           )}
-
           {activeTab === 'signin' && (
             <div
               id="signin-panel"
               role="tabpanel"
               aria-labelledby="signin-tab"
-              className="space-y-3"
             >
-              <p className="text-center text-xs text-ink-mid">
-                Welcome back, AustiNight. Sign in to post, comment, and upload.
-              </p>
+              <div className="space-y-4">
+                <div>
+                  <label htmlFor="signin-email" className="block text-sm font-medium text-gray-700">
+                    Email
+                  </label>
+                  <input
+                    type="email"
+                    id="signin-email"
+                    value={signinEmail}
+                    onChange={(e) => setSigninEmail(e.target.value)}
+                    className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-navy focus:outline-none focus:ring-navy sm:text-sm"
+                    placeholder="your@email.com"
+                    required
+                  />
+                </div>
 
-              <label className="block text-xs">
-                <span className="font-bold text-ink">
-                  Phone or Email <span className="text-orange">*</span>
-                </span>
-                <input
-                  type="text"
-                  autoComplete="email"
-                  value={signinEmail}
-                  onChange={e => setSigninEmail(e.target.value)}
-                  placeholder="Phone number or email"
-                  className="mt-1 w-full rounded-xl border-[1.5px] border-hairline bg-white px-3 py-2 text-sm outline-none focus:border-teal"
-                />
-              </label>
+                <div>
+                  <label htmlFor="signin-password" className="block text-sm font-medium text-gray-700">
+                    Password
+                  </label>
+                  <input
+                    type="password"
+                    id="signin-password"
+                    value={signinPassword}
+                    onChange={(e) => setSigninPassword(e.target.value)}
+                    className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-navy focus:outline-none focus:ring-navy sm:text-sm"
+                    required
+                  />
+                </div>
 
-              <label className="block text-xs">
-                <span className="font-bold text-ink">
-                  Password <span className="text-orange">*</span>
-                </span>
-                <input
-                  type="password"
-                  autoComplete="current-password"
-                  value={signinPassword}
-                  onChange={e => setSigninPassword(e.target.value)}
-                  placeholder="Your password"
-                  className="mt-1 w-full rounded-xl border-[1.5px] border-hairline bg-white px-3 py-2 text-sm outline-none focus:border-teal"
-                />
-              </label>
-
-              <button
-                type="button"
-                disabled={!canSubmitSignin}
-                onClick={handleSigninSubmit}
-                className="w-full rounded-xl bg-pink px-4 py-3 font-display text-sm font-bold text-white shadow focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pink disabled:cursor-not-allowed disabled:bg-gray-300 disabled:shadow-none"
-              >
-                Sign In
-              </button>
-
-              <p className="pt-1 text-center text-[11px] text-ink-light">
-                New here?{' '}
                 <button
                   type="button"
-                  onClick={() => setActiveTab('signup')}
-                  className="font-bold text-teal hover:underline"
+                  onClick={handleSigninSubmit}
+                  disabled={!canSubmitSignin}
+                  className={clsx(
+                    'w-full rounded-md px-4 py-2 text-white font-medium',
+                    canSubmitSignin
+                      ? 'bg-navy hover:bg-navy-600'
+                      : 'bg-gray-300 cursor-not-allowed'
+                  )}
                 >
-                  Create an account →
+                  Sign In
                 </button>
-              </p>
+
+                <div className="text-center">
+                  <button
+                    type="button"
+                    className="text-sm text-navy hover:underline"
+                    onClick={() => setActiveTab('signup')}
+                  >
+                    Don't have an account? Sign up
+                  </button>
+                </div>
+              </div>
             </div>
           )}
         </div>
-      </div>
+      </div>    
     </div>
   );
 }

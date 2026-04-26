@@ -19,7 +19,7 @@ import { WereAustinCalendar } from '@/components/were-austin-calendar';
 import { Comedy } from '@/components/comedy';
 import { WeirdFunnyCool } from '@/components/weird-funny-cool';
 import { AustinPulse } from '@/components/austin-pulse';
-import { SignupModal } from '@/components/signup-modal';
+import  SignupModal from '@/components/signup-modal';
 import { BusinessPartnerModal } from '@/components/business-partner-modal';
 import { Footer } from '@/components/footer';
 import { BottomTabBar, type BottomTab } from '@/components/bottom-tab-bar';

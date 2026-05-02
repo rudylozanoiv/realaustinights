@@ -123,8 +123,22 @@ export default function Home() {
 
     if (typeof window !== 'undefined') {
       const params = new URLSearchParams(window.location.search);
-      if (params.get('auth_error') === 'callback') {
-        setAuthError('Email confirmation failed. Please request a new sign-up link.');
+      const errKey = params.get('auth_error');
+      if (errKey === 'callback' || errKey === 'confirm') {
+        const reasonKey = params.get('auth_reason');
+        const reasonText: Record<string, string> = {
+          missing_credentials: 'The link was missing required data.',
+          exchange_failed: 'We could not complete the sign-in. Please request a new link.',
+          verify_failed: 'The confirmation link has expired or already been used.',
+          bad_type: 'The confirmation link is malformed.',
+          supabase_error: 'Supabase reported an error during confirmation.',
+        };
+        const reasonMsg = reasonKey ? reasonText[reasonKey] : undefined;
+        setAuthError(
+          reasonMsg
+            ? `Email confirmation failed. ${reasonMsg}`
+            : 'Email confirmation failed. Please request a new sign-up link.',
+        );
       }
     }
 

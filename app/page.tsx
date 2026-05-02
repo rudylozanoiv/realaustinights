@@ -91,7 +91,7 @@ const QUE_PASA_PHOTOS: QuePasaPhoto[] = [
   {
     id: 'qp1', username: '@austintx_vibes',
     photoUrl: 'https://images.unsplash.com/photo-1575444758702-4a6b9222336e?w=600&q=80',
-    caption: 'Friday night at Rainey 🍹', venueName: 'Craft Pride',
+    caption: 'Austin nightlife pulse 🍹', venueName: 'Craft Pride',
     neighborhood: 'Rainey St',
     googleMapsUrl: 'https://maps.google.com/?q=Craft+Pride+Austin+TX',
     appleMapsUrl: 'https://maps.apple.com/?q=Craft+Pride+Austin+TX',
@@ -145,7 +145,7 @@ const AFTER_PARTIES: AfterParty[] = [
   {
     id: 'ap1', event: 'SXSW', venueName: 'Stubbs Waller Creek Amphitheater',
     address: '801 Red River St', neighborhood: 'Red River',
-    time: 'Midnight – 3am', description: 'Official SXSW late-night showcase. Multiple acts, outdoor amphitheater. Full bar. First come first served with badge.',
+    time: 'Midnight – 3am', description: 'Austin late-night showcase preview. Venue details and event timing update as confirmed.',
     price: 'Badge / $20', verifiedOnly: false,
     googleMapsUrl: 'https://maps.google.com/?q=Stubbs+Amphitheater+Austin',
     appleMapsUrl: 'https://maps.apple.com/?q=Stubbs+Waller+Creek+Austin',
@@ -153,7 +153,7 @@ const AFTER_PARTIES: AfterParty[] = [
   {
     id: 'ap2', event: 'SXSW', venueName: 'Mohawk ATX – Outdoor Stage',
     address: '912 Red River St', neighborhood: 'Red River',
-    time: '11pm – 2am', description: 'SXSW day-party overflow flows into late night. DJ sets, craft beer specials, skyline views.',
+    time: '11pm – 2am', description: 'Red River late-night sets, craft beer specials, and skyline views.',
     price: 'RSVP Free / $15 door', verifiedOnly: false,
     googleMapsUrl: 'https://maps.google.com/?q=Mohawk+ATX+Austin',
     appleMapsUrl: 'https://maps.apple.com/?q=Mohawk+Austin',
@@ -208,7 +208,7 @@ const COMEDY_SHOWS: ComedyShow[] = [
   {
     id: 'c1', title: 'Joe Pera: Soft Thoughts Tour', comedian: 'Joe Pera',
     venueName: 'Cap City Comedy Club', venueType: 'comedy club',
-    date: 'Fri Apr 4', dateObj: new Date('2026-04-04'),
+    date: 'Upcoming', dateObj: new Date('2026-04-04'),
     time: '8pm & 10pm', price: '$28-38', ticketUrl: 'https://capcitycomedy.com',
     hasAlcohol: true, hasFood: true, neighborhood: 'North Lamar',
     image: 'https://images.unsplash.com/photo-1527224857830-43a7acc85260?w=600&q=80',
@@ -217,7 +217,7 @@ const COMEDY_SHOWS: ComedyShow[] = [
   {
     id: 'c2', title: 'Nikki Glaser: Alive Tour', comedian: 'Nikki Glaser',
     venueName: 'Moody Center', venueType: 'major venue',
-    date: 'Sat Apr 5', dateObj: new Date('2026-04-05'),
+    date: 'Upcoming', dateObj: new Date('2026-04-05'),
     time: '7:30pm', price: '$55-125', ticketUrl: 'https://moodycenteratx.com',
     hasAlcohol: true, hasFood: true, neighborhood: 'UT Area',
     image: 'https://images.unsplash.com/photo-1503095396549-807759245b35?w=600&q=80',
@@ -226,7 +226,7 @@ const COMEDY_SHOWS: ComedyShow[] = [
   {
     id: 'c3', title: 'Open Mic Extravaganza', comedian: 'Various Local Comics',
     venueName: 'Spider House Cafe', venueType: 'comedy club',
-    date: 'Sun Apr 6', dateObj: new Date('2026-04-06'),
+    date: 'Upcoming', dateObj: new Date('2026-04-06'),
     time: '8pm', price: 'Free', ticketUrl: '',
     hasAlcohol: true, hasFood: false, neighborhood: 'Hyde Park',
     image: 'https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?w=600&q=80',
@@ -235,7 +235,7 @@ const COMEDY_SHOWS: ComedyShow[] = [
   {
     id: 'c4', title: 'Bill Burr: Back for More', comedian: 'Bill Burr',
     venueName: 'ACL Live at the Moody Theater', venueType: 'major venue',
-    date: 'Fri Apr 11', dateObj: new Date('2026-04-11'),
+    date: 'Upcoming', dateObj: new Date('2026-04-11'),
     time: '8pm', price: '$75-150', ticketUrl: 'https://acl-live.com',
     hasAlcohol: true, hasFood: true, neighborhood: 'Warehouse District',
     image: 'https://images.unsplash.com/photo-1486693128850-a77436e7ba3c?w=600&q=80',
@@ -244,7 +244,7 @@ const COMEDY_SHOWS: ComedyShow[] = [
   {
     id: 'c5', title: 'Thursday Laugh Factory', comedian: 'Local Showcase',
     venueName: 'Cap City Comedy Club', venueType: 'comedy club',
-    date: 'Thu Apr 10', dateObj: new Date('2026-04-10'),
+    date: 'Upcoming', dateObj: new Date('2026-04-10'),
     time: '9pm', price: '$15', ticketUrl: 'https://capcitycomedy.com',
     hasAlcohol: true, hasFood: true, neighborhood: 'North Lamar',
     image: 'https://images.unsplash.com/photo-1527224857830-43a7acc85260?w=600&q=80',
@@ -253,7 +253,7 @@ const COMEDY_SHOWS: ComedyShow[] = [
   {
     id: 'c6', title: 'Chappelle Works in Progress', comedian: 'Dave Chappelle',
     venueName: 'The Paramount Theatre', venueType: 'major venue',
-    date: 'Sat Apr 12', dateObj: new Date('2026-04-12'),
+    date: 'Upcoming', dateObj: new Date('2026-04-12'),
     time: '10:30pm', price: '$45-95', ticketUrl: 'https://austintheatre.org',
     hasAlcohol: false, hasFood: false, neighborhood: 'Congress Ave',
     image: 'https://images.unsplash.com/photo-1503095396549-807759245b35?w=600&q=80',
@@ -305,9 +305,9 @@ const COMMUNITY_POSTS = [
 const ZETA_POST = {
   id: 'zeta1',
   photoUrl: 'https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=400&q=80',
-  caption: 'Zeta had the BEST week at Barkingham Place! Made three new friends and only stole one tennis ball.',
+  caption: 'Zeta had the BEST time at Barkingham Place! Made three new friends and only stole one tennis ball.',
   venue: 'Barkingham Place',
-  week: 'Week of April 4',
+  week: 'Weekly local spotlight',
 };
 
 // ─────────────────────────────────────────────
@@ -324,11 +324,41 @@ function liveBadge(type: LivePost['type']) {
   return m[type] || m.update;
 }
 
+// Public contact inbox for Founding Member requests + Austin tips.
+const CONTACT_EMAIL = 'info@realaustinights.com';
+
+const FOUNDING_MAILTO = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(
+  'Founding Member Request — Real AustiNights',
+)}&body=${encodeURIComponent(
+  `Hi Real AustiNights,
+
+I want to be notified when Founding Member access opens.
+
+Name:
+Instagram:
+Austin neighborhood:
+`,
+)}`;
+
+const TIP_MAILTO = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(
+  'Austin Tip — Real AustiNights',
+)}&body=${encodeURIComponent(
+  `Hi Real AustiNights,
+
+I found something worth checking out.
+
+Tip:
+Location:
+Date/time:
+Instagram/credit:
+`,
+)}`;
+
 // ─────────────────────────────────────────────
 // SUB-COMPONENTS
 // ─────────────────────────────────────────────
 
-/** Founding Member coming-soon modal. No signup form, no auth. */
+/** Founding Member request modal. Mailto-only, no auth, no DB, no fake send. */
 function UserModeModal({
   onClose, S,
 }: {
@@ -353,24 +383,36 @@ function UserModeModal({
           boxShadow: '0 24px 80px rgba(0,0,0,0.2)', fontFamily: S.font,
         }}
       >
-        <div style={{ textAlign: 'center', marginBottom: 28 }}>
+        <div style={{ textAlign: 'center', marginBottom: 24 }}>
           <div style={{ fontSize: 40, marginBottom: 8 }}>&#129312;</div>
           <h2 id="founding-member-title" style={{ fontSize: 24, fontWeight: 800, color: S.text }}>
-            Welcome to <span style={{ color: S.teal }}>Real</span><span style={{ color: S.orange }}>AustiNights</span>
-          </h2>
-          <p style={{ fontSize: 15, color: S.textMid, marginTop: 10, lineHeight: 1.6, fontWeight: 700 }}>
             Become a Founding Member
-          </p>
-          <p style={{ fontSize: 13, color: S.textMid, marginTop: 10, lineHeight: 1.6 }}>
-            Founding Member access is opening soon. Follow Real AustiNights for launch updates.
+          </h2>
+          <p style={{ fontSize: 14, color: S.textMid, marginTop: 12, lineHeight: 1.6 }}>
+            Founding Member access is opening soon. Send a request and we&apos;ll follow up when early access opens.
           </p>
         </div>
+        <a
+          href={FOUNDING_MAILTO}
+          style={{
+            display: 'block', width: '100%', padding: 16, borderRadius: 14,
+            background: S.teal, color: 'white', fontWeight: 700, fontSize: 15,
+            fontFamily: S.font, textDecoration: 'none', textAlign: 'center',
+            boxShadow: '0 4px 14px rgba(0,0,0,0.15)', boxSizing: 'border-box',
+          }}
+        >
+          Send request
+        </a>
+        <p style={{ fontSize: 11, color: S.textLight, marginTop: 8, textAlign: 'center', lineHeight: 1.5 }}>
+          This opens your email app so you can send the request directly.
+        </p>
         <button
           onClick={onClose}
           style={{
-            width: '100%', padding: 16, borderRadius: 14, border: 'none', cursor: 'pointer',
-            background: S.teal, color: 'white', fontWeight: 700, fontSize: 15, fontFamily: S.font,
-            boxShadow: '0 4px 14px rgba(0,0,0,0.15)', transition: 'all 0.2s',
+            width: '100%', padding: 12, marginTop: 12, borderRadius: 14,
+            border: `1.5px solid ${S.border}`, cursor: 'pointer',
+            background: 'transparent', color: S.textMid, fontWeight: 600,
+            fontSize: 14, fontFamily: S.font,
           }}
         >
           Got it
@@ -703,35 +745,8 @@ function ComedySection({ S }: { S: ReturnType<typeof buildStyles> }) {
   );
 }
 
-/** User Submission Widget */
-function SubmitWeirdStuff({ S, userMode }: { S: ReturnType<typeof buildStyles>; userMode: UserMode }) {
-  const [photoFile, setPhotoFile] = useState<string | null>(null);
-  const [username, setUsername] = useState('');
-  const [caption, setCaption] = useState('');
-  const [submitted, setSubmitted] = useState(false);
-  const fileRef = useRef<HTMLInputElement>(null);
-
-  const handleFile = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) setPhotoFile(URL.createObjectURL(file));
-  };
-
-  if (submitted) {
-    return (
-      <div style={{ background: S.tealLight, borderRadius: 20, padding: 28, textAlign: 'center', marginBottom: 28, border: `1px solid ${S.teal}22` }}>
-        <div style={{ fontSize: 36, marginBottom: 8 }}>✝️</div>
-        <div style={{ fontFamily: S.font, fontWeight: 800, fontSize: 16, color: S.teal }}>Submission received!</div>
-        <div style={{ fontSize: 13, color: S.textMid, marginTop: 6 }}>
-          {userMode === 'tourist' ? "We'll review your photo before it goes live." : "It'll hit the Que Pasa carousel soon. You're Austin now."}
-        </div>
-        <button onClick={() => { setSubmitted(false); setPhotoFile(null); setUsername(''); setCaption(''); }}
-          style={{ marginTop: 16, background: S.teal, color: 'white', border: 'none', padding: '10px 24px', borderRadius: 10, fontSize: 13, fontWeight: 700, cursor: 'pointer', fontFamily: S.font }}>
-          Submit Another
-        </button>
-      </div>
-    );
-  }
-
+/** Send a tip — mailto-only. No upload, no fake submission. */
+function SubmitWeirdStuff({ S }: { S: ReturnType<typeof buildStyles> }) {
   return (
     <div style={{ background: 'white', borderRadius: 20, padding: 24, boxShadow: S.shadow, marginBottom: 28, border: `1px solid ${S.border}` }}>
       <div style={{ display: 'flex', gap: 12, alignItems: 'flex-start', marginBottom: 16 }}>
@@ -741,62 +756,24 @@ function SubmitWeirdStuff({ S, userMode }: { S: ReturnType<typeof buildStyles>; 
             Found something weird, funny, or cool we missed?
           </h3>
           <p style={{ fontSize: 13, color: S.textMid, lineHeight: 1.6 }}>
-            Drop a photo. We'll give you credit.
-            {userMode === 'tourist' && <span style={{ color: S.orange }}> (Tourist photos reviewed before going public)</span>}
+            Send us a tip and we may feature it.
           </p>
         </div>
       </div>
-
-      {/* Photo upload area */}
-      <div
-        onClick={() => fileRef.current?.click()}
+      <a
+        href={TIP_MAILTO}
         style={{
-          border: `2px dashed ${photoFile ? S.teal : S.border}`, borderRadius: 14,
-          padding: 24, textAlign: 'center', cursor: 'pointer',
-          background: photoFile ? S.tealLight : S.bg, marginBottom: 14,
-          transition: 'all 0.2s', position: 'relative', overflow: 'hidden',
+          display: 'block', width: '100%', padding: 13, borderRadius: 12,
+          background: S.orange, color: 'white', fontWeight: 700, fontSize: 14,
+          fontFamily: S.font, textDecoration: 'none', textAlign: 'center',
+          boxShadow: '0 4px 14px rgba(255,140,0,0.3)', boxSizing: 'border-box',
         }}
       >
-        {photoFile ? (
-          <img src={photoFile} alt="preview" style={{ maxHeight: 160, borderRadius: 8, objectFit: 'cover', maxWidth: '100%' }} />
-        ) : (
-          <>
-            <div style={{ fontSize: 32, marginBottom: 8 }}>📷</div>
-            <div style={{ fontSize: 13, color: S.textMid, fontWeight: 600 }}>Click to upload a photo</div>
-            <div style={{ fontSize: 11, color: S.textLight, marginTop: 4 }}>JPG, PNG, GIF · max 10MB</div>
-          </>
-        )}
-        <input ref={fileRef} type="file" accept="image/*" onChange={handleFile} style={{ display: 'none' }} />
-      </div>
-
-      <div style={{ display: 'grid', gap: 10, marginBottom: 16 }}>
-        <input
-          type="text" placeholder="Your username (e.g. @keepitweird_512)"
-          value={username} onChange={e => setUsername(e.target.value)}
-          style={{ padding: '11px 14px', borderRadius: 10, border: `1.5px solid ${S.border}`, fontSize: 13, fontFamily: S.fontBody, outline: 'none', background: S.bg }}
-        />
-        <textarea
-          placeholder="What's going on here? (optional)"
-          value={caption} onChange={e => setCaption(e.target.value)}
-          rows={2}
-          style={{ padding: '11px 14px', borderRadius: 10, border: `1.5px solid ${S.border}`, fontSize: 13, fontFamily: S.fontBody, outline: 'none', resize: 'none', background: S.bg }}
-        />
-      </div>
-
-      <button
-        disabled={!photoFile || !username}
-        onClick={() => photoFile && username && setSubmitted(true)}
-        style={{
-          width: '100%', padding: 13, borderRadius: 12, border: 'none',
-          background: photoFile && username ? S.orange : '#E5E7EB',
-          color: 'white', fontWeight: 700, fontSize: 14, fontFamily: S.font,
-          cursor: photoFile && username ? 'pointer' : 'not-allowed',
-          boxShadow: photoFile && username ? '0 4px 14px rgba(255,140,0,0.3)' : 'none',
-          transition: 'all 0.2s',
-        }}
-      >
-        Submit to Que Pasa 📸
-      </button>
+        Send a tip
+      </a>
+      <p style={{ fontSize: 11, color: S.textLight, marginTop: 8, textAlign: 'center', lineHeight: 1.5 }}>
+        This opens your email app so you can send the tip directly.
+      </p>
     </div>
   );
 }
@@ -858,10 +835,8 @@ export default function RealAustiNightsV7() {
   const [showDealsFull, setShowDealsFull] = useState(false);
   const [quePasaComment, setQuePasaComment] = useState('');
 
-  // Track actual signup (not just browsing mode)
-  const [isSignedUp, setIsSignedUp] = useState(false);
-
-  // Gate: show signup modal if user hasn't actually signed up
+  // Founding Member access is not yet open; gated CTAs route to the request modal.
+  const [isSignedUp] = useState(false);
   const requireLogin = () => {
     if (!isSignedUp) {
       setShowModal(true);
@@ -1246,7 +1221,7 @@ export default function RealAustiNightsV7() {
           <ComedySection S={S} />
 
           {/* ── SUBMIT WEIRD STUFF ── */}
-          <SubmitWeirdStuff S={S} userMode={userMode} />
+          <SubmitWeirdStuff S={S} />
         </main>
 
         {/* ── RIGHT SIDEBAR ── */}
@@ -1376,23 +1351,24 @@ export default function RealAustiNightsV7() {
               ))}
             </div>
 
-            {/* Sign up prompt */}
+            {/* Tip prompt */}
             <div style={{
               textAlign: 'center', padding: '32px 0', marginTop: 20,
               borderTop: '2px solid #1B2A4A',
             }}>
               <p style={{ fontFamily: S.font, fontSize: 18, fontWeight: 700, color: '#1B2A4A' }}>
-                Got a photo? Share what's happening in YOUR Austin.
+                Got a photo? Share what&apos;s happening in YOUR Austin.
               </p>
-              <button onClick={() => { if (requireLogin()) return; }} style={{
-                background: S.teal, color: 'white', border: 'none', padding: '14px 32px',
-                borderRadius: 14, fontSize: 15, fontWeight: 700, cursor: 'pointer', fontFamily: S.font,
+              <a href={TIP_MAILTO} style={{
+                display: 'inline-block',
+                background: S.teal, color: 'white', padding: '14px 32px',
+                borderRadius: 14, fontSize: 15, fontWeight: 700, textDecoration: 'none', fontFamily: S.font,
                 boxShadow: '0 4px 14px rgba(0,122,122,0.3)', marginTop: 12,
               }}>
-                Sign Up to Post &#128248;
-              </button>
+                Send a tip &#128248;
+              </a>
               <p style={{ fontSize: 12, color: S.textLight, marginTop: 8 }}>
-                Verified AustiNites only. All photos moderated before going live.
+                This opens your email app so you can send the tip directly.
               </p>
             </div>
           </div>
@@ -1441,15 +1417,19 @@ export default function RealAustiNightsV7() {
             ))}
             <div style={{ textAlign: 'center', padding: '32px 0', marginTop: 20, borderTop: '2px solid #1B2A4A' }}>
               <p style={{ fontFamily: S.font, fontSize: 18, fontWeight: 700, color: '#1B2A4A' }}>
-                Got something to say? Join the conversation.
+                Got something to say? Send us a tip.
               </p>
-              <button onClick={() => { if (requireLogin()) return; }} style={{
-                background: '#1B2A4A', color: 'white', border: 'none', padding: '14px 32px',
-                borderRadius: 14, fontSize: 15, fontWeight: 700, cursor: 'pointer', fontFamily: S.font,
+              <a href={TIP_MAILTO} style={{
+                display: 'inline-block',
+                background: '#1B2A4A', color: 'white', padding: '14px 32px',
+                borderRadius: 14, fontSize: 15, fontWeight: 700, textDecoration: 'none', fontFamily: S.font,
                 boxShadow: '0 4px 14px rgba(27,42,74,0.3)', marginTop: 12,
               }}>
-                Sign Up to Post
-              </button>
+                Send a tip
+              </a>
+              <p style={{ fontSize: 12, color: S.textLight, marginTop: 8 }}>
+                This opens your email app so you can send the tip directly.
+              </p>
             </div>
           </div>
         </div>
@@ -1506,15 +1486,19 @@ export default function RealAustiNightsV7() {
             </div>
             <div style={{ textAlign: 'center', padding: '32px 0', marginTop: 20, borderTop: '2px solid #1B2A4A' }}>
               <p style={{ fontFamily: S.font, fontSize: 18, fontWeight: 700, color: '#1B2A4A' }}>
-                Got a cute pup? Share your Austin dog!
+                Got a cute pup? Send us a tip.
               </p>
-              <button onClick={() => { if (requireLogin()) return; }} style={{
-                background: S.orange, color: 'white', border: 'none', padding: '14px 32px',
-                borderRadius: 14, fontSize: 15, fontWeight: 700, cursor: 'pointer', fontFamily: S.font,
+              <a href={TIP_MAILTO} style={{
+                display: 'inline-block',
+                background: S.orange, color: 'white', padding: '14px 32px',
+                borderRadius: 14, fontSize: 15, fontWeight: 700, textDecoration: 'none', fontFamily: S.font,
                 boxShadow: '0 4px 14px rgba(255,140,0,0.3)', marginTop: 12,
               }}>
-                Sign Up to Post Your Pup
-              </button>
+                Send a tip
+              </a>
+              <p style={{ fontSize: 12, color: S.textLight, marginTop: 8 }}>
+                This opens your email app so you can send the tip directly.
+              </p>
             </div>
           </div>
         </div>

@@ -9,6 +9,8 @@ interface HeaderProps {
   search: string;
   onSearchChange: (s: string) => void;
   onSignUpClick: () => void;
+  onSignOutClick?: () => void;
+  isAuthenticated?: boolean;
   /** Fired on Enter key or tap of the inline 🔍 submit button. */
   onSearchSubmit?: () => void;
 }
@@ -19,6 +21,8 @@ export function Header({
   search,
   onSearchChange,
   onSignUpClick,
+  onSignOutClick,
+  isAuthenticated = false,
   onSearchSubmit,
 }: HeaderProps) {
   const [tick, setTick] = useState(0);
@@ -103,10 +107,10 @@ export function Header({
         {/* Sign Up — sacred pink */}
         <button
           type="button"
-          onClick={onSignUpClick}
+          onClick={isAuthenticated ? onSignOutClick : onSignUpClick}
           className="shrink-0 rounded-full bg-pink px-4 py-2.5 font-display text-xs font-bold text-white shadow-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pink md:px-6 md:py-2.5 md:text-sm"
         >
-          Sign Up
+          {isAuthenticated ? 'Sign Out' : 'Sign Up'}
         </button>
       </nav>
 

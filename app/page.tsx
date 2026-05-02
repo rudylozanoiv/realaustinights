@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import clsx from 'clsx';
 
 import { Header } from '@/components/header';
@@ -25,6 +25,7 @@ import { Footer } from '@/components/footer';
 import { BottomTabBar, type BottomTab } from '@/components/bottom-tab-bar';
 import { SectionBoundary } from '@/components/ui/section-boundary';
 import { VenuesJsonLd, EventsJsonLd } from '@/components/json-ld';
+import { createClient } from '@/lib/supabase/client';
 
 import {
   AFTER_PARTIES,
@@ -78,7 +79,8 @@ export default function Home() {
   const [selected, setSelected] = useState<FeedCardType | null>(null);
   const [userMode, setUserMode] = useState<UserMode>(null);
   const [, setYearsInAustin] = useState<number | null>(null);
-  const [isSignedUp, setIsSignedUp] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [authError, setAuthError] = useState<string | null>(null);
   const [showSignup, setShowSignup] = useState(false);
   const [showBusiness, setShowBusiness] = useState(false);
   const [bottomTab, setBottomTab] = useState<BottomTab | null>('home');
@@ -86,9 +88,67 @@ export default function Home() {
   const [pupperIdx, setPupperIdx] = useState<number | null>(null);
   const mounted = useMounted();
 
+  // ── Auth: real Supabase session ──────────────────────
+  useEffect(() => {
+    type MetaShape = { mode?: UserMode; years_in_austin?: number | null };
+
+    let supabase;
+    try {
+      supabase = createClient();
+    } catch {
+      setAuthError('Auth is not configured for this build.');
+      return;
+    }
+
+    const applyUser = (user: { user_metadata?: unknown } | null | undefined) => {
+      setIsAuthenticated(Boolean(user));
+      const meta = (user?.user_metadata ?? undefined) as MetaShape | undefined;
+      if (meta?.mode === 'austinight' || meta?.mode === 'tourist') {
+        setUserMode(meta.mode);
+      }
+      if (typeof meta?.years_in_austin === 'number') {
+        setYearsInAustin(meta.years_in_austin);
+      }
+    };
+
+    let cancelled = false;
+    supabase.auth.getSession().then(({ data }) => {
+      if (cancelled) return;
+      applyUser(data.session?.user ?? null);
+    });
+
+    const { data: sub } = supabase.auth.onAuthStateChange((_event, session) => {
+      applyUser(session?.user ?? null);
+    });
+
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search);
+      if (params.get('auth_error') === 'callback') {
+        setAuthError('Email confirmation failed. Please request a new sign-up link.');
+      }
+    }
+
+    return () => {
+      cancelled = true;
+      sub.subscription.unsubscribe();
+    };
+  }, []);
+
+  const handleSignOut = async () => {
+    try {
+      const supabase = createClient();
+      await supabase.auth.signOut();
+    } catch {
+      // Ignore: missing env vars or network. Local state still clears below.
+    }
+    setIsAuthenticated(false);
+    setUserMode(null);
+    setYearsInAustin(null);
+  };
+
   // ── Helpers ──────────────────────────────────────────
   const requireLogin = () => {
-    if (!isSignedUp) {
+    if (!isAuthenticated) {
       setShowSignup(true);
       return true;
     }
@@ -208,8 +268,29 @@ export default function Home() {
         search={search}
         onSearchChange={setSearch}
         onSignUpClick={() => setShowSignup(true)}
+        onSignOutClick={handleSignOut}
+        isAuthenticated={isAuthenticated}
         onSearchSubmit={() => scrollTo('feed')}
       />
+
+      {authError && (
+        <div
+          role="alert"
+          className="mx-auto mt-3 flex max-w-7xl items-start gap-2 rounded-xl border border-pink/40 bg-pink/10 px-4 py-2.5 text-xs text-pink"
+        >
+          <span aria-hidden>⚠️</span>
+          <div>
+            <strong>{authError}</strong>{' '}
+            <button
+              type="button"
+              onClick={() => setAuthError(null)}
+              className="ml-1 underline"
+            >
+              Dismiss
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* Tourist notice */}
       {userMode === 'tourist' && (
@@ -261,7 +342,7 @@ export default function Home() {
           <SectionBoundary label="Weird / Funny / Cool">
             <section id="weird-funny-cool" aria-label="Weird Funny Cool">
               <WeirdFunnyCool
-                isSignedIn={isSignedUp}
+                isSignedIn={isAuthenticated}
                 onRequireLogin={() => requireLogin()}
               />
             </section>
@@ -366,7 +447,7 @@ export default function Home() {
               <CommunityFeed
                 posts={COMMUNITY_POSTS}
                 onPostClick={() => requireLogin()}
-                isSignedIn={isSignedUp}
+                isSignedIn={isAuthenticated}
                 onSignInRequired={() => setShowSignup(true)}
               />
             </section>
@@ -465,13 +546,15 @@ export default function Home() {
         open={showSignup}
         onClose={() => setShowSignup(false)}
         onSignedUp={({ mode, years }) => {
+          // Supabase signUp succeeded but email confirmation is still required.
+          // Record the user's selected preferences for UI; do NOT mark as
+          // authenticated — that flips only when onAuthStateChange sees a session.
           setUserMode(mode);
           setYearsInAustin(years);
-          setIsSignedUp(true);
-          setShowSignup(false);
         }}
         onSignedIn={() => {
-          setIsSignedUp(true);
+          // Sign-in success — onAuthStateChange will flip isAuthenticated.
+          // Just close the modal here.
           setShowSignup(false);
         }}
       />

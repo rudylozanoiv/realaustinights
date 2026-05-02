@@ -2,13 +2,15 @@
 
 import { useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
-import { RECAPTCHA_SITE_KEY } from '@/lib/flags';
 import type { UserMode } from '@/lib/types';
-import { supabase } from '@/lib/supabase';
+import { createClient } from '@/lib/supabase/client';
 
 interface SignupModalProps {
   open: boolean;
   onClose: () => void;
+  // Fired after Supabase signUp succeeds. Email confirmation is still
+  // pending — the user is NOT authenticated yet. Real authenticated state
+  // comes from the Supabase session, not this callback.
   onSignedUp: (user: {
     mode: Exclude<UserMode, null>;
     years: number | null;
@@ -18,7 +20,16 @@ interface SignupModalProps {
   onSignedIn?: (user: { email: string }) => void;
 }
 
-type Tab = 'signup' | 'signin';
+type Tab = 'signup' | 'signin' | 'check-email';
+
+function describeAuthError(err: unknown): string {
+  if (err instanceof Error) {
+    const code = (err as { code?: string }).code;
+    return code ? `${err.message} [${code}]` : err.message;
+  }
+  if (typeof err === 'string') return err;
+  return 'Unknown signup error';
+}
 
 const FOCUSABLE =
   'a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex="-1"])';
@@ -41,6 +52,9 @@ export default function SignupModal({
   const [signinEmail, setSigninEmail] = useState('');
   const [signinPassword, setSigninPassword] = useState('');
   const [activeTab, setActiveTab] = useState<Tab>('signup');
+  const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
+  const [submittedEmail, setSubmittedEmail] = useState<string | null>(null);
   const modalRef = useRef<HTMLDivElement>(null);
 
   // Validation logic
@@ -53,73 +67,91 @@ export default function SignupModal({
     signinEmail.trim().length > 0 && signinPassword.length >= 6;
 
   const handleSignupSubmit = async () => {
-    if (!canSubmitSignup || !mode) return;
-    
+    if (!canSubmitSignup || !mode || submitting) return;
+    setSubmitting(true);
+    setSubmitError(null);
+
+    const trimmedEmail = email.trim();
+    const trimmedInstagram = instagram.trim();
+    const yearsValue = years ? Number.parseInt(years, 10) : null;
+
     try {
-      // Sign up with Supabase Auth
-      const { data: authData, error: authError } = await supabase.auth.signUp({
-        email: email.trim(),
-        password: password.trim(),
+      const supabase = createClient();
+      const { error } = await supabase.auth.signUp({
+        email: trimmedEmail,
+        password,
         options: {
+          emailRedirectTo: `${window.location.origin}/auth/callback`,
           data: {
-            instagram_handle: instagram.trim() || null,
-          }
-        }
+            mode,
+            years_in_austin: yearsValue,
+            instagram: trimmedInstagram,
+          },
+        },
       });
-      
-      if (authError) throw authError;
-      
-      // Get current user count for founding member logic
-      const { count } = await supabase
-        .from('users')
-        .select('*', { count: 'exact' });
-      
-      const next = (count || 0) + 1;
-      const isFounding = next <= FOUNDING_CAP;
-      
-      // Create user profile in our custom table
-      const { error: profileError } = await supabase
-        .from('users')
-        .insert([
-          {
-            auth_id: authData.user?.id,
-            email: email.trim(),
-            instagram_handle: instagram.trim() || null,
-            is_founding_member: isFounding,
-            founding_member_number: isFounding ? next : null
-          }
-        ]);
-        
-      if (profileError) throw profileError;
-      
-      alert(`Welcome! You're Founding AustiNight #${isFounding ? next : 'TBD'}. Check your email to verify your account.`);
-      
+      if (error) {
+        setSubmitError(`Signup failed: ${describeAuthError(error)}`);
+        return;
+      }
+
+      setSubmittedEmail(trimmedEmail);
+      setActiveTab('check-email');
       onSignedUp({
         mode,
-        years: years ? Number.parseInt(years, 10) : null,
-        email: email.trim(),
-        instagram: instagram.trim(),
+        years: yearsValue,
+        email: trimmedEmail,
+        instagram: trimmedInstagram,
       });
-    } catch (error) {
-      console.error('Signup error:', error);
-      const message = error instanceof Error ? error.message : String(error);
-      alert('Signup failed: ' + message);
+    } catch (err) {
+      setSubmitError(`Signup failed: ${describeAuthError(err)}`);
+    } finally {
+      setSubmitting(false);
     }
   };
 
-  const handleSigninSubmit = () => {
-    if (!canSubmitSignin) return;
-    onSignedIn?.({ email: signinEmail.trim() });
+  const handleSigninSubmit = async () => {
+    if (!canSubmitSignin || submitting) return;
+    setSubmitting(true);
+    setSubmitError(null);
+
+    const trimmedEmail = signinEmail.trim();
+
+    try {
+      const supabase = createClient();
+      const { error } = await supabase.auth.signInWithPassword({
+        email: trimmedEmail,
+        password: signinPassword,
+      });
+      if (error) {
+        setSubmitError(`Sign in failed: ${describeAuthError(error)}`);
+        return;
+      }
+      onSignedIn?.({ email: trimmedEmail });
+      onClose();
+    } catch (err) {
+      setSubmitError(`Sign in failed: ${describeAuthError(err)}`);
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   useEffect(() => {
-    if (open && modalRef.current) {
+    if (!open) {
+      setSubmitError(null);
+      setSubmitting(false);
+      return;
+    }
+    if (modalRef.current) {
       const focusable = modalRef.current.querySelectorAll(FOCUSABLE);
       if (focusable.length > 0) {
         (focusable[0] as HTMLElement).focus();
       }
     }
   }, [open]);
+
+  useEffect(() => {
+    setSubmitError(null);
+  }, [activeTab]);
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'Escape') {
@@ -320,18 +352,27 @@ export default function SignupModal({
                   </div>
                 </div>
 
+                {submitError && (
+                  <p
+                    role="alert"
+                    className="rounded-md bg-pink/10 px-3 py-2 text-xs font-semibold text-pink"
+                  >
+                    {submitError}
+                  </p>
+                )}
+
                 <button
                   type="button"
                   onClick={handleSignupSubmit}
-                  disabled={!canSubmitSignup}
+                  disabled={!canSubmitSignup || submitting}
                   className={clsx(
                     'w-full rounded-md px-4 py-2 text-white font-medium',
-                    canSubmitSignup
+                    canSubmitSignup && !submitting
                       ? 'bg-pink hover:bg-pink-600'
                       : 'bg-gray-300 cursor-not-allowed'
                   )}
                 >
-                  🤠 Let's Go!
+                  {submitting ? 'Submitting…' : "🤠 Let's Go!"}
                 </button>
               </div>
             </div>
@@ -372,18 +413,27 @@ export default function SignupModal({
                   />
                 </div>
 
+                {submitError && (
+                  <p
+                    role="alert"
+                    className="rounded-md bg-pink/10 px-3 py-2 text-xs font-semibold text-pink"
+                  >
+                    {submitError}
+                  </p>
+                )}
+
                 <button
                   type="button"
                   onClick={handleSigninSubmit}
-                  disabled={!canSubmitSignin}
+                  disabled={!canSubmitSignin || submitting}
                   className={clsx(
                     'w-full rounded-md px-4 py-2 text-white font-medium',
-                    canSubmitSignin
+                    canSubmitSignin && !submitting
                       ? 'bg-navy hover:bg-navy-600'
                       : 'bg-gray-300 cursor-not-allowed'
                   )}
                 >
-                  Sign In
+                  {submitting ? 'Signing in…' : 'Sign In'}
                 </button>
 
                 <div className="text-center">
@@ -392,14 +442,41 @@ export default function SignupModal({
                     className="text-sm text-navy hover:underline"
                     onClick={() => setActiveTab('signup')}
                   >
-                    Don't have an account? Sign up
+                    Don&apos;t have an account? Sign up
                   </button>
                 </div>
               </div>
             </div>
           )}
+          {activeTab === 'check-email' && (
+            <div
+              id="check-email-panel"
+              role="tabpanel"
+              className="text-center"
+            >
+              <div aria-hidden className="text-4xl">📬</div>
+              <p className="mt-2 text-sm font-bold text-navy">
+                Check your email to confirm your account.
+              </p>
+              {submittedEmail && (
+                <p className="mt-1 break-all text-xs text-gray-500">
+                  Sent to <span className="font-semibold text-gray-700">{submittedEmail}</span>
+                </p>
+              )}
+              <p className="mt-2 text-xs text-gray-500">
+                Open the link from this device. You can close this window.
+              </p>
+              <button
+                type="button"
+                onClick={onClose}
+                className="mt-4 w-full rounded-md bg-navy px-4 py-2 font-medium text-white hover:bg-navy-600"
+              >
+                Got it
+              </button>
+            </div>
+          )}
         </div>
-      </div>    
+      </div>
     </div>
   );
 }

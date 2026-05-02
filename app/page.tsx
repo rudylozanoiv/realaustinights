@@ -328,131 +328,54 @@ function liveBadge(type: LivePost['type']) {
 // SUB-COMPONENTS
 // ─────────────────────────────────────────────
 
-/** AustinNite / Tourist onboarding modal */
+/** Founding Member coming-soon modal. No signup form, no auth. */
 function UserModeModal({
-  onSelect, S,
+  onClose, S,
 }: {
-  onSelect: (mode: UserMode, years?: number) => void;
+  onClose: () => void;
   S: ReturnType<typeof buildStyles>;
 }) {
-  const [step, setStep] = useState<'welcome' | 'signup'>('welcome');
-  const [email, setEmail] = useState('');
-  const [instagram, setInstagram] = useState('');
-  const [localMode, setLocalMode] = useState<'austinnite' | 'tourist' | null>(null);
-  const [years, setYears] = useState('');
-
   return (
-    <div style={{
-      position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.55)', zIndex: 1100,
-      display: 'flex', alignItems: 'center', justifyContent: 'center',
-    }}>
-      <div style={{
-        background: '#FFFAF3', borderRadius: 24, padding: 40, maxWidth: 460, width: '90%',
-        boxShadow: '0 24px 80px rgba(0,0,0,0.2)', fontFamily: S.font,
-      }}>
-        {step === 'welcome' && (
-          <>
-            <div style={{ textAlign: 'center', marginBottom: 28 }}>
-              <div style={{ fontSize: 40, marginBottom: 8 }}>&#129312;</div>
-              <h2 style={{ fontSize: 24, fontWeight: 800, color: S.text }}>
-                Welcome to <span style={{ color: S.teal }}>Real</span><span style={{ color: S.orange }}>AustiNights</span>
-              </h2>
-              <p style={{ fontSize: 15, color: S.textMid, marginTop: 10, lineHeight: 1.6, fontWeight: 600 }}>
-                Sign up to post, comment, and upload!
-              </p>
-              <p style={{ fontSize: 12, color: S.textLight, marginTop: 4 }}>
-                Browse freely without an account.
-              </p>
-            </div>
-            <button
-              onClick={() => setStep('signup')}
-              style={{
-                width: '100%', padding: 16, borderRadius: 14, border: 'none', cursor: 'pointer',
-                background: S.teal, color: 'white', fontWeight: 700, fontSize: 15, fontFamily: S.font,
-                boxShadow: '0 4px 14px rgba(0,0,0,0.15)', transition: 'all 0.2s', marginBottom: 12,
-              }}
-            >
-              Sign Up Now
-            </button>
-            <button
-              onClick={() => onSelect('tourist')}
-              style={{
-                width: '100%', padding: 14, borderRadius: 14, border: `2px solid ${S.border}`, cursor: 'pointer',
-                background: 'transparent', color: S.textMid, fontWeight: 600, fontSize: 14, fontFamily: S.font,
-                transition: 'all 0.2s',
-              }}
-            >
-              Not Now &#8212; Just Browsing
-            </button>
-          </>
-        )}
-
-        {step === 'signup' && (
-          <>
-            <div style={{ textAlign: 'center', marginBottom: 24 }}>
-              <h2 style={{ fontSize: 22, fontWeight: 800, color: S.text }}>
-                Join <span style={{ color: S.teal }}>Real</span><span style={{ color: S.orange }}>AustiNights</span>
-              </h2>
-              <p style={{ fontSize: 13, color: S.textMid, marginTop: 6 }}>
-                Unlock posting, comments, and uploads
-              </p>
-            </div>
-
-            <div style={{ marginBottom: 14 }}>
-              <label style={{ fontSize: 12, fontWeight: 600, color: S.textMid, display: 'block', marginBottom: 6 }}>Phone or Email <span style={{ color: S.orange }}>*</span></label>
-              <input type="text" placeholder="Phone number or email" value={email} onChange={e => setEmail(e.target.value)}
-                style={{ width: '100%', padding: '11px 16px', borderRadius: 12, border: `1.5px solid ${S.border}`, fontSize: 14, fontFamily: S.fontBody, outline: 'none', boxSizing: 'border-box' }} />
-              <p style={{ fontSize: 10, color: S.textLight, margin: '4px 0 0' }}>At least one required</p>
-            </div>
-
-            <div style={{ marginBottom: 14 }}>
-              <label style={{ fontSize: 12, fontWeight: 600, color: S.textMid, display: 'block', marginBottom: 6 }}>Instagram <span style={{ fontSize: 10, color: S.textLight }}>(optional)</span></label>
-              <input type="text" placeholder="@yourusername" value={instagram} onChange={e => setInstagram(e.target.value)}
-                style={{ width: '100%', padding: '11px 16px', borderRadius: 12, border: `1.5px solid ${S.border}`, fontSize: 14, fontFamily: S.fontBody, outline: 'none', boxSizing: 'border-box' }} />
-            </div>
-
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10, marginBottom: 14 }}>
-              <button onClick={() => setLocalMode('austinnite')} style={{
-                padding: '14px 12px', borderRadius: 14, cursor: 'pointer', textAlign: 'center',
-                border: `2px solid ${localMode === 'austinnite' ? S.teal : S.border}`,
-                background: localMode === 'austinnite' ? S.tealLight : 'white', transition: 'all 0.2s',
-              }}>
-                <div style={{ fontSize: 22, marginBottom: 4 }}>&#127969;</div>
-                <div style={{ fontWeight: 700, fontSize: 13, color: S.text }}>AustiNite</div>
-              </button>
-              <button onClick={() => setLocalMode('tourist')} style={{
-                padding: '14px 12px', borderRadius: 14, cursor: 'pointer', textAlign: 'center',
-                border: `2px solid ${localMode === 'tourist' ? S.orange : S.border}`,
-                background: localMode === 'tourist' ? S.orangeLight : 'white', transition: 'all 0.2s',
-              }}>
-                <div style={{ fontSize: 22, marginBottom: 4 }}>&#9992;</div>
-                <div style={{ fontWeight: 700, fontSize: 13, color: S.text }}>Tourist</div>
-              </button>
-            </div>
-
-            <button
-              disabled={!email || !localMode}
-              onClick={() => onSelect(localMode, undefined)}
-              style={{
-                width: '100%', padding: 16, borderRadius: 14, border: 'none',
-                cursor: email && localMode ? 'pointer' : 'not-allowed',
-                background: email && localMode ? S.teal : '#E5E7EB',
-                color: 'white', fontWeight: 700, fontSize: 15, fontFamily: S.font,
-                boxShadow: email && localMode ? '0 4px 14px rgba(0,0,0,0.15)' : 'none',
-                transition: 'all 0.2s', marginBottom: 10,
-              }}
-            >
-              &#129312; Let's Go!
-            </button>
-
-            <button onClick={() => setStep('welcome')} style={{
-              width: '100%', padding: 10, background: 'transparent', border: 'none',
-              color: S.textLight, fontSize: 13, cursor: 'pointer', fontFamily: S.font,
-            }}>
-              &#8592; Back
-            </button>
-          </>
-        )}      </div>
+    <div
+      onClick={onClose}
+      style={{
+        position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.55)', zIndex: 1100,
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+      }}
+    >
+      <div
+        onClick={e => e.stopPropagation()}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="founding-member-title"
+        style={{
+          background: '#FFFAF3', borderRadius: 24, padding: 40, maxWidth: 460, width: '90%',
+          boxShadow: '0 24px 80px rgba(0,0,0,0.2)', fontFamily: S.font,
+        }}
+      >
+        <div style={{ textAlign: 'center', marginBottom: 28 }}>
+          <div style={{ fontSize: 40, marginBottom: 8 }}>&#129312;</div>
+          <h2 id="founding-member-title" style={{ fontSize: 24, fontWeight: 800, color: S.text }}>
+            Welcome to <span style={{ color: S.teal }}>Real</span><span style={{ color: S.orange }}>AustiNights</span>
+          </h2>
+          <p style={{ fontSize: 15, color: S.textMid, marginTop: 10, lineHeight: 1.6, fontWeight: 700 }}>
+            Become a Founding Member
+          </p>
+          <p style={{ fontSize: 13, color: S.textMid, marginTop: 10, lineHeight: 1.6 }}>
+            Founding Member access is opening soon. Follow Real AustiNights for launch updates.
+          </p>
+        </div>
+        <button
+          onClick={onClose}
+          style={{
+            width: '100%', padding: 16, borderRadius: 14, border: 'none', cursor: 'pointer',
+            background: S.teal, color: 'white', fontWeight: 700, fontSize: 15, fontFamily: S.font,
+            boxShadow: '0 4px 14px rgba(0,0,0,0.15)', transition: 'all 0.2s',
+          }}
+        >
+          Got it
+        </button>
+      </div>
     </div>
   );
 }
@@ -974,18 +897,6 @@ export default function RealAustiNightsV7() {
     return v && ct && d;
   });
 
-  const handleModeSelect = (mode: UserMode, years?: number) => {
-    setUserMode(mode);
-    if (years !== undefined) setYearsInAustin(years);
-    // Only mark as signed up if they came through the signup form (not "Not Now")
-    // "Not Now" passes 'tourist' with no years - that's browse mode
-    // Real signup passes mode with years or email was filled
-    if (mode === 'austinnite' || (mode === 'tourist' && years !== undefined)) {
-      setIsSignedUp(true);
-    }
-    setShowModal(false);
-  };
-
   const isAustinNite = userMode === 'austinnite';
 
   return (
@@ -1000,14 +911,14 @@ export default function RealAustiNightsV7() {
       `}</style>
 
       {/* Onboarding modal */}
-      {mounted && showModal && <UserModeModal onSelect={handleModeSelect} S={S} />}
+      {mounted && showModal && <UserModeModal onClose={() => setShowModal(false)} S={S} />}
 
       {/* ── HEADER ── */}
       <header style={{ background: '#FFFAF3', borderBottom: '3px solid #1B2A4A', boxShadow: 'none', border: 'none', position: 'sticky', top: 0, zIndex: 50 }}>
-        {/* Founding Partner banner */}
+        {/* Founding Member banner */}
         <div id="partner-cta" style={{ background: `linear-gradient(90deg, #1B2A4A, ${S.teal})`, padding: '6px 24px', textAlign: 'center' }}>
           <span style={{ color: 'white', fontSize: 12, fontWeight: 600, fontFamily: S.font }}>
-            TESTING MODE — Site under construction. Coming soon to realaustinights.com — <span style={{ color: '#FFD700' }}>Become a Founding Partner</span>
+            <span style={{ color: '#FFD700' }}>Become a Founding Member</span>
           </span>
         </div>
 
@@ -1039,7 +950,7 @@ export default function RealAustiNightsV7() {
             )}
 
             <button onClick={() => setShowModal(true)} style={{ background: S.orange, color: 'white', border: 'none', padding: '10px 24px', borderRadius: 24, fontWeight: 700, fontSize: 13, cursor: 'pointer', fontFamily: S.font, boxShadow: '0 2px 8px rgba(255,140,0,0.3)' }}>
-              Sign Up
+              Founding Member
             </button>
           </div>
         </nav>
@@ -1291,7 +1202,7 @@ export default function RealAustiNightsV7() {
             >
               <div style={{ height: 180, background: `url(${card.image}) center/cover`, position: 'relative' }}>
                 <div style={{ position: 'absolute', bottom: 12, left: 12, display: 'flex', gap: 6 }}>
-                  {card.isFoundingPartner && <span style={{ background: S.violet, color: 'white', fontSize: 10, fontWeight: 700, padding: '4px 12px', borderRadius: 8, fontFamily: S.font }}>Founding Partner</span>}
+                  {card.isFoundingPartner && <span style={{ background: S.violet, color: 'white', fontSize: 10, fontWeight: 700, padding: '4px 12px', borderRadius: 8, fontFamily: S.font }}>Founding Member</span>}
                   {card.isSponsored && <span style={{ background: 'rgba(255,140,0,0.9)', color: 'white', fontSize: 10, fontWeight: 700, padding: '4px 12px', borderRadius: 8, fontFamily: S.font }}>Recommendation</span>}
                   {card.petFriendly && <span style={{ background: 'rgba(255,255,255,0.92)', color: S.teal, fontSize: 10, fontWeight: 700, padding: '4px 10px', borderRadius: 8, fontFamily: S.font }}>🐾 Pet Friendly</span>}
                 </div>
@@ -1353,7 +1264,7 @@ export default function RealAustiNightsV7() {
               </div>
               {selected.isFoundingPartner && (
                 <span style={{ background: S.violetLight, color: S.violet, fontSize: 11, fontWeight: 700, padding: '4px 12px', borderRadius: 8, display: 'inline-block', marginBottom: 12, fontFamily: S.font }}>
-                  Founding Partner
+                  Founding Member
                 </span>
               )}
               <p style={{ fontSize: 14, color: S.textMid, lineHeight: 1.65, marginBottom: 16 }}>{selected.description}</p>

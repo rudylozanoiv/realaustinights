@@ -879,10 +879,32 @@ export default function RealAustiNightsV7() {
       <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800&family=Open+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
       <style>{`
         * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body { overflow-x: hidden; max-width: 100vw; }
         ::selection { background: #FF8C00; color: white; }
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-thumb { background: #ddd; border-radius: 3px; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Collapse the 272/1fr/312 grid to a single column on tablet/mobile so the
+           sticky side columns don't trap horizontal scroll on narrow viewports. */
+        @media (max-width: 1024px) {
+          .raln-three-col {
+            grid-template-columns: 1fr !important;
+            min-height: auto !important;
+          }
+          .raln-side {
+            position: static !important;
+            height: auto !important;
+            max-height: none !important;
+            overflow: visible !important;
+            border-right: none !important;
+            border-left: none !important;
+            padding: 16px !important;
+          }
+        }
+        @media (max-width: 768px) {
+          .raln-left { display: none !important; }
+        }
       `}</style>
 
       {/* Onboarding modal */}
@@ -940,10 +962,10 @@ export default function RealAustiNightsV7() {
       </header>
 
       {/* ── THREE-COLUMN LAYOUT ── */}
-      <div style={{ display: 'grid', gridTemplateColumns: '272px 1fr 312px', minHeight: 'calc(100vh - 130px)' }}>
+      <div className="raln-three-col" style={{ display: 'grid', gridTemplateColumns: '272px 1fr 312px', minHeight: 'calc(100vh - 130px)' }}>
 
         {/* ── LEFT SIDEBAR ── */}
-        <aside style={{
+        <aside className="raln-side raln-left" style={{
           background: 'white', borderRight: `1px solid ${S.border}`, padding: 24,
           position: 'sticky', top: 130, height: 'calc(100vh - 130px)', overflowY: 'auto',
         }}>
@@ -1225,7 +1247,7 @@ export default function RealAustiNightsV7() {
         </main>
 
         {/* ── RIGHT SIDEBAR ── */}
-        <aside style={{
+        <aside className="raln-side raln-right" style={{
           background: 'white', borderLeft: `1px solid ${S.border}`, padding: 24,
           position: 'sticky', top: 130, height: 'calc(100vh - 130px)', overflowY: 'auto',
         }}>

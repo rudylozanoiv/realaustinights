@@ -135,6 +135,28 @@ export default function SignupModal({
     }
   };
 
+  const handleGoogleAuth = async () => {
+    if (submitting) return;
+    setSubmitting(true);
+    setSubmitError(null);
+
+    try {
+      const supabase = createClient();
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+          redirectTo: `${window.location.origin}/auth/callback`,
+        },
+      });
+      if (error) {
+        setSubmitError(`Google sign in failed: ${describeAuthError(error)}`);
+      }
+    } catch (err) {
+      setSubmitError(`Google sign in failed: ${describeAuthError(err)}`);
+      setSubmitting(false);
+    }
+  };
+
   useEffect(() => {
     if (!open) {
       setSubmitError(null);
@@ -247,6 +269,28 @@ export default function SignupModal({
               </div>
 
               <div className="space-y-4">
+                <button
+                  type="button"
+                  onClick={handleGoogleAuth}
+                  disabled={submitting}
+                  className={clsx(
+                    'flex w-full items-center justify-center gap-3 rounded-md border border-gray-300 px-4 py-2 font-medium text-gray-700',
+                    submitting ? 'cursor-not-allowed bg-gray-100 text-gray-400' : 'bg-white hover:bg-gray-50'
+                  )}
+                >
+                  <span aria-hidden>🔵</span>
+                  {submitting ? 'Connecting…' : 'Continue with Google'}
+                </button>
+
+                <div className="relative">
+                  <div className="absolute inset-0 flex items-center">
+                    <div className="w-full border-t border-gray-200" />
+                  </div>
+                  <div className="relative flex justify-center text-xs uppercase">
+                    <span className="bg-white px-2 text-gray-500">or use email</span>
+                  </div>
+                </div>
+
                 <div>
                   <label htmlFor="email" className="block text-sm font-medium text-gray-700">
                     Phone or Email *
@@ -384,6 +428,28 @@ export default function SignupModal({
               aria-labelledby="signin-tab"
             >
               <div className="space-y-4">
+                <button
+                  type="button"
+                  onClick={handleGoogleAuth}
+                  disabled={submitting}
+                  className={clsx(
+                    'flex w-full items-center justify-center gap-3 rounded-md border border-gray-300 px-4 py-2 font-medium text-gray-700',
+                    submitting ? 'cursor-not-allowed bg-gray-100 text-gray-400' : 'bg-white hover:bg-gray-50'
+                  )}
+                >
+                  <span aria-hidden>🔵</span>
+                  {submitting ? 'Connecting…' : 'Continue with Google'}
+                </button>
+
+                <div className="relative">
+                  <div className="absolute inset-0 flex items-center">
+                    <div className="w-full border-t border-gray-200" />
+                  </div>
+                  <div className="relative flex justify-center text-xs uppercase">
+                    <span className="bg-white px-2 text-gray-500">or use email</span>
+                  </div>
+                </div>
+
                 <div>
                   <label htmlFor="signin-email" className="block text-sm font-medium text-gray-700">
                     Email

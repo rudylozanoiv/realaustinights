@@ -52,3 +52,6 @@ next-env.d.ts
 *.old.ts
 *.old.tsx
 *.orig
+*.bak-*
+.claude/
+.env*.local

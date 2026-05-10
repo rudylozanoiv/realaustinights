@@ -12,12 +12,14 @@ const CYCLE_MS = 1500;
 interface WeirdFunnyCoolProps {
   className?: string;
   isSignedIn?: boolean;
+  allowGuestSubmit?: boolean;
   onRequireLogin?: () => void;
 }
 
 export function WeirdFunnyCool({
   className,
   isSignedIn = false,
+  allowGuestSubmit = false,
   onRequireLogin,
 }: WeirdFunnyCoolProps) {
   const [tick, setTick] = useState(0);
@@ -48,7 +50,7 @@ export function WeirdFunnyCool({
   };
 
   const handleSubmit = async () => {
-    if (!isSignedIn) {
+    if (!isSignedIn && !allowGuestSubmit) {
       onRequireLogin?.();
       return;
     }
@@ -243,8 +245,13 @@ export function WeirdFunnyCool({
             disabled={!photoUrl || !caption || !captchaOk}
             className="w-full rounded-lg bg-orange px-4 py-3 font-display text-sm font-bold text-white shadow disabled:cursor-not-allowed disabled:bg-gray-300 disabled:shadow-none"
           >
-            {isSignedIn ? `Submit as ${frozen}` : 'Sign in to submit'}
+            {isSignedIn || allowGuestSubmit ? `Submit as ${frozen}` : 'Sign in to submit'}
           </button>
+          {allowGuestSubmit && (
+            <p className="text-center text-[11px] text-ink-light">
+              Guest image submissions are open in this beta. Public posting and reactions stay locked.
+            </p>
+          )}
         </div>
       )}
 
@@ -253,6 +260,9 @@ export function WeirdFunnyCool({
           <div aria-hidden className="text-3xl">✝️</div>
           <p className="mt-1 font-display text-sm font-bold text-teal">
             Submitted as {frozen}!
+          </p>
+          <p className="mt-1 text-xs text-ink-mid">
+            Browse-only beta: image submissions are open, but public replies and reactions are locked for now.
           </p>
 
           {sharePrompt === 'available' && (

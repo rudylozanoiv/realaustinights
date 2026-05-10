@@ -52,6 +52,12 @@ import type {
   VibeFilter,
 } from '@/lib/types';
 import { useDebounced, useMounted } from '@/lib/hooks';
+import {
+  BROWSE_ONLY_MODE,
+  GUEST_IMAGE_SUBMISSIONS_ENABLED,
+  SHOW_UNVERIFIED_PUPPER,
+  SHOW_UNVERIFIED_QUE_PASA,
+} from '@/lib/flags';
 
 // TODO: Replace with Rudy-supplied Zeta + Barkingham pup photos at go-live.
 const PUPPER_GALLERY: PupperGalleryItem[] = [
@@ -211,7 +217,16 @@ export default function Home() {
 
   const handleBusiness = () => {
     setBottomTab('business');
+    if (BROWSE_ONLY_MODE) {
+      scrollTo('deals');
+      return;
+    }
     setShowBusiness(true);
+  };
+
+  const openGuestImageSubmit = () => {
+    setBottomTab('home');
+    scrollTo('weird-funny-cool');
   };
 
   const openBarkingham = () => {
@@ -334,13 +349,14 @@ export default function Home() {
           'lg:grid-cols-[280px_1fr_340px]',
         )}
       >
+        <div className="pointer-events-none absolute inset-x-0 top-0 -z-10 mx-auto h-[420px] max-w-7xl bg-[radial-gradient(circle_at_20%_20%,rgba(255,140,0,0.12),transparent_28%),radial-gradient(circle_at_85%_10%,rgba(0,122,122,0.12),transparent_26%)]" />
         {/* ── Left sidebar — lg+ only ─────────────────── */}
         <aside aria-label="Widgets" className="hidden lg:col-start-1 lg:row-start-1 lg:block">
-          <div className="sticky top-48 space-y-4">
+          <div className="sticky top-48 max-h-[calc(100vh-12rem)] space-y-4 overflow-y-auto pr-1">
             <WeatherWidget />
-            <MiniQuePasa onJump={() => scrollTo('que-pasa')} />
+            {SHOW_UNVERIFIED_QUE_PASA && <MiniQuePasa onJump={() => scrollTo('que-pasa')} />}
             <MiniCommunity onJump={() => scrollTo('community')} />
-            <MiniPupper onJump={() => scrollTo('pupper')} />
+            {SHOW_UNVERIFIED_PUPPER && <MiniPupper onJump={() => scrollTo('pupper')} />}
             <MiniDeals onJump={() => scrollTo('deals')} />
             <Categories cats={cats} onToggle={toggleCat} />
             <TonightsPick />
@@ -357,21 +373,24 @@ export default function Home() {
             <section id="weird-funny-cool" aria-label="Weird Funny Cool">
               <WeirdFunnyCool
                 isSignedIn={isAuthenticated}
+                allowGuestSubmit={GUEST_IMAGE_SUBMISSIONS_ENABLED}
                 onRequireLogin={() => requireLogin()}
               />
             </section>
           </SectionBoundary>
 
           {/* 2. Que Pasa carousel */}
-          <SectionBoundary label="¿Que Pasa, Austin?">
-            <section id="que-pasa" aria-label="¿Que Pasa, Austin?">
-              <QuePasaCarousel
-                photos={QUE_PASA_PHOTOS}
-                onSubmitClick={() => requireLogin()}
-                onPhotoClick={i => setQuePasaIdx(i)}
-              />
-            </section>
-          </SectionBoundary>
+          {SHOW_UNVERIFIED_QUE_PASA && (
+            <SectionBoundary label="¿Que Pasa, Austin?">
+              <section id="que-pasa" aria-label="¿Que Pasa, Austin?">
+                <QuePasaCarousel
+                  photos={QUE_PASA_PHOTOS}
+                  onSubmitClick={openGuestImageSubmit}
+                  onPhotoClick={i => setQuePasaIdx(i)}
+                />
+              </section>
+            </SectionBoundary>
+          )}
 
           {/* 3. We're Austin calendar */}
           <SectionBoundary label="We're Austin">
@@ -444,7 +463,7 @@ export default function Home() {
                 <span className="text-orange">{tab}</span>
               </h2>
               {filtered.length === 0 ? (
-                <p className="rounded-xl border border-hairline bg-white p-8 text-center text-sm text-ink-light">
+                <p className="glass-panel rounded-xl border border-white/70 p-8 text-center text-sm text-ink-light shadow-[0_16px_34px_rgba(27,42,74,0.08)]">
                   No weirdness found. Try adjusting filters!
                 </p>
               ) : (
@@ -463,29 +482,33 @@ export default function Home() {
                 onPostClick={() => requireLogin()}
                 isSignedIn={isAuthenticated}
                 onSignInRequired={() => setShowSignup(true)}
+                browseOnly={BROWSE_ONLY_MODE}
               />
             </section>
           </SectionBoundary>
 
           {/* 8. Pupper Weekly */}
-          <SectionBoundary label="Pupper Weekly">
-            <section id="pupper">
-              <PupperWeekly
-                hero={ZETA_POST}
-                gallery={PUPPER_GALLERY}
-                onSubmitClick={() => requireLogin()}
-                onPhotoClick={i => setPupperIdx(i)}
-                onBarkinghamClick={openBarkingham}
-              />
-            </section>
-          </SectionBoundary>
+          {SHOW_UNVERIFIED_PUPPER && (
+            <SectionBoundary label="Pupper Weekly">
+              <section id="pupper">
+                <PupperWeekly
+                  hero={ZETA_POST}
+                  gallery={PUPPER_GALLERY}
+                  onSubmitClick={openGuestImageSubmit}
+                  onPhotoClick={i => setPupperIdx(i)}
+                  onBarkinghamClick={openBarkingham}
+                />
+              </section>
+            </SectionBoundary>
+          )}
 
           {/* 9. Deals */}
           <SectionBoundary label="Deals">
             <section id="deals">
               <Deals
                 deals={DEALS}
-                onListBusinessClick={() => setShowBusiness(true)}
+                browseOnly={BROWSE_ONLY_MODE}
+                onListBusinessClick={BROWSE_ONLY_MODE ? undefined : () => setShowBusiness(true)}
                 onDealClick={deal =>
                   alert(
                     `${deal.businessName}: ${deal.description}\n\nFull deal detail page coming soon.`,
@@ -498,7 +521,11 @@ export default function Home() {
           {/* 10. After This */}
           <SectionBoundary label="After This">
             <section id="after-this">
-              <AfterThis parties={AFTER_PARTIES} activeEvent={activeEvent} />
+              <AfterThis
+                parties={AFTER_PARTIES}
+                activeEvent={activeEvent}
+                allowSubmit={!BROWSE_ONLY_MODE}
+              />
             </section>
           </SectionBoundary>
 
@@ -519,7 +546,7 @@ export default function Home() {
                   Austin Pulse — Live Updates
                 </p>
               </div>
-              <AustinPulse posts={LIVE_POSTS} />
+              <AustinPulse posts={LIVE_POSTS} browseOnly={BROWSE_ONLY_MODE} />
             </section>
           </SectionBoundary>
         </main>
@@ -538,7 +565,7 @@ export default function Home() {
                 isAustinight={userMode === 'austinight'}
               />
             ) : (
-              <AustinPulse posts={LIVE_POSTS} />
+              <AustinPulse posts={LIVE_POSTS} browseOnly={BROWSE_ONLY_MODE} />
             )}
           </div>
         </aside>
@@ -573,7 +600,7 @@ export default function Home() {
         }}
       />
       <BusinessPartnerModal
-        open={showBusiness}
+        open={!BROWSE_ONLY_MODE && showBusiness}
         onClose={() => setShowBusiness(false)}
         onSubmit={() => {
           // Submission is displayed inside the modal; Stripe wiring TODO.
@@ -596,6 +623,7 @@ export default function Home() {
           startIndex={quePasaIdx}
           onClose={() => setQuePasaIdx(null)}
           onCommentRequireLogin={() => requireLogin()}
+          browseOnly={BROWSE_ONLY_MODE}
         />
       )}
 
@@ -606,6 +634,7 @@ export default function Home() {
           startIndex={pupperIdx}
           onClose={() => setPupperIdx(null)}
           onCommentRequireLogin={() => requireLogin()}
+          browseOnly={BROWSE_ONLY_MODE}
         />
       )}
     </>

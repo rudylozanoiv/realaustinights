@@ -178,7 +178,7 @@ export function QuePasaCarousel({ photos, onSubmitClick, onPhotoClick, className
           Submit your photo 📸
         </button>
         <p className="mt-1.5 text-[10px] text-ink-light">
-          Verified AustiNights only. All photos moderated before going live.
+          Guest photo submissions are open in this beta. Public interactions stay locked.
         </p>
       </div>
     </section>

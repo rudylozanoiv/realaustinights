@@ -20,6 +20,7 @@ interface QuePasaModalProps {
   startIndex: number;
   onClose: () => void;
   onCommentRequireLogin?: () => void;
+  browseOnly?: boolean;
 }
 
 const SWIPE_THRESHOLD = 40;
@@ -31,6 +32,7 @@ export function QuePasaModal({
   startIndex,
   onClose,
   onCommentRequireLogin,
+  browseOnly = false,
 }: QuePasaModalProps) {
   const [idx, setIdx] = useState(startIndex);
   const [liked, setLiked] = useState<Set<string>>(new Set());
@@ -234,29 +236,37 @@ export function QuePasaModal({
               )}
             </div>
             <div className="flex gap-2">
-              {/* Sacred pink when liked — fills only on active state. */}
-              <button
-                type="button"
-                onClick={toggleLike}
-                aria-pressed={isLiked}
-                aria-label={isLiked ? 'Unlike' : 'Like'}
-                className={clsx(
-                  'rounded-md px-3 py-1.5 text-sm font-bold shadow transition-colors',
-                  isLiked
-                    ? 'bg-pink text-white'
-                    : 'bg-white/10 text-white hover:bg-white/20',
-                )}
-              >
-                <span aria-hidden>{isLiked ? '❤️' : '🤍'}</span>
-              </button>
-              <button
-                type="button"
-                onClick={() => onCommentRequireLogin?.()}
-                aria-label="Comment"
-                className="rounded-md bg-white/10 px-3 py-1.5 text-sm font-bold text-white hover:bg-white/20"
-              >
-                <span aria-hidden>💬</span>
-              </button>
+              {browseOnly ? (
+                <p className="rounded-md bg-white/10 px-3 py-1.5 text-[11px] font-bold text-white/80">
+                  Browse-only beta — reactions and comments are locked.
+                </p>
+              ) : (
+                <>
+                  {/* Sacred pink when liked — fills only on active state. */}
+                  <button
+                    type="button"
+                    onClick={toggleLike}
+                    aria-pressed={isLiked}
+                    aria-label={isLiked ? 'Unlike' : 'Like'}
+                    className={clsx(
+                      'rounded-md px-3 py-1.5 text-sm font-bold shadow transition-colors',
+                      isLiked
+                        ? 'bg-pink text-white'
+                        : 'bg-white/10 text-white hover:bg-white/20',
+                    )}
+                  >
+                    <span aria-hidden>{isLiked ? '❤️' : '🤍'}</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => onCommentRequireLogin?.()}
+                    aria-label="Comment"
+                    className="rounded-md bg-white/10 px-3 py-1.5 text-sm font-bold text-white hover:bg-white/20"
+                  >
+                    <span aria-hidden>💬</span>
+                  </button>
+                </>
+              )}
             </div>
           </div>
           <div className="mt-2 text-center text-[11px] text-white/60">

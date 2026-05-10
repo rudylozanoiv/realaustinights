@@ -9,6 +9,7 @@ interface AfterThisProps {
   parties: AfterParty[];
   activeEvent?: MajorEvent;
   onSubmit?: (payload: { category: AfterPartyEvent; location: string }) => void;
+  allowSubmit?: boolean;
   className?: string;
 }
 
@@ -22,7 +23,7 @@ const EVENT_TO_MAJOR: Record<AfterPartyEvent, MajorEvent['name']> = {
   'Rodeo Austin': 'Rodeo',
 };
 
-export function AfterThis({ parties, activeEvent, onSubmit, className }: AfterThisProps) {
+export function AfterThis({ parties, activeEvent, onSubmit, allowSubmit = true, className }: AfterThisProps) {
   const [tab, setTab] = useState<AfterPartyEvent>('SXSW');
   const [submitOpen, setSubmitOpen] = useState(false);
   const [submitCategory, setSubmitCategory] = useState<AfterPartyEvent>('SXSW');
@@ -56,14 +57,20 @@ export function AfterThis({ parties, activeEvent, onSubmit, className }: AfterTh
             <strong className="text-red">Do not post personal party addresses.</strong>
           </p>
         </div>
-        <button
-          type="button"
-          onClick={() => setSubmitOpen(s => !s)}
-          aria-expanded={submitOpen}
-          className="rounded-lg bg-navy px-4 py-2 font-display text-xs font-bold text-white shadow hover:brightness-110"
-        >
-          {submitOpen ? 'Close' : 'Submit a spot'}
-        </button>
+        {allowSubmit ? (
+          <button
+            type="button"
+            onClick={() => setSubmitOpen(s => !s)}
+            aria-expanded={submitOpen}
+            className="rounded-lg bg-navy px-4 py-2 font-display text-xs font-bold text-white shadow hover:brightness-110"
+          >
+            {submitOpen ? 'Close' : 'Submit a spot'}
+          </button>
+        ) : (
+          <span className="rounded-lg bg-cream px-3 py-2 text-[11px] font-bold text-ink-light">
+            Read-only beta
+          </span>
+        )}
       </div>
 
       {/* Event tabs — glow when that event is currently active. Touch targets ≥44px. */}
@@ -111,7 +118,7 @@ export function AfterThis({ parties, activeEvent, onSubmit, className }: AfterTh
         </a>
       </div>
 
-      {submitOpen && !submitted && (
+      {allowSubmit && submitOpen && !submitted && (
         <form
           onSubmit={handleSubmit}
           className="mb-4 grid gap-2 rounded-xl border border-hairline bg-cream p-3"
@@ -154,7 +161,7 @@ export function AfterThis({ parties, activeEvent, onSubmit, className }: AfterTh
         </form>
       )}
 
-      {submitted && (
+      {allowSubmit && submitted && (
         <p
           role="status"
           className="mb-4 rounded-xl border border-teal/30 bg-teal-light px-3 py-2 text-sm text-teal"

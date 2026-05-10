@@ -39,7 +39,7 @@ export function BottomTabBar({
     // z-50 so the bar sits above sidebar/overlay elements at mobile viewports.
     <nav
       aria-label="Bottom navigation"
-      className="fixed inset-x-0 bottom-0 z-50 border-t-[3px] border-navy bg-cream shadow-[0_-4px_12px_rgba(0,0,0,0.05)] lg:hidden"
+      className="fixed inset-x-0 bottom-0 z-50 border-t-[3px] border-navy/90 bg-white/92 shadow-[0_-8px_24px_rgba(27,42,74,0.10)] backdrop-blur-md lg:hidden"
       style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
     >
       <ul className="grid h-[60px] grid-cols-4">

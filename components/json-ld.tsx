@@ -23,7 +23,7 @@ export function VenuesJsonLd({ venues }: { venues: FeedCard[] }) {
       item: venueJsonLd({
         name: v.venueName,
         address: v.address,
-        image: v.image,
+        image: undefined,
         url: SITE.url,
         priceRange: v.price,
         category: v.category,
@@ -48,7 +48,7 @@ export function EventsJsonLd({
       venue: s.venueName,
       address: s.neighborhood + ', Austin, TX',
       description: `${s.comedian} — ${s.time}`,
-      image: s.image,
+      image: undefined,
       url: s.ticketUrl || SITE.url,
       price: s.price,
       ticketUrl: s.ticketUrl || undefined,

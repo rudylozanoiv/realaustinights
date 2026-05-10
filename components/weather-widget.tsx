@@ -78,6 +78,9 @@ export function WeatherWidget({ temp = 82, condition = 'clear', className }: Wea
         <span className="text-sm text-ink-mid">{condition}</span>
       </div>
       <p className="mt-2 text-xs text-ink-mid">{tip}</p>
+      <p className="mt-1 text-[11px] font-semibold text-ink-light">
+        Beta preview — live weather feed coming soon.
+      </p>
     </section>
   );
 }

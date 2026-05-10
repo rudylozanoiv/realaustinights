@@ -7,8 +7,9 @@ import { FeaturedPartnerBadge } from './ui/badges';
 
 interface DealsProps {
   deals: Deal[];
-  onListBusinessClick: () => void;
+  onListBusinessClick?: () => void;
   onDealClick?: (deal: Deal) => void;
+  browseOnly?: boolean;
   /** Override for tests. Defaults to today. */
   now?: Date;
   className?: string;
@@ -26,6 +27,7 @@ export function Deals({
   deals,
   onListBusinessClick,
   onDealClick,
+  browseOnly = false,
   now = new Date(),
   className,
 }: DealsProps) {
@@ -61,13 +63,19 @@ export function Deals({
           </h2>
           <p className="text-[11px] text-ink-light">Local savings from businesses you trust.</p>
         </div>
-        <button
-          type="button"
-          onClick={onListBusinessClick}
-          className="rounded-lg bg-green px-4 py-2.5 font-display text-xs font-bold text-white shadow hover:brightness-110 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
-        >
-          List Your Business
-        </button>
+        {browseOnly ? (
+          <span className="rounded-lg bg-cream px-3 py-2 text-[11px] font-bold text-ink-light">
+            Browse-only beta
+          </span>
+        ) : onListBusinessClick ? (
+          <button
+            type="button"
+            onClick={onListBusinessClick}
+            className="rounded-lg bg-green px-4 py-2.5 font-display text-xs font-bold text-white shadow hover:brightness-110 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+          >
+            List Your Business
+          </button>
+        ) : null}
       </div>
 
       {/* Category filters — bumped to py-2.5 + min-h-11 so every tab is ≥44px tall (Apple touch target min). */}
@@ -102,19 +110,9 @@ export function Deals({
         </p>
       ) : (
         <ul className="grid gap-3 md:grid-cols-2">
-          {visible.map(({ d, daysLeft }) => (
-            <li key={d.id}>
-              <button
-                type="button"
-                onClick={() => onDealClick?.(d)}
-                aria-label={`${d.businessName} — ${d.description}`}
-                className={clsx(
-                  'flex w-full flex-col rounded-xl border p-4 text-left shadow-sm transition-transform hover:-translate-y-0.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal motion-reduce:hover:translate-y-0',
-                  d.sponsorTier === 'featured'
-                    ? 'border-pink/40 bg-pink/5'
-                    : 'border-hairline bg-white',
-                )}
-              >
+          {visible.map(({ d, daysLeft }) => {
+            const content = (
+              <>
                 <div className="mb-2 flex items-center justify-between gap-2">
                   <span className="rounded-md bg-teal-light px-2 py-0.5 text-[10px] font-bold uppercase text-teal">
                     {d.category}
@@ -152,9 +150,39 @@ export function Deals({
                     Expires in {daysLeft === 0 ? 'today' : `${daysLeft}d`}
                   </span>
                 </div>
-              </button>
-            </li>
-          ))}
+                {browseOnly && (
+                  <p className="mt-3 text-[11px] font-semibold text-ink-light">
+                    Deal details stay read-only in this beta.
+                  </p>
+                )}
+              </>
+            );
+
+            const cardClass = clsx(
+              'flex w-full flex-col rounded-xl border p-4 text-left shadow-sm',
+              !browseOnly && onDealClick && 'transition-transform hover:-translate-y-0.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal motion-reduce:hover:translate-y-0',
+              d.sponsorTier === 'featured' ? 'border-pink/40 bg-pink/5' : 'border-hairline bg-white',
+            );
+
+            return (
+              <li key={d.id}>
+                {!browseOnly && onDealClick ? (
+                  <button
+                    type="button"
+                    onClick={() => onDealClick(d)}
+                    aria-label={`${d.businessName} — ${d.description}`}
+                    className={cardClass}
+                  >
+                    {content}
+                  </button>
+                ) : (
+                  <div aria-label={`${d.businessName} — ${d.description}`} className={cardClass}>
+                    {content}
+                  </div>
+                )}
+              </li>
+            );
+          })}
         </ul>
       )}
     </section>

@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import clsx from 'clsx';
 import type { FeedCard } from '@/lib/types';
-import { UBER_ENABLED } from '@/lib/flags';
+import { REPRESENTATIVE_IMAGE_LABELS, UBER_ENABLED } from '@/lib/flags';
 import { FeaturedPartnerBadge, FoundingPartnerBadge } from './ui/badges';
 import { VerifiedBadge } from './ui/verified-badge';
 
@@ -53,6 +53,11 @@ export function VenueDetailCard({
       )}
 
       <div className="relative aspect-video w-full bg-hairline/40">
+        {REPRESENTATIVE_IMAGE_LABELS && (
+          <span className="absolute right-3 top-3 z-10 rounded-md bg-black/70 px-2 py-1 text-[10px] font-semibold text-white">
+            Representative photo
+          </span>
+        )}
         <Image
           src={venue.image}
           alt={`${venue.venueName} — ${venue.neighborhood}`}
@@ -77,6 +82,11 @@ export function VenueDetailCard({
           {venue.isFeaturedPartner && <FeaturedPartnerBadge />}
         </div>
         <p className="mt-3 text-sm leading-relaxed text-ink-mid">{venue.description}</p>
+        {REPRESENTATIVE_IMAGE_LABELS && (
+          <p className="mt-2 text-[11px] text-ink-light">
+            Photo is representative while venue-specific imagery is being verified.
+          </p>
+        )}
 
         <dl className="mt-5 space-y-1.5 text-sm text-ink-mid">
           <div className="flex gap-2">

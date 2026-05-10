@@ -6,9 +6,10 @@ import type { CommunityPost } from '@/lib/types';
 
 interface CommunityFeedProps {
   posts: CommunityPost[];
-  onPostClick: () => void;
+  onPostClick?: () => void;
   isSignedIn?: boolean;
   onSignInRequired?: () => void;
+  browseOnly?: boolean;
   className?: string;
 }
 
@@ -17,6 +18,7 @@ export function CommunityFeed({
   onPostClick,
   isSignedIn = false,
   onSignInRequired,
+  browseOnly = false,
   className,
 }: CommunityFeedProps) {
   const [expanded, setExpanded] = useState<Set<string>>(new Set());
@@ -47,13 +49,19 @@ export function CommunityFeed({
           </h2>
           <p className="text-[11px] text-ink-light">Real talk from real AustiNights.</p>
         </div>
-        <button
-          type="button"
-          onClick={onPostClick}
-          className="rounded-lg bg-navy px-4 py-2 font-display text-xs font-bold text-white shadow hover:brightness-110 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
-        >
-          Post to Community
-        </button>
+        {browseOnly ? (
+          <span className="rounded-lg bg-cream px-3 py-2 text-[11px] font-bold text-ink-light">
+            Read-only beta
+          </span>
+        ) : (
+          <button
+            type="button"
+            onClick={onPostClick}
+            className="rounded-lg bg-navy px-4 py-2 font-display text-xs font-bold text-white shadow hover:brightness-110 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+          >
+            Post to Community
+          </button>
+        )}
       </div>
 
       <ul className="divide-y divide-hairline">
@@ -89,38 +97,40 @@ export function CommunityFeed({
                     </span>
                   </div>
                 </button>
-                <div className="relative shrink-0">
-                  <button
-                    type="button"
-                    aria-label={`Report post by ${post.username}`}
-                    aria-expanded={reportOpenFor === post.id}
-                    onClick={e => {
-                      e.stopPropagation();
-                      setReportOpenFor(v => (v === post.id ? null : post.id));
-                    }}
-                    className="grid h-8 w-8 place-items-center rounded-md text-ink-light hover:bg-cream"
-                  >
-                    <span aria-hidden>⋯</span>
-                  </button>
-                  {reportOpenFor === post.id && (
-                    <div
-                      role="menu"
-                      className="absolute right-0 top-9 z-10 w-36 rounded-lg border border-hairline bg-white p-1 text-sm shadow-lg"
+                {!browseOnly && (
+                  <div className="relative shrink-0">
+                    <button
+                      type="button"
+                      aria-label={`Report post by ${post.username}`}
+                      aria-expanded={reportOpenFor === post.id}
+                      onClick={e => {
+                        e.stopPropagation();
+                        setReportOpenFor(v => (v === post.id ? null : post.id));
+                      }}
+                      className="grid h-8 w-8 place-items-center rounded-md text-ink-light hover:bg-cream"
                     >
-                      <button
-                        role="menuitem"
-                        type="button"
-                        onClick={() => {
-                          setReportOpenFor(null);
-                          alert('Report submitted. Thanks for keeping Austin kind.');
-                        }}
-                        className="block w-full rounded px-2 py-1.5 text-left text-red hover:bg-cream"
+                      <span aria-hidden>⋯</span>
+                    </button>
+                    {reportOpenFor === post.id && (
+                      <div
+                        role="menu"
+                        className="absolute right-0 top-9 z-10 w-36 rounded-lg border border-hairline bg-white p-1 text-sm shadow-lg"
                       >
-                        Report post
-                      </button>
-                    </div>
-                  )}
-                </div>
+                        <button
+                          role="menuitem"
+                          type="button"
+                          onClick={() => {
+                            setReportOpenFor(null);
+                            alert('Report submitted. Thanks for keeping Austin kind.');
+                          }}
+                          className="block w-full rounded px-2 py-1.5 text-left text-red hover:bg-cream"
+                        >
+                          Report post
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                )}
               </div>
 
               {/* Expanded panel: thread placeholder + Reply (signed in) / Sign in prompt */}
@@ -133,7 +143,11 @@ export function CommunityFeed({
                     No replies yet. Be the first to chime in.
                   </p>
 
-                  {isSignedIn ? (
+                  {browseOnly ? (
+                    <p className="mt-3 text-xs font-semibold text-ink-light">
+                      Replies are locked in browse-only beta.
+                    </p>
+                  ) : isSignedIn ? (
                     <div className="mt-3 flex flex-col gap-2">
                       <textarea
                         value={replyDrafts[post.id] ?? ''}

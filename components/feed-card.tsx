@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import clsx from 'clsx';
 import type { FeedCard as FeedCardData } from '@/lib/types';
-import { UBER_ENABLED } from '@/lib/flags';
+import { REPRESENTATIVE_IMAGE_LABELS, UBER_ENABLED } from '@/lib/flags';
 import {
   FeaturedPartnerBadge,
   FoundingPartnerBadge,
@@ -43,6 +43,11 @@ export function FeedCard({ card, onViewDetails, onRideClick }: FeedCardProps) {
           loading="lazy"
           className="object-cover"
         />
+        {REPRESENTATIVE_IMAGE_LABELS && (
+          <span className="absolute right-2 top-2 rounded-md bg-black/70 px-2 py-1 text-[10px] font-semibold text-white">
+            Representative photo
+          </span>
+        )}
         <div className="absolute bottom-2 left-2 flex flex-wrap gap-1.5">
           {card.isFoundingPartner && <FoundingPartnerBadge />}
           {card.isFeaturedPartner && <FeaturedPartnerBadge />}

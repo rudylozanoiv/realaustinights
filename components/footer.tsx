@@ -6,12 +6,12 @@ interface FooterProps {
 
 export function Footer({ onFoundingClick }: FooterProps) {
   return (
-    <footer className="bg-teal px-5 py-8 text-center text-white" role="contentinfo">
+    <footer className="mt-8 bg-[linear-gradient(180deg,#12304e_0%,#0f6b6b_55%,#0b5858_100%)] px-5 py-10 text-center text-white shadow-[0_-12px_30px_rgba(27,42,74,0.12)]" role="contentinfo">
       <div className="mx-auto max-w-2xl space-y-3">
-        <p className="font-display text-xl font-extrabold">
+        <p className="font-display text-2xl font-extrabold tracking-tight md:text-3xl">
           Real<span className="text-yellow-300">AustiNights</span>
         </p>
-        <p className="text-sm opacity-80">Real locals. Real vibes. Real fun.</p>
+        <p className="text-sm opacity-85 md:text-base">Real locals. Real vibes. Real fun.</p>
         <p className="text-[11px] opacity-70">🤖 AI-Driven, AustiNight-Approved</p>
 
         <nav aria-label="Social links" className="flex items-center justify-center gap-4 pt-1">
@@ -19,7 +19,7 @@ export function Footer({ onFoundingClick }: FooterProps) {
             href="https://instagram.com/realaustinights"
             target="_blank"
             rel="noopener noreferrer"
-            className="font-display text-sm font-semibold underline-offset-4 hover:underline"
+            className="font-display text-sm font-semibold underline-offset-4 transition hover:text-yellow-300 hover:underline"
           >
             Instagram
           </a>
@@ -27,13 +27,13 @@ export function Footer({ onFoundingClick }: FooterProps) {
             href="https://x.com/realaustinights"
             target="_blank"
             rel="noopener noreferrer"
-            className="font-display text-sm font-semibold underline-offset-4 hover:underline"
+            className="font-display text-sm font-semibold underline-offset-4 transition hover:text-yellow-300 hover:underline"
           >
             X
           </a>
           <Link
             href="/coming-soon"
-            className="font-display text-sm font-semibold opacity-70 underline-offset-4 hover:underline"
+            className="font-display text-sm font-semibold opacity-80 underline-offset-4 transition hover:text-yellow-300 hover:underline"
           >
             TikTok <span className="text-[10px] opacity-80">(In Work)</span>
           </Link>
@@ -43,7 +43,7 @@ export function Footer({ onFoundingClick }: FooterProps) {
           <button
             type="button"
             onClick={onFoundingClick}
-            className="mt-2 rounded-full bg-pink px-5 py-2 font-display text-sm font-bold text-white shadow-md hover:brightness-110"
+            className="mt-3 rounded-full bg-pink px-6 py-2.5 font-display text-sm font-bold text-white shadow-[0_12px_24px_rgba(255,105,180,0.35)] hover:brightness-110"
           >
             🏆 Become a Founding AustiNight
           </button>

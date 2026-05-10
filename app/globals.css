@@ -29,7 +29,12 @@
 /* Reset body defaults so page sections control their own background. */
 html,
 body {
-  background: var(--color-cream);
+  min-height: 100%;
+  background:
+    radial-gradient(circle at top left, rgba(255, 140, 0, 0.10), transparent 28%),
+    radial-gradient(circle at top right, rgba(0, 122, 122, 0.10), transparent 30%),
+    linear-gradient(180deg, #fffdf9 0%, var(--color-cream) 24%, #fff7ee 100%);
+  background-attachment: fixed;
   color: var(--color-ink);
   font-family: var(--font-sans);
 }
@@ -59,6 +64,31 @@ body {
 @keyframes raln-fade-in {
   from { opacity: 0; transform: translateY(4px); }
   to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes raln-float {
+  from { transform: translateY(0px); }
+  50% { transform: translateY(-4px); }
+  to { transform: translateY(0px); }
+}
+
+.glass-panel {
+  background: rgba(255, 255, 255, 0.82);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.section-wash {
+  position: relative;
+}
+
+.section-wash::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 1.5rem;
+  background: linear-gradient(135deg, rgba(255,255,255,0.55), rgba(255,255,255,0.18));
+  pointer-events: none;
 }
 
 @media (prefers-reduced-motion: reduce) {

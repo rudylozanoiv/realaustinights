@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { useMemo, useState } from 'react';
 import clsx from 'clsx';
 import type { ComedyShow, ComedyVenueType } from '@/lib/types';
+import { REPRESENTATIVE_IMAGE_LABELS } from '@/lib/flags';
 
 interface ComedyProps {
   shows: ComedyShow[];
@@ -39,6 +40,11 @@ export function Comedy({ shows, className }: ComedyProps) {
         Comedy in Austin <span aria-hidden>😂</span>
       </h2>
       <p className="text-[11px] text-ink-light">Stand-up, open mics, and big touring acts.</p>
+      {REPRESENTATIVE_IMAGE_LABELS && (
+        <p className="mt-1 text-[11px] text-ink-light">
+          Representative photos only while event-specific art is being verified.
+        </p>
+      )}
 
       <div className="mt-3 flex flex-col gap-2 min-[401px]:flex-row min-[401px]:flex-wrap min-[401px]:items-center">
         <div
@@ -110,6 +116,11 @@ export function Comedy({ shows, className }: ComedyProps) {
                   className="flex w-full cursor-pointer flex-col overflow-hidden rounded-xl border border-hairline bg-cream text-left shadow-sm transition-transform hover:-translate-y-0.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal min-[401px]:flex-row motion-reduce:hover:translate-y-0"
                 >
                   <div className="relative aspect-video w-full min-[401px]:aspect-auto min-[401px]:h-24 min-[401px]:w-28 min-[401px]:shrink-0">
+                    {REPRESENTATIVE_IMAGE_LABELS && (
+                      <span className="absolute right-1.5 top-1.5 z-10 rounded-md bg-black/70 px-1.5 py-0.5 text-[9px] font-semibold text-white">
+                        Representative
+                      </span>
+                    )}
                     <Image
                       src={show.image}
                       alt={`${show.comedian} at ${show.venueName}`}

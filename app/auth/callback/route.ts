@@ -1,5 +1,5 @@
 import { NextResponse, type NextRequest } from 'next/server';
-import { createClient } from '@/lib/supabase/server';
+import { createRouteClient } from '@/lib/supabase/server';
 import {
   authErrorRedirect,
   isValidEmailOtpType,
@@ -21,20 +21,22 @@ export async function GET(request: NextRequest) {
   }
 
   try {
-    const supabase = await createClient();
-
     if (code) {
+      const response = NextResponse.redirect(`${origin}${next}`);
+      const supabase = await createRouteClient(response);
       const { error } = await supabase.auth.exchangeCodeForSession(code);
       if (error) {
         return NextResponse.redirect(authErrorRedirect(origin, 'callback', 'exchange_failed'));
       }
-      return NextResponse.redirect(`${origin}${next}`);
+      return response;
     }
 
     if (tokenHash) {
       if (!isValidEmailOtpType(type)) {
         return NextResponse.redirect(authErrorRedirect(origin, 'callback', 'bad_type'));
       }
+      const response = NextResponse.redirect(`${origin}${next}`);
+      const supabase = await createRouteClient(response);
       const { error } = await supabase.auth.verifyOtp({
         token_hash: tokenHash,
         type,
@@ -42,7 +44,7 @@ export async function GET(request: NextRequest) {
       if (error) {
         return NextResponse.redirect(authErrorRedirect(origin, 'callback', 'verify_failed'));
       }
-      return NextResponse.redirect(`${origin}${next}`);
+      return response;
     }
 
     return NextResponse.redirect(authErrorRedirect(origin, 'callback', 'missing_credentials'));

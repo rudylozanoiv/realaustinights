@@ -586,12 +586,10 @@ export default function Home() {
       <SignupModal
         open={showSignup}
         onClose={() => setShowSignup(false)}
-        onSignedUp={({ mode, years }) => {
+        onSignedUp={() => {
           // Supabase signUp succeeded but email confirmation is still required.
-          // Record the user's selected preferences for UI; do NOT mark as
-          // authenticated — that flips only when onAuthStateChange sees a session.
-          setUserMode(mode);
-          setYearsInAustin(years);
+          // Do NOT mark as authenticated here — that flips only when
+          // onAuthStateChange sees a real session.
         }}
         onSignedIn={() => {
           // Sign-in success — onAuthStateChange will flip isAuthenticated.

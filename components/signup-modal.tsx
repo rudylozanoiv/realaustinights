@@ -2,7 +2,6 @@
 
 import { useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
-import type { UserMode } from '@/lib/types';
 import { createClient } from '@/lib/supabase/client';
 
 interface SignupModalProps {
@@ -12,8 +11,6 @@ interface SignupModalProps {
   // pending — the user is NOT authenticated yet. Real authenticated state
   // comes from the Supabase session, not this callback.
   onSignedUp: (user: {
-    mode: Exclude<UserMode, null>;
-    years: number | null;
     email: string;
     instagram: string;
   }) => void;
@@ -34,18 +31,12 @@ function describeAuthError(err: unknown): string {
 const FOCUSABLE =
   'a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex="-1"])';
 
-const FOUNDING_KEY = 'raln:founding_count';
-const FOUNDING_BASE = 0;
-const FOUNDING_CAP = 500;
-
 export default function SignupModal({
   open,
   onClose,
   onSignedUp,
   onSignedIn,
 }: SignupModalProps) {
-  const [mode, setMode] = useState<Exclude<UserMode, null> | null>(null);
-  const [years, setYears] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [instagram, setInstagram] = useState('');
@@ -59,7 +50,6 @@ export default function SignupModal({
 
   // Validation logic
   const canSubmitSignup =
-    mode &&
     email.trim().length > 0 &&
     password.length >= 6;
 
@@ -67,13 +57,12 @@ export default function SignupModal({
     signinEmail.trim().length > 0 && signinPassword.length >= 6;
 
   const handleSignupSubmit = async () => {
-    if (!canSubmitSignup || !mode || submitting) return;
+    if (!canSubmitSignup || submitting) return;
     setSubmitting(true);
     setSubmitError(null);
 
     const trimmedEmail = email.trim();
     const trimmedInstagram = instagram.trim();
-    const yearsValue = years ? Number.parseInt(years, 10) : null;
 
     try {
       const supabase = createClient();
@@ -83,8 +72,6 @@ export default function SignupModal({
         options: {
           emailRedirectTo: `${window.location.origin}/auth/callback`,
           data: {
-            mode,
-            years_in_austin: yearsValue,
             instagram: trimmedInstagram,
           },
         },
@@ -97,8 +84,6 @@ export default function SignupModal({
       setSubmittedEmail(trimmedEmail);
       setActiveTab('check-email');
       onSignedUp({
-        mode,
-        years: yearsValue,
         email: trimmedEmail,
         instagram: trimmedInstagram,
       });
@@ -262,12 +247,6 @@ export default function SignupModal({
               role="tabpanel"
               aria-labelledby="signup-tab"
             >
-              <div className="mb-4 rounded-lg bg-pink p-3">
-                <p className="text-center text-sm font-semibold text-white">
-                  🏆 Claim spot #{1} of 500 Founding AustiNights
-                </p>
-              </div>
-
               <div className="space-y-4">
                 <button
                   type="button"
@@ -335,60 +314,20 @@ export default function SignupModal({
                     placeholder="@yourusername"
                   />
                 </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    I'm a...
-                  </label>
-                  <div className="flex gap-2">
-                    <button
-                      type="button"
-                      className={clsx(
-                        'flex-1 rounded-md border px-3 py-2 text-center text-sm font-medium',
-                        mode === 'austinight'
-                          ? 'border-navy bg-navy text-white'
-                          : 'border-gray-300 bg-white text-gray-700 hover:bg-gray-50'
-                      )}
-                      onClick={() => setMode('austinight')}
-                    >
-                      🏡<br />AustiNight
-                    </button>
-                    <button
-                      type="button"
-                      className={clsx(
-                        'flex-1 rounded-md border px-3 py-2 text-center text-sm font-medium',
-                        mode === 'tourist'
-                          ? 'border-navy bg-navy text-white'
-                          : 'border-gray-300 bg-white text-gray-700 hover:bg-gray-50'
-                      )}
-                      onClick={() => setMode('tourist')}
-                    >
-                      ✈️<br />Tourist
-                    </button>
-                  </div>
-                </div>
-
-                {mode === 'austinight' && (
-                  <div>
-                    <label htmlFor="years" className="block text-sm font-medium text-gray-700">
-                      Years in Austin
-                    </label>
-                    <input
-                      type="number"
-                      id="years"
-                      value={years}
-                      onChange={(e) => setYears(e.target.value)}
-                      className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-navy focus:outline-none focus:ring-navy sm:text-sm"
-                      min="0"
-                      max="100"
-                    />
-                  </div>
-                )}
-
                 <div className="space-y-2">
                   <label className="flex items-start gap-2">
                     <input type="checkbox" className="mt-1" required />
                     <span className="text-sm text-gray-600">
-                      I agree to the community guidelines and terms.
+                      I agree to the{' '}
+                      <a
+                        href="/community-guidelines"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="font-semibold text-navy underline underline-offset-2"
+                      >
+                        Community Guidelines
+                      </a>
+                      {' '}and terms.
                     </span>
                   </label>
                   <div className="text-sm text-gray-500">

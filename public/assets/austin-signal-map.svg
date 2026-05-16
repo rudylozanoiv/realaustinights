@@ -1,0 +1,73 @@
+<svg width="338" height="250" viewBox="0 0 338 250" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="338" y2="250" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#140A14"/>
+      <stop offset="1" stop-color="#22111E"/>
+    </linearGradient>
+    <radialGradient id="hot" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(0 0) rotate(90) scale(18)">
+      <stop stop-color="#FF76BE"/>
+      <stop offset="1" stop-color="#FF76BE" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="glow" x="-40" y="-40" width="120" height="120" filterUnits="userSpaceOnUse">
+      <feGaussianBlur stdDeviation="8" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <rect x="0.5" y="0.5" width="337" height="249" rx="18" fill="url(#bg)" stroke="#5B2846"/>
+  <rect x="16" y="16" width="306" height="218" rx="14" fill="#1A0D18" stroke="#432032"/>
+
+  <g opacity="0.28" stroke="#4A243A" stroke-width="1">
+    <path d="M16 60H322"/>
+    <path d="M16 104H322"/>
+    <path d="M16 148H322"/>
+    <path d="M16 192H322"/>
+    <path d="M60 16V234"/>
+    <path d="M112 16V234"/>
+    <path d="M164 16V234"/>
+    <path d="M216 16V234"/>
+    <path d="M268 16V234"/>
+  </g>
+
+  <g opacity="0.85" stroke-linecap="round">
+    <path d="M40 92L132 112L194 100L302 84" stroke="#6E3357" stroke-width="2.4"/>
+    <path d="M56 134L134 144L190 168L284 178" stroke="#5B2D4C" stroke-width="2"/>
+    <path d="M82 46L114 86L142 118L178 154L214 190" stroke="#7A3A5E" stroke-width="1.8"/>
+    <path d="M212 42L206 78L214 112L236 148L258 194" stroke="#6B3454" stroke-width="1.8"/>
+    <path d="M112 58L158 76L204 74L252 94" stroke="#8A4164" stroke-width="1.6" opacity="0.6"/>
+  </g>
+
+  <g font-family="Arial, Helvetica, sans-serif" font-size="11" font-weight="700" letter-spacing="1.6" fill="#F7EDF5" opacity="0.92">
+    <text x="24" y="88">DOWNTOWN</text>
+    <text x="82" y="96">EAST 6TH ST</text>
+    <text x="223" y="101">EAST AUSTIN</text>
+    <text x="179" y="148">RAINEY ST</text>
+    <text x="25" y="203">SOUTH CONGRESS</text>
+  </g>
+
+  <g filter="url(#glow)">
+    <g transform="translate(64 61)">
+      <circle r="18" fill="url(#hot)"/>
+      <circle r="6.5" fill="#FF77C5" stroke="#FFD4EA" stroke-width="1.5"/>
+    </g>
+    <g transform="translate(122 72)">
+      <circle r="20" fill="url(#hot)"/>
+      <circle r="7.5" fill="#FF77C5" stroke="#FFD4EA" stroke-width="1.5"/>
+    </g>
+    <g transform="translate(206 84)">
+      <circle r="18" fill="url(#hot)"/>
+      <circle r="6.5" fill="#FF77C5" stroke="#FFD4EA" stroke-width="1.5"/>
+    </g>
+    <g transform="translate(234 126)">
+      <circle r="18" fill="url(#hot)"/>
+      <circle r="6.5" fill="#FF77C5" stroke="#FFD4EA" stroke-width="1.5"/>
+    </g>
+    <g transform="translate(112 181)">
+      <circle r="20" fill="url(#hot)"/>
+      <circle r="7.5" fill="#FF77C5" stroke="#FFD4EA" stroke-width="1.5"/>
+    </g>
+  </g>
+</svg>

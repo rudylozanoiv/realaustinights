@@ -188,7 +188,10 @@ export default function SignupModal({
     >
       <div
         ref={modalRef}
-        className="w-full max-w-md rounded-lg bg-white shadow-lg"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="signup-title"
+        className="relative w-full max-w-md rounded-lg bg-white shadow-lg"
         onKeyDown={handleKeyDown}
         tabIndex={-1}
       >

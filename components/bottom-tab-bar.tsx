@@ -19,6 +19,11 @@ const TABS: { key: BottomTab; label: string; icon: string }[] = [
   { key: 'business', label: 'Business', icon: '💼' },
 ];
 
+// Visual doctrine:
+// BottomTabBar should match the approved Real AustiNights mockup system — dark shell,
+// white editorial inactive type, pink/magenta active nav accent, muted rose glow.
+// Old placeholder-site palette choices are not visual authority.
+
 export function BottomTabBar({
   active,
   onHome,
@@ -39,7 +44,7 @@ export function BottomTabBar({
     // z-50 so the bar sits above sidebar/overlay elements at mobile viewports.
     <nav
       aria-label="Bottom navigation"
-      className="fixed inset-x-0 bottom-0 z-50 border-t-[3px] border-navy/90 bg-white/92 shadow-[0_-8px_24px_rgba(27,42,74,0.10)] backdrop-blur-md lg:hidden"
+      className="fixed inset-x-0 bottom-0 z-50 border-t border-white/10 bg-[rgba(9,14,29,0.82)] shadow-[0_-8px_24px_rgba(0,0,0,0.45)] backdrop-blur-xl md:hidden"
       style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
     >
       <ul className="grid h-[60px] grid-cols-4">
@@ -53,13 +58,18 @@ export function BottomTabBar({
                 aria-label={t.label}
                 aria-current={isActive ? 'page' : undefined}
                 className={clsx(
-                  'flex h-full w-full flex-col items-center justify-center gap-0.5 transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-teal',
+                  'relative flex h-full w-full flex-col items-center justify-center gap-0.5 overflow-hidden transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-pink/70',
                   isActive
-                    ? 'bg-teal-light text-teal [text-shadow:0_0_8px_rgba(0,122,122,0.4)]'
-                    : 'text-ink-mid hover:bg-cream',
+                    ? 'bg-white/[0.03] text-pink before:absolute before:inset-x-3 before:top-1.5 before:h-0.5 before:rounded-full before:bg-pink before:shadow-[0_0_10px_rgba(255,105,180,0.55)]'
+                    : 'text-white/68 hover:bg-white/[0.03] hover:text-white/90',
                 )}
               >
-                <span aria-hidden className="text-xl leading-none">{t.icon}</span>
+                <span
+                  aria-hidden
+                  className={clsx('text-xl leading-none transition-opacity', isActive ? 'opacity-100' : 'opacity-80')}
+                >
+                  {t.icon}
+                </span>
                 <span className="font-display text-[10px] font-bold uppercase tracking-wide">
                   {t.label}
                 </span>

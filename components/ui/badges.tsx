@@ -1,7 +1,6 @@
 import clsx from 'clsx';
 
-/** Navy pill for Founding Partner venues. */
-export function FoundingPartnerBadge({ className }: { className?: string }) {
+export function FoundingMemberBadge({ className }: { className?: string }) {
   return (
     <span
       className={clsx(
@@ -9,10 +8,12 @@ export function FoundingPartnerBadge({ className }: { className?: string }) {
         className,
       )}
     >
-      Founding Partner
+      Founding Member
     </span>
   );
 }
+
+export const FoundingPartnerBadge = FoundingMemberBadge;
 
 /**
  * Pink Featured Partner pill — PINK IS SACRED.

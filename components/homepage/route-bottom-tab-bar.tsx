@@ -7,9 +7,9 @@ import { BottomTabBar, type BottomTab } from '@/components/bottom-tab-bar';
 // BottomTabBar follows the approved mockup's dark/pink premium nav system.
 
 function activeTabForPath(pathname: string): BottomTab {
-  if (pathname === '/tonight' || pathname === '/events') return 'tonight';
-  if (pathname === '/venues' || pathname === '/guides') return 'gems';
-  if (pathname === '/membership') return 'business';
+  if (pathname === '/tonight' || pathname === '/events' || pathname === '/signal') return 'tonight';
+  if (pathname === '/venues' || pathname === '/guides') return 'guides';
+  if (pathname === '/membership') return 'membership';
   return 'home';
 }
 
@@ -23,8 +23,8 @@ export function RouteBottomTabBar() {
       active={active}
       onHome={() => router.push('/')}
       onTonight={() => router.push('/tonight')}
-      onGems={() => router.push('/guides')}
-      onBusiness={() => router.push('/membership')}
+      onGuides={() => router.push('/guides')}
+      onMembership={() => router.push('/membership')}
     />
   );
 }

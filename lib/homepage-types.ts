@@ -25,6 +25,7 @@ export interface HomepageVenueCard {
   tags: string[];
   ctaLabel: string;
   href: string;
+  hasDetailPage?: boolean;
 }
 
 export interface HomepageSignalItem {
@@ -37,6 +38,9 @@ export interface HomepageSignalItem {
   rank: number;
   mapX: string;
   mapY: string;
+  previewSignals?: string[];
+  anchorVenues?: string[];
+  vibeNote?: string;
 }
 
 export interface HomepageLowerModule {
@@ -46,6 +50,8 @@ export interface HomepageLowerModule {
   icon: string;
   accent: 'pink' | 'amber' | 'violet' | 'cyan' | 'lime';
   href: string;
+  eyebrow?: string;
+  honestyLabel?: string;
 }
 
 export interface HomepageImageRailItem {

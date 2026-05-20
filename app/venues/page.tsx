@@ -6,6 +6,13 @@ import { HOMEPAGE_VENUE_CARDS } from '@/lib/homepage-mock-data';
 
 const neighborhoods = ['Red River', 'Rainey Street', 'North Lamar', 'East Austin'] as const;
 
+const neighborhoodDistrictHref: Record<(typeof neighborhoods)[number], string> = {
+  'Red River': '/tonight?district=east-6th-st',
+  'Rainey Street': '/tonight?district=rainey-st',
+  'North Lamar': '/tonight?category=comedy',
+  'East Austin': '/tonight?district=east-austin',
+};
+
 export default function VenuesPage() {
   return (
     <div className="min-h-screen bg-[linear-gradient(180deg,#080d18_0%,#11182b_24%,#16142b_56%,#0e1324_100%)] text-white">
@@ -30,8 +37,11 @@ export default function VenuesPage() {
             <p className="text-xs font-black uppercase tracking-[0.24em] text-pink">Venues</p>
             <h1 className="mt-3 font-display text-4xl font-black tracking-tight md:text-5xl">Austin venues, by neighborhood</h1>
             <p className="mt-4 max-w-3xl text-sm leading-7 text-white/78 md:text-base">
-              Start with the part of town, then open the places that fit the night. This page keeps discovery simple, local, and easy to scan.
+              Start with the part of town, then scan the curated cards we actually have. Individual venue deep-dive pages are not live yet, so every CTA below stays honest about that.
             </p>
+            <div className="mt-6 rounded-[1rem] border border-white/10 bg-white/[0.04] px-4 py-3 text-sm text-white/72">
+              Current state: neighborhood browsing is live; full venue detail sections are still coming.
+            </div>
           </section>
 
           {neighborhoods.map((neighborhood) => {
@@ -44,9 +54,17 @@ export default function VenuesPage() {
                     <p className="text-xs font-black uppercase tracking-[0.24em] text-pink/80">Neighborhood</p>
                     <h2 className="mt-1 font-display text-3xl font-black text-white">{neighborhood}</h2>
                   </div>
-                  <p className="max-w-xl text-sm leading-7 text-white/68">
-                    A quick read on {neighborhood} now, with deeper venue detail coming as the data layer gets stronger.
-                  </p>
+                  <div className="max-w-xl space-y-2 text-sm leading-7 text-white/68">
+                    <p>
+                      A quick read on {neighborhood} now, with deeper venue detail coming as the data layer gets stronger.
+                    </p>
+                    <Link
+                      href={neighborhoodDistrictHref[neighborhood]}
+                      className="inline-flex items-center rounded-full border border-white/12 bg-white/6 px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.14em] text-white/80 transition hover:bg-white/10 hover:text-white"
+                    >
+                      Open matching tonight view
+                    </Link>
+                  </div>
                 </div>
                 <EventVenueCardGrid items={items} />
               </section>

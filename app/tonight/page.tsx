@@ -12,7 +12,68 @@ import {
   HOMEPAGE_VENUE_CARDS,
 } from '@/lib/homepage-mock-data';
 
-export default function TonightPage() {
+function slugify(value: string) {
+  return value.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
+}
+
+function districtMatchesVenue(district: string, neighborhood: string) {
+  const d = slugify(district);
+  const n = slugify(neighborhood);
+
+  if (d === n) return true;
+  if (d === 'east-6th-st' && n === 'red-river') return true;
+  if (d === 'downtown' && ['red-river', 'rainey-street'].includes(n)) return true;
+  return false;
+}
+
+interface TonightPageProps {
+  searchParams?: Promise<{ category?: string; district?: string }>;
+}
+
+export default async function TonightPage({ searchParams }: TonightPageProps) {
+  const params = (await searchParams) ?? {};
+  const activeCategory = params.category?.trim().toLowerCase() ?? '';
+  const activeDistrict = params.district?.trim().toLowerCase() ?? '';
+
+  const categoryItems = HOMEPAGE_CATEGORY_PILLS.map((item) => ({
+    ...item,
+    active: activeCategory ? slugify(item.label) === activeCategory : item.label === 'Live Now',
+  }));
+
+  const filteredVenueCards = HOMEPAGE_VENUE_CARDS.filter((item) => {
+    const categoryMatch = !activeCategory || slugify(item.category) === activeCategory || (activeCategory === 'live-now' && item.statusBadge === 'Live Now');
+    const districtMatch = !activeDistrict || districtMatchesVenue(activeDistrict, item.neighborhood);
+    return categoryMatch && districtMatch;
+  });
+
+  const filteredSignalItems = activeDistrict
+    ? HOMEPAGE_SIGNAL_ITEMS.filter((item) => slugify(item.district) === activeDistrict)
+    : HOMEPAGE_SIGNAL_ITEMS;
+
+  const hasCategoryFilter = Boolean(activeCategory);
+  const hasDistrictFilter = Boolean(activeDistrict);
+  const categoryOnlyResultCount = hasCategoryFilter
+    ? HOMEPAGE_VENUE_CARDS.filter((item) => slugify(item.category) === activeCategory || (activeCategory === 'live-now' && item.statusBadge === 'Live Now')).length
+    : HOMEPAGE_VENUE_CARDS.length;
+  const districtOnlyResultCount = hasDistrictFilter
+    ? HOMEPAGE_VENUE_CARDS.filter((item) => districtMatchesVenue(activeDistrict, item.neighborhood)).length
+    : HOMEPAGE_VENUE_CARDS.length;
+  const honestEmptyReason =
+    filteredVenueCards.length > 0
+      ? null
+      : hasCategoryFilter && hasDistrictFilter && categoryOnlyResultCount > 0 && districtOnlyResultCount > 0
+        ? 'We have category picks and district picks separately, but not a verified overlap for this exact combo yet.'
+        : hasCategoryFilter && categoryOnlyResultCount === 0
+          ? 'This category filter is wired, but we do not have real curated cards for it yet.'
+          : hasDistrictFilter && districtOnlyResultCount === 0
+            ? 'This district filter is wired, but we do not have real curated cards for it yet.'
+            : 'That route used to feel fake because the filter changed the URL but not the content. This is the honest state until live data arrives.';
+
+  const filterLabels = [
+    activeCategory ? categoryItems.find((item) => slugify(item.label) === activeCategory)?.label ?? activeCategory : null,
+    activeDistrict ? HOMEPAGE_SIGNAL_ITEMS.find((item) => slugify(item.district) === activeDistrict)?.district ?? activeDistrict : null,
+  ].filter(Boolean);
+
   return (
     <div className="min-h-screen bg-[linear-gradient(180deg,#080d18_0%,#11182b_24%,#16142b_56%,#0e1324_100%)] text-white">
       <RouteLockedHeader currentPath="/tonight" />
@@ -40,10 +101,42 @@ export default function TonightPage() {
             </p>
 
             <div className="mt-8 space-y-5">
-              <CategoryPills items={HOMEPAGE_CATEGORY_PILLS} />
+              <CategoryPills items={categoryItems} />
+
+              {filterLabels.length > 0 ? (
+                <div className="flex flex-wrap items-center gap-3 rounded-[1rem] border border-pink/20 bg-[rgba(255,45,135,0.06)] px-4 py-3 text-sm text-white/84">
+                  <span className="text-[11px] font-black uppercase tracking-[0.18em] text-pink">Showing</span>
+                  <span>{filterLabels.join(' • ')}</span>
+                  <Link href="/tonight" className="text-[11px] font-semibold uppercase tracking-[0.14em] text-white/60 underline-offset-4 hover:text-white hover:underline">
+                    Clear filters
+                  </Link>
+                </div>
+              ) : null}
+
               <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_340px]">
-                <EventVenueCardGrid items={HOMEPAGE_VENUE_CARDS} />
-                <SignalPanel items={HOMEPAGE_SIGNAL_ITEMS} />
+                {filteredVenueCards.length > 0 ? (
+                  <EventVenueCardGrid items={filteredVenueCards} />
+                ) : (
+                  <section className="rounded-[1.4rem] border border-white/10 bg-[linear-gradient(180deg,rgba(23,11,22,0.96),rgba(13,9,16,0.98))] p-6 shadow-[0_18px_44px_rgba(0,0,0,0.32)]">
+                    <p className="text-xs font-black uppercase tracking-[0.18em] text-pink/84">No featured picks yet</p>
+                    <h2 className="mt-3 font-display text-2xl font-black text-white">We don’t have a clean {filterLabels[0] ?? 'tonight'} card set yet.</h2>
+                    <p className="mt-3 max-w-2xl text-sm leading-7 text-white/72">
+                      {honestEmptyReason}
+                    </p>
+                    <div className="mt-4 rounded-[1rem] border border-white/10 bg-white/[0.03] px-4 py-3 text-xs uppercase tracking-[0.16em] text-white/52">
+                      Honest mode: filter visible; curated result set not ready.
+                    </div>
+                    <div className="mt-5 flex flex-wrap gap-3">
+                      <Link href="/events" className="inline-flex items-center rounded-full border border-pink/40 bg-pink/12 px-4 py-2 text-sm font-semibold text-pink transition hover:bg-pink/18">
+                        Browse upcoming events
+                      </Link>
+                      <Link href="/guides" className="inline-flex items-center rounded-full border border-white/12 bg-white/6 px-4 py-2 text-sm font-semibold text-white/82 transition hover:bg-white/10">
+                        Open guides
+                      </Link>
+                    </div>
+                  </section>
+                )}
+                <SignalPanel items={filteredSignalItems.length > 0 ? filteredSignalItems : HOMEPAGE_SIGNAL_ITEMS} />
               </div>
             </div>
           </section>

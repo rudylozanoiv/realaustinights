@@ -100,12 +100,12 @@ export default function Home() {
           setBottomTab('tonight');
           router.push('/tonight');
         }}
-        onGems={() => {
-          setBottomTab('gems');
+        onGuides={() => {
+          setBottomTab('guides');
           router.push('/guides');
         }}
-        onBusiness={() => {
-          setBottomTab('business');
+        onMembership={() => {
+          setBottomTab('membership');
           router.push('/membership');
         }}
       />

@@ -2,21 +2,21 @@
 
 import clsx from 'clsx';
 
-export type BottomTab = 'home' | 'tonight' | 'gems' | 'business';
+export type BottomTab = 'home' | 'tonight' | 'guides' | 'membership';
 
 interface BottomTabBarProps {
   active?: BottomTab | null;
   onHome: () => void;
   onTonight: () => void;
-  onGems: () => void;
-  onBusiness: () => void;
+  onGuides: () => void;
+  onMembership: () => void;
 }
 
 const TABS: { key: BottomTab; label: string; icon: string }[] = [
   { key: 'home', label: 'Home', icon: '🏠' },
   { key: 'tonight', label: 'Tonight', icon: '🎯' },
-  { key: 'gems', label: 'Gems', icon: '💎' },
-  { key: 'business', label: 'Business', icon: '💼' },
+  { key: 'guides', label: 'Guides', icon: '💎' },
+  { key: 'membership', label: 'Join', icon: '💼' },
 ];
 
 // Visual doctrine:
@@ -28,14 +28,14 @@ export function BottomTabBar({
   active,
   onHome,
   onTonight,
-  onGems,
-  onBusiness,
+  onGuides,
+  onMembership,
 }: BottomTabBarProps) {
   const handlers: Record<BottomTab, () => void> = {
     home: onHome,
     tonight: onTonight,
-    gems: onGems,
-    business: onBusiness,
+    guides: onGuides,
+    membership: onMembership,
   };
 
   return (

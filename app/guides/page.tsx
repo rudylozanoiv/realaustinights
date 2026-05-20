@@ -8,14 +8,17 @@ const guideCards = [
   {
     title: 'Date night that still feels Austin',
     body: 'Start with rooftops, cocktails, and live music instead of generic chain recommendations.',
+    href: '/tonight?category=cocktails',
   },
   {
     title: 'Comedy + late-night pairing',
     body: 'Use comedy clubs and late eats as one route instead of separate research sessions.',
+    href: '/tonight?category=comedy',
   },
   {
     title: 'Pet-friendly planning',
     body: 'Dog-friendly patios and easy social stops deserve a real home, not a buried afterthought.',
+    href: '/tonight?category=pet-friendly',
   },
 ];
 
@@ -49,14 +52,15 @@ export default function GuidesPage() {
 
           <section className="grid gap-4 md:grid-cols-3">
             {guideCards.map((card) => (
-              <article
+              <Link
                 key={card.title}
-                className="rounded-[1.4rem] border border-white/10 bg-[linear-gradient(180deg,rgba(23,11,22,0.96),rgba(13,9,16,0.98))] p-5 shadow-[0_18px_44px_rgba(0,0,0,0.32)]"
+                href={card.href}
+                className="group block rounded-[1.4rem] border border-white/10 bg-[linear-gradient(180deg,rgba(23,11,22,0.96),rgba(13,9,16,0.98))] p-5 shadow-[0_18px_44px_rgba(0,0,0,0.32)] transition hover:border-pink/40 hover:bg-[linear-gradient(180deg,rgba(28,13,26,0.97),rgba(15,10,18,0.99))] focus-visible:outline focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-pink/70"
               >
                 <p className="text-xs font-black uppercase tracking-[0.18em] text-pink/84">Guide lane</p>
                 <h2 className="mt-3 font-display text-2xl font-black text-white">{card.title}</h2>
                 <p className="mt-3 text-sm leading-7 text-white/72">{card.body}</p>
-              </article>
+              </Link>
             ))}
           </section>
 

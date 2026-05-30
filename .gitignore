@@ -55,3 +55,6 @@ next-env.d.ts
 *.bak-*
 .claude/
 .env*.local
+
+# local QA / build artifacts (low-res screenshots + scratch script; originals kept elsewhere)
+/.artifacts/

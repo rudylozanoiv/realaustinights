@@ -10,11 +10,18 @@ function slugify(value: string) {
   return value.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
 }
 
+function normalizeDistrictSlug(value: string) {
+  const slug = slugify(value);
+  if (slug === 'rainey-street') return 'rainey-st';
+  return slug;
+}
+
 function districtMatchesVenue(district: string, neighborhood: string) {
-  const d = slugify(district);
+  const d = normalizeDistrictSlug(district);
   const n = slugify(neighborhood);
 
   if (d === n) return true;
+  if (d === 'rainey-st' && n === 'rainey-street') return true;
   if (d === 'east-6th-st' && n === 'red-river') return true;
   if (d === 'downtown' && ['red-river', 'rainey-street'].includes(n)) return true;
   return false;
@@ -30,10 +37,10 @@ interface SignalPageProps {
 
 export default async function SignalPage({ searchParams }: SignalPageProps) {
   const params = (await searchParams) ?? {};
-  const activeDistrict = params.district?.trim().toLowerCase() ?? '';
+  const activeDistrict = normalizeDistrictSlug(params.district ?? '');
 
   const activeSignal = activeDistrict
-    ? HOMEPAGE_SIGNAL_ITEMS.find((item) => slugify(item.district) === activeDistrict) ?? null
+    ? HOMEPAGE_SIGNAL_ITEMS.find((item) => normalizeDistrictSlug(item.district) === activeDistrict) ?? null
     : null;
 
   const visibleSignalItems = activeSignal ? [activeSignal] : HOMEPAGE_SIGNAL_ITEMS;
@@ -77,15 +84,15 @@ export default async function SignalPage({ searchParams }: SignalPageProps) {
           <section className="overflow-hidden rounded-[2rem] border border-white/10 bg-[linear-gradient(135deg,rgba(11,15,28,0.96)_0%,rgba(25,16,36,0.94)_36%,rgba(20,32,56,0.92)_100%)] px-6 py-10 shadow-[0_30px_80px_rgba(7,10,21,0.45)] md:px-8 md:py-12">
             <p className="text-xs font-black uppercase tracking-[0.24em] text-pink">The Signal</p>
             <h1 className="mt-3 font-display text-4xl font-black tracking-tight md:text-5xl">
-              {activeSignal ? `${activeSignal.district} right now` : 'Austin district heat map'}
+              {activeSignal ? `${activeSignal.district} preview` : 'Austin district heat map'}
             </h1>
             <p className="mt-4 max-w-3xl text-sm leading-7 text-white/78 md:text-base">
-              A dedicated Signal destination: district heat, hotspot context, and neighborhood picks in one place. Current mode is an honest preview of the live-intelligence surface we want to build.
+              A dedicated Signal destination: district heat, hotspot context, and neighborhood picks in one place. Current mode is an honest preview of the source-intelligence surface we want to build.
             </p>
 
             <div className="mt-6 flex flex-wrap gap-3 rounded-[1rem] border border-white/10 bg-white/[0.04] px-4 py-3 text-sm text-white/72">
               <span className="rounded-full border border-pink/20 bg-pink/10 px-3 py-1 text-[11px] font-black uppercase tracking-[0.14em] text-pink">Preview mode</span>
-              <span>Signal data is currently curated mock district intelligence, not live scraped nightlife data yet.</span>
+              <span>Signal data is currently curated mock district intelligence, not source-fed nightlife data yet.</span>
             </div>
 
             <div className="mt-8 grid gap-6 lg:grid-cols-[392px_minmax(0,1fr)] lg:items-start">
@@ -110,7 +117,7 @@ export default async function SignalPage({ searchParams }: SignalPageProps) {
                     <div className="absolute inset-0 rounded-[0.8rem] ring-1 ring-inset ring-white/6" />
 
                     {rankedItems.map((item) => {
-                      const isActive = slugify(item.district) === activeDistrict || (!activeDistrict && item.rank === 1);
+                      const isActive = normalizeDistrictSlug(item.district) === activeDistrict || (!activeDistrict && item.rank === 1);
                       return (
                         <Link
                           key={item.id}
@@ -133,7 +140,7 @@ export default async function SignalPage({ searchParams }: SignalPageProps) {
 
                 <div className="divide-y divide-white/7 overflow-hidden rounded-[0.95rem] border border-white/8 bg-[rgba(255,255,255,0.02)]">
                   {rankedItems.map((item) => {
-                    const isActive = slugify(item.district) === activeDistrict;
+                    const isActive = normalizeDistrictSlug(item.district) === activeDistrict;
                     return (
                       <Link
                         key={item.id}
@@ -258,7 +265,7 @@ export default async function SignalPage({ searchParams }: SignalPageProps) {
               </p>
               <div className="mt-4 divide-y divide-white/8 overflow-hidden rounded-[0.95rem] border border-white/8 bg-[rgba(255,255,255,0.02)]">
                 {rankedItems.map((item) => {
-                  const isActive = slugify(item.district) === activeDistrict;
+                  const isActive = normalizeDistrictSlug(item.district) === activeDistrict;
                   return (
                     <Link
                       key={`compare-${item.id}`}
@@ -293,7 +300,7 @@ export default async function SignalPage({ searchParams }: SignalPageProps) {
               <p className="text-[11px] font-black uppercase tracking-[0.2em] text-pink/82">What The Signal will track</p>
               <h2 className="mt-2 font-display text-xl font-black text-white">A district-first read on Austin nightlife</h2>
               <p className="mt-2 text-[13px] leading-6 text-white/72">
-                Today this surface is a curated preview. Once the live data layer is wired up, The Signal will pull from verified venue, event, and pulse inputs — not guesses.
+                Today this surface is a curated preview. Once the source data layer is wired up, The Signal will pull from verified venue, event, and pulse inputs — not guesses.
               </p>
               <ul className="mt-4 space-y-3 text-[13px] leading-6 text-white/78">
                 <li className="flex gap-3">
@@ -310,7 +317,7 @@ export default async function SignalPage({ searchParams }: SignalPageProps) {
                 </li>
               </ul>
               <p className="mt-5 text-[11px] leading-5 text-white/44">
-                Honest mode: heat labels, anchor venues, and signal copy on this preview are illustrative. No live scraping is feeding this surface yet.
+                Honest mode: heat labels, anchor venues, and signal copy on this preview are illustrative. No source ingestion is feeding this surface yet.
               </p>
             </div>
           </section>

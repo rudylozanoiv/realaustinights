@@ -60,6 +60,9 @@ export default function GuidesPage() {
                 <p className="text-xs font-black uppercase tracking-[0.18em] text-pink/84">Guide lane</p>
                 <h2 className="mt-3 font-display text-2xl font-black text-white">{card.title}</h2>
                 <p className="mt-3 text-sm leading-7 text-white/72">{card.body}</p>
+                <p className="mt-4 text-[11px] font-semibold uppercase tracking-[0.14em] text-pink/80 group-hover:text-pink">
+                  Open filtered picks →
+                </p>
               </Link>
             ))}
           </section>

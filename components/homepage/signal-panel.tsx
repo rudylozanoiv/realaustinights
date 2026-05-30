@@ -48,7 +48,7 @@ export function SignalPanel({ items }: { items: HomepageSignalItem[] }) {
           <p className="mt-1.5 text-[13px] leading-5 text-white/58">Preview snapshot of Austin&apos;s district energy.</p>
         </div>
         <Link href="/signal" className="mt-1 shrink-0 text-[11px] font-semibold uppercase tracking-[0.12em] text-pink/88 hover:text-pink">
-          Open The Signal ↗
+          View Signal Preview ↗
         </Link>
       </div>
 
@@ -116,7 +116,7 @@ export function SignalPanel({ items }: { items: HomepageSignalItem[] }) {
       </p>
 
       <p className="mt-3 text-[10px] leading-[1.5] text-white/40">
-        Preview only — districts and heat labels are curated mock intelligence, not live scraped data yet.
+        Preview only — districts and heat labels are curated mock intelligence, not source-fed nightlife data yet.
       </p>
     </aside>
   );

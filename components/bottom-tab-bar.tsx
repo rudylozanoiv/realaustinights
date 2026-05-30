@@ -16,7 +16,7 @@ const TABS: { key: BottomTab; label: string; icon: string }[] = [
   { key: 'home', label: 'Home', icon: '🏠' },
   { key: 'tonight', label: 'Tonight', icon: '🎯' },
   { key: 'guides', label: 'Guides', icon: '💎' },
-  { key: 'membership', label: 'Join', icon: '💼' },
+  { key: 'membership', label: 'Preview', icon: '💼' },
 ];
 
 // Visual doctrine:

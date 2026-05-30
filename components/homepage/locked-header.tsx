@@ -52,14 +52,6 @@ export function LockedHeader({
 
         <div className="ml-auto flex items-center gap-2 md:gap-3">
           <Link
-            href="/events"
-            aria-label="Search"
-            className="grid h-8 w-8 place-items-center text-white/72 transition hover:text-white"
-          >
-            <span aria-hidden className="text-base">⌕</span>
-          </Link>
-
-          <Link
             href="/tonight"
             className="hidden items-center gap-2 rounded-md border border-pink/40 bg-[rgba(255,45,135,0.06)] px-3.5 py-1.5 text-sm font-semibold text-white transition hover:bg-[rgba(255,45,135,0.12)] md:inline-flex"
           >
@@ -80,25 +72,24 @@ export function LockedHeader({
             </button>
           ) : signUpHref ? (
             <Link
-              href={signUpHref}
+              href="/membership"
               className={clsx(
                 'rounded-md px-3.5 py-1.5 text-sm font-bold text-white shadow-[0_10px_28px_rgba(255,45,135,0.25)] transition',
                 'bg-pink hover:brightness-110',
               )}
             >
-              Sign Up
+              Preview Info
             </Link>
           ) : (
-            <button
-              type="button"
-              onClick={onSignUpClick}
+            <Link
+              href="/membership"
               className={clsx(
                 'rounded-md px-3.5 py-1.5 text-sm font-bold text-white shadow-[0_10px_28px_rgba(255,45,135,0.25)] transition',
                 'bg-pink hover:brightness-110',
               )}
             >
-              Sign Up
-            </button>
+              Preview Info
+            </Link>
           )}
         </div>
       </div>

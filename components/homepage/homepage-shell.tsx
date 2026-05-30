@@ -57,22 +57,22 @@ export function HomepageShell({
               <div className="rounded-[1rem] border border-white/8 bg-white/[0.025] px-3 py-3.5 shadow-[0_14px_34px_rgba(0,0,0,0.22)] md:px-4">
                 <div className="flex flex-col gap-3 xl:flex-row xl:items-end xl:justify-between">
                   <div>
-                    <p className="text-[11px] font-black uppercase tracking-[0.24em] text-pink/88">Right Now</p>
+                    <p className="text-[11px] font-black uppercase tracking-[0.24em] text-pink/88">Preview picks</p>
                     <h2 className="mt-1.5 font-display text-[2rem] font-black text-white md:text-[2.4rem]">
                       Tonight in Austin
                     </h2>
                   </div>
                   <p className="max-w-xl text-sm leading-6 text-white/68 xl:text-right">
-                    Live picks from across the city — filter the vibe, then dive into a venue or event.
+                    Browse preview picks by district, mood, or guide. Filter the vibe, then explore filtered previews while venue pages are still being built.
                   </p>
                 </div>
 
                 <div className="mt-3.5 border-t border-white/8 pt-3">
                   <div className="mb-2 flex flex-wrap items-center justify-between gap-2">
                     <p className="text-[10px] font-black uppercase tracking-[0.18em] text-white/44">
-                      Live now filters
+                      Preview filters
                     </p>
-                    <p className="text-[11px] text-white/50">Music, rooftops, comedy, food, pets, deals.</p>
+                    <p className="text-[11px] text-white/50">Music, rooftops, comedy, food, cocktails.</p>
                   </div>
                   <CategoryPills items={HOMEPAGE_CATEGORY_PILLS} hrefBase="/tonight" />
                 </div>
@@ -88,12 +88,12 @@ export function HomepageShell({
         </section>
 
         <div className="mx-auto mt-1 w-full max-w-[1400px] px-4 md:mt-2 md:px-6 lg:mt-3 lg:px-8">
-          <UpcomingCalendarSection items={HOMEPAGE_CALENDAR_ITEMS} variant="slim" />
+          <UpcomingCalendarSection items={HOMEPAGE_CALENDAR_ITEMS.slice(0, 4)} variant="slim" />
         </div>
 
         <div className="mx-auto flex w-full max-w-[1400px] flex-col gap-10 px-4 md:px-6 lg:px-8">
           <PeoplePlacesImageRail items={HOMEPAGE_IMAGE_RAIL} />
-          <FooterRoutingSection onSignUpClick={onSignUpClick} />
+          <FooterRoutingSection />
         </div>
       </main>
     </div>

@@ -11,7 +11,7 @@ export function PeoplePlacesImageRail({ items }: { items: HomepageImageRailItem[
           <h2 className="mt-2 font-display text-3xl font-black text-white">Austin should look alive here.</h2>
         </div>
         <p className="max-w-xl text-sm leading-7 text-white/72">
-          This rail keeps the product framed as social/editorial nightlife — using curated, approved, or permissioned imagery assumptions only.
+          This rail keeps the product framed as social/editorial nightlife — licensed stock placeholders now; venue-permissioned local media comes later.
         </p>
       </div>
 

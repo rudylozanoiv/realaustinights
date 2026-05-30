@@ -46,6 +46,11 @@ export default function EventsPage() {
               This is the planning view for people who think beyond tonight: tomorrow, Sunday, and next-week dates surfaced in one clean scan.
             </p>
 
+            <div className="mt-6 inline-flex items-center gap-2 rounded-full border border-pink/30 bg-pink/10 px-4 py-2 text-[11px] font-black uppercase tracking-[0.18em] text-pink">
+              <span aria-hidden>✦</span>
+              <span>Preview schedule — official source monitoring is not connected yet</span>
+            </div>
+
             <div className="mt-8 grid gap-4 xl:grid-cols-4">
               {groups.map((group) => (
                 <div
@@ -71,6 +76,7 @@ export default function EventsPage() {
                           </span>
                         </div>
                         <p className="mt-3 text-[11px] font-semibold uppercase tracking-[0.14em] text-white/56">{item.status}</p>
+                        <p className="mt-2 text-[10px] uppercase tracking-[0.14em] text-white/36">Details coming later</p>
                       </article>
                     ))}
                   </div>

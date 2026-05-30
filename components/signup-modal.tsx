@@ -200,8 +200,11 @@ export default function SignupModal({
             id="signup-title"
             className="mb-4 text-center text-xl font-bold text-navy"
           >
-            Welcome to RealAustiNights
+            Preview List controlled test
           </h2>
+          <p className="mb-4 rounded-md bg-pink/10 px-3 py-2 text-xs leading-5 text-gray-700">
+            Family/friends can browse without an account. This form is only for controlled auth testing; official membership, Founding Member numbers, and badges are not active yet.
+          </p>
           
           <button
             onClick={onClose}
@@ -225,7 +228,7 @@ export default function SignupModal({
                 aria-controls="signup-panel"
                 onClick={() => setActiveTab('signup')}
               >
-                Sign Up
+                Test Signup
               </button>
               <button
                 type="button"
@@ -261,7 +264,7 @@ export default function SignupModal({
                   )}
                 >
                   <span aria-hidden>🔵</span>
-                  {submitting ? 'Connecting…' : 'Continue with Google'}
+                  {submitting ? 'Connecting…' : 'Continue with Google (test only)'}
                 </button>
 
                 <div className="relative">
@@ -269,7 +272,7 @@ export default function SignupModal({
                     <div className="w-full border-t border-gray-200" />
                   </div>
                   <div className="relative flex justify-center text-xs uppercase">
-                    <span className="bg-white px-2 text-gray-500">or use email</span>
+                    <span className="bg-white px-2 text-gray-500">or test with email</span>
                   </div>
                 </div>
 
@@ -358,7 +361,7 @@ export default function SignupModal({
                       : 'bg-gray-300 cursor-not-allowed'
                   )}
                 >
-                  {submitting ? 'Submitting…' : "🤠 Let's Go!"}
+                  {submitting ? 'Submitting…' : 'Send test signup'}
                 </button>
               </div>
             </div>
@@ -380,7 +383,7 @@ export default function SignupModal({
                   )}
                 >
                   <span aria-hidden>🔵</span>
-                  {submitting ? 'Connecting…' : 'Continue with Google'}
+                  {submitting ? 'Connecting…' : 'Continue with Google (test only)'}
                 </button>
 
                 <div className="relative">
@@ -450,7 +453,7 @@ export default function SignupModal({
                     className="text-sm text-navy hover:underline"
                     onClick={() => setActiveTab('signup')}
                   >
-                    Don&apos;t have an account? Sign up
+                    Controlled tester? Open test signup
                   </button>
                 </div>
               </div>
@@ -464,7 +467,7 @@ export default function SignupModal({
             >
               <div aria-hidden className="text-4xl">📬</div>
               <p className="mt-2 text-sm font-bold text-navy">
-                Check your email to confirm your account.
+                Check your email to continue the controlled auth test.
               </p>
               {submittedEmail && (
                 <p className="mt-1 break-all text-xs text-gray-500">
@@ -472,7 +475,7 @@ export default function SignupModal({
                 </p>
               )}
               <p className="mt-2 text-xs text-gray-500">
-                Open the link from this device. You can close this window.
+                Open the link from this device. This does not assign official membership, Founding Member numbers, or badges.
               </p>
               <button
                 type="button"

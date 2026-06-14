@@ -52,7 +52,7 @@ export default function Home() {
 
   useEffect(() => {
     if (authUnavailable) {
-      setAuthError((prev) => prev ?? 'Auth is not configured for this build.');
+      setAuthError((prev) => prev ?? "Men at Work — You're in Early. Browse everything — sign-up and interactions launch soon.");
     }
   }, [authUnavailable]);
 
@@ -60,16 +60,16 @@ export default function Home() {
     <>
       {authError && (
         <div
-          role="alert"
-          className="mx-auto mt-3 flex max-w-7xl items-start gap-2 rounded-xl border border-pink/40 bg-pink/10 px-4 py-2.5 text-xs text-pink"
+          role="status"
+          className="mx-auto mt-3 flex max-w-7xl items-start gap-2 rounded-xl border border-amber-300 bg-amber-50 px-4 py-2.5 text-xs text-amber-900"
         >
-          <span aria-hidden>⚠️</span>
+          <span aria-hidden className="shrink-0">👷</span>
           <div>
-            <strong>{authError}</strong>{' '}
+            <strong className="font-semibold text-amber-950">{authError}</strong>{' '}
             <button
               type="button"
               onClick={() => setAuthError(null)}
-              className="ml-1 underline"
+              className="ml-1 underline text-amber-800 transition hover:text-amber-950"
             >
               Dismiss
             </button>

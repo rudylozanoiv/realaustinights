@@ -16,15 +16,16 @@ export interface HomepageVenueCard {
   venueName: string;
   neighborhood: string;
   category: string;
-  image: string;
+  image?: string;
   statusBadge: string;
-  timeLabel: string;
-  ratingLabel: string;
+  timeLabel?: string;
+  ratingLabel?: string;
   availabilityLabel: string;
   availabilityTone?: 'hot' | 'warm' | 'steady';
   tags: string[];
   ctaLabel: string;
   href: string;
+  websiteUrl?: string;
   hasDetailPage?: boolean;
 }
 

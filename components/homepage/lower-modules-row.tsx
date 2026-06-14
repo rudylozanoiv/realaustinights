@@ -17,7 +17,7 @@ export function LowerModulesRow({ items }: { items: HomepageLowerModule[] }) {
         <div>
           <p className="text-xs font-black uppercase tracking-[0.24em] text-pink">More to explore</p>
           <h2 className="mt-2 font-display text-2xl font-black text-white md:text-3xl">
-            Que Pasa &amp; the rest of Austin tonight
+            ¡Vive Austin! &amp; the rest of Austin tonight
           </h2>
         </div>
         <p className="max-w-md text-sm leading-6 text-white/68">

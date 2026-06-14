@@ -8,7 +8,7 @@ export function PeoplePlacesImageRail({ items }: { items: HomepageImageRailItem[
       <div className="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
         <div>
           <p className="text-xs font-black uppercase tracking-[0.24em] text-pink">People + Places</p>
-          <h2 className="mt-2 font-display text-3xl font-black text-white">Austin should look alive here.</h2>
+          <h2 className="mt-2 font-display text-3xl font-black text-white">¡Vive Austin!</h2>
         </div>
         <p className="max-w-xl text-sm leading-7 text-white/72">
           This rail keeps the product framed as social/editorial nightlife — licensed stock placeholders now; venue-permissioned local media comes later.

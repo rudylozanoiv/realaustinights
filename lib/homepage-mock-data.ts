@@ -36,6 +36,7 @@ export const HOMEPAGE_VENUE_CARDS: HomepageVenueCard[] = [
   {
     id: 'venue-1',
     slug: 'mohawk-atx',
+    cardArtUrl: '/assets/venue-art/livemusic-v5neon.png',
     title: 'Mohawk ATX',
     venueName: 'Mohawk',
     neighborhood: 'Red River',
@@ -52,6 +53,7 @@ export const HOMEPAGE_VENUE_CARDS: HomepageVenueCard[] = [
   {
     id: 'venue-2',
     slug: 'stubbs-bar-b-q',
+    cardArtUrl: '/assets/venue-art/livemusic-v3austin.png',
     title: "Stubb's Bar-B-Q",
     venueName: "Stubb's Bar-B-Q",
     neighborhood: 'Red River',
@@ -68,6 +70,7 @@ export const HOMEPAGE_VENUE_CARDS: HomepageVenueCard[] = [
   {
     id: 'venue-3',
     slug: 'continental-club',
+    cardArtUrl: '/assets/venue-art/livemusic-v1warm.png',
     title: 'The Continental Club',
     venueName: 'The Continental Club',
     neighborhood: 'South Congress',
@@ -84,6 +87,7 @@ export const HOMEPAGE_VENUE_CARDS: HomepageVenueCard[] = [
   {
     id: 'venue-4',
     slug: 'antones-nightclub',
+    cardArtUrl: '/assets/venue-art/livemusic-v2sharp.png',
     title: "Antone's Nightclub",
     venueName: "Antone's Nightclub",
     neighborhood: 'Downtown',
@@ -100,6 +104,7 @@ export const HOMEPAGE_VENUE_CARDS: HomepageVenueCard[] = [
   {
     id: 'venue-5',
     slug: 'c-boys-heart-soul',
+    cardArtUrl: '/assets/venue-art/livemusic-v4austin.png',
     title: 'C-Boys Heart & Soul',
     venueName: 'C-Boys Heart & Soul',
     neighborhood: 'South Congress',
@@ -117,6 +122,7 @@ export const HOMEPAGE_VENUE_CARDS: HomepageVenueCard[] = [
   {
     id: 'venue-6',
     slug: 'azul-rooftop',
+    cardArtUrl: '/assets/venue-art/rooftop-v3austin.png',
     title: 'Azul Rooftop Bar + Lounge',
     venueName: 'Azul Rooftop Bar + Lounge',
     neighborhood: 'Downtown',
@@ -133,6 +139,7 @@ export const HOMEPAGE_VENUE_CARDS: HomepageVenueCard[] = [
   {
     id: 'venue-7',
     slug: 'rooftop-on-6th',
+    cardArtUrl: '/assets/venue-art/rooftop-v5neon.png',
     title: 'The Rooftop on 6th',
     venueName: 'The Rooftop on 6th',
     neighborhood: 'Downtown',
@@ -149,6 +156,7 @@ export const HOMEPAGE_VENUE_CARDS: HomepageVenueCard[] = [
   {
     id: 'venue-8',
     slug: 'luna-rooftop',
+    cardArtUrl: '/assets/venue-art/rooftop-v4austin.png',
     title: 'Luna Rooftop',
     venueName: 'Luna Rooftop',
     neighborhood: 'Downtown',
@@ -166,6 +174,7 @@ export const HOMEPAGE_VENUE_CARDS: HomepageVenueCard[] = [
   {
     id: 'venue-9',
     slug: 'dittydog',
+    cardArtUrl: '/assets/venue-art/foodtruck-park-v6.png',
     title: 'DittyDog',
     venueName: 'DittyDog',
     neighborhood: 'Downtown',
@@ -182,6 +191,7 @@ export const HOMEPAGE_VENUE_CARDS: HomepageVenueCard[] = [
   {
     id: 'venue-10',
     slug: 'always-something',
+    cardArtUrl: '/assets/venue-art/foodtruck-park-v6.png',
     title: 'Always Something',
     venueName: 'Always Something',
     neighborhood: 'Rainey Street',
@@ -198,6 +208,7 @@ export const HOMEPAGE_VENUE_CARDS: HomepageVenueCard[] = [
   {
     id: 'venue-11',
     slug: 'veracruz-all-natural',
+    cardArtUrl: '/assets/venue-art/lively-eatery-v7.png',
     title: 'Veracruz All Natural',
     venueName: 'Veracruz All Natural',
     neighborhood: 'South Congress',
@@ -215,6 +226,7 @@ export const HOMEPAGE_VENUE_CARDS: HomepageVenueCard[] = [
   {
     id: 'venue-12',
     slug: 'franklin-barbecue',
+    cardArtUrl: '/assets/venue-art/bbq-smokehouse-v4austin.png',
     title: 'Franklin Barbecue',
     venueName: 'Franklin Barbecue',
     neighborhood: 'East Austin',
@@ -231,6 +243,7 @@ export const HOMEPAGE_VENUE_CARDS: HomepageVenueCard[] = [
   {
     id: 'venue-13',
     slug: 'bangers-beer-garden',
+    cardArtUrl: '/assets/venue-art/beer-garden-v6.png',
     title: "Banger's Sausage House & Beer Garden",
     venueName: "Banger's Sausage House & Beer Garden",
     neighborhood: 'Rainey Street',
@@ -247,6 +260,7 @@ export const HOMEPAGE_VENUE_CARDS: HomepageVenueCard[] = [
   {
     id: 'venue-14',
     slug: 'loro-south-lamar',
+    cardArtUrl: '/assets/venue-art/smokehouse-v5neon.png',
     title: 'Loro',
     venueName: 'Loro (South Lamar)',
     neighborhood: 'South Lamar',
@@ -264,6 +278,7 @@ export const HOMEPAGE_VENUE_CARDS: HomepageVenueCard[] = [
   {
     id: 'venue-15',
     slug: 'here-nor-there',
+    cardArtUrl: '/assets/venue-art/cozy-indoor-bar-v6.png',
     title: 'Here Nor There',
     venueName: 'Here Nor There',
     neighborhood: 'Downtown',
@@ -280,6 +295,7 @@ export const HOMEPAGE_VENUE_CARDS: HomepageVenueCard[] = [
   {
     id: 'venue-16',
     slug: 'garage-atx',
+    cardArtUrl: '/assets/venue-art/cocktails-v5neon.png',
     title: 'Garage',
     venueName: 'Garage',
     neighborhood: 'Downtown',
@@ -296,6 +312,7 @@ export const HOMEPAGE_VENUE_CARDS: HomepageVenueCard[] = [
   {
     id: 'venue-17',
     slug: 'kinfolk-lounge',
+    cardArtUrl: '/assets/venue-art/cocktails-v1warm.png',
     title: 'Kinfolk Lounge & Library',
     venueName: 'Kinfolk Lounge & Library',
     neighborhood: 'Red River',
@@ -313,6 +330,7 @@ export const HOMEPAGE_VENUE_CARDS: HomepageVenueCard[] = [
   {
     id: 'venue-18',
     slug: 'white-horse',
+    cardArtUrl: '/assets/venue-art/honkytonk-band-v6.png',
     title: 'The White Horse',
     venueName: 'The White Horse',
     neighborhood: 'East Austin',
@@ -329,6 +347,7 @@ export const HOMEPAGE_VENUE_CARDS: HomepageVenueCard[] = [
   {
     id: 'venue-19',
     slug: 'barbarella',
+    cardArtUrl: '/assets/venue-art/dance-club-v5neon.png',
     title: 'Barbarella',
     venueName: 'Barbarella',
     neighborhood: 'Red River',
@@ -345,6 +364,7 @@ export const HOMEPAGE_VENUE_CARDS: HomepageVenueCard[] = [
   {
     id: 'venue-20',
     slug: 'broken-spoke',
+    cardArtUrl: '/assets/venue-art/two-step-v6.png',
     title: 'Broken Spoke',
     venueName: 'Broken Spoke',
     neighborhood: 'South Lamar',
@@ -362,6 +382,7 @@ export const HOMEPAGE_VENUE_CARDS: HomepageVenueCard[] = [
   {
     id: 'venue-21',
     slug: 'comedy-mothership',
+    cardArtUrl: '/assets/venue-art/comedy-v5neon.png',
     title: 'The Comedy Mothership',
     venueName: 'The Comedy Mothership',
     neighborhood: 'Downtown',
@@ -378,6 +399,7 @@ export const HOMEPAGE_VENUE_CARDS: HomepageVenueCard[] = [
   {
     id: 'venue-22',
     slug: 'cap-city-comedy',
+    cardArtUrl: '/assets/venue-art/comedy-v3austin.png',
     title: 'Cap City Comedy Club',
     venueName: 'Cap City Comedy Club',
     neighborhood: 'North Lamar',
@@ -394,6 +416,7 @@ export const HOMEPAGE_VENUE_CARDS: HomepageVenueCard[] = [
   {
     id: 'venue-23',
     slug: 'red-room-cap-city',
+    cardArtUrl: '/assets/venue-art/comedy-v1warm.png',
     title: 'The Red Room at Cap City',
     venueName: 'The Red Room at Cap City',
     neighborhood: 'North Lamar',
@@ -410,6 +433,7 @@ export const HOMEPAGE_VENUE_CARDS: HomepageVenueCard[] = [
   {
     id: 'venue-24',
     slug: 'east-austin-comedy',
+    cardArtUrl: '/assets/venue-art/comedy-weird-v6.png',
     title: 'East Austin Comedy Club',
     venueName: 'East Austin Comedy Club',
     neighborhood: 'East Austin',
@@ -426,6 +450,7 @@ export const HOMEPAGE_VENUE_CARDS: HomepageVenueCard[] = [
   {
     id: 'venue-25',
     slug: 'creek-and-the-cave',
+    cardArtUrl: '/assets/venue-art/comedy-v2sharp.png',
     title: 'The Creek and The Cave',
     venueName: 'The Creek and The Cave',
     neighborhood: 'Downtown',

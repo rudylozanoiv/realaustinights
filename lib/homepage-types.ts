@@ -17,6 +17,8 @@ export interface HomepageVenueCard {
   neighborhood: string;
   category: string;
   image?: string;
+  /** Phase-2 pastel art slot. Empty for now → on-brand gradient fallback in the discovery card. */
+  cardArtUrl?: string;
   statusBadge: string;
   timeLabel?: string;
   ratingLabel?: string;

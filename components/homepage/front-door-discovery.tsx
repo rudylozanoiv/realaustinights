@@ -95,7 +95,7 @@ export function FrontDoorDiscovery({ items }: { items: HomepageVenueCard[] }) {
       <div className="mb-3 flex items-end justify-between gap-3">
         <div>
           <p className="text-[11px] font-black uppercase tracking-[0.24em] text-teal">Start here</p>
-          <h2 className="mt-1 font-display text-[1.7rem] font-black leading-tight text-white md:text-[2rem]">{setLabel}</h2>
+          <h2 className="mt-1 font-display text-[1.7rem] font-semibold leading-tight text-white md:text-[2rem]">{setLabel}</h2>
         </div>
         {!isDefault && (
           <button
@@ -125,22 +125,18 @@ export function FrontDoorDiscovery({ items }: { items: HomepageVenueCard[] }) {
 }
 
 function DiscoveryCard({ item, idx }: { item: HomepageVenueCard; idx: number }) {
-  const external = Boolean(item.websiteUrl);
-  const href = item.websiteUrl ?? item.href;
+  const hasLink = Boolean(item.websiteUrl);
   const gradient = BRAND_GRADIENTS[idx % BRAND_GRADIENTS.length];
 
-  return (
-    <a
-      href={href}
-      target={external ? '_blank' : undefined}
-      rel={external ? 'noopener noreferrer' : undefined}
-      aria-label={`${item.title} — ${item.neighborhood} — ${external ? 'open official website (new tab)' : 'see matching picks'}`}
-      className="group relative flex flex-col overflow-hidden rounded-[0.9rem] border border-white/10 bg-white/[0.025] shadow-[0_14px_34px_rgba(0,0,0,0.28)] transition hover:border-teal/40 focus-within:border-teal/40"
-    >
+  const cardClass =
+    'relative flex flex-col overflow-hidden rounded-[0.9rem] border border-white/10 bg-white/[0.025] shadow-[0_14px_34px_rgba(0,0,0,0.28)]';
+
+  const inner = (
+    <>
       <div className="relative aspect-[4/3]">
         {item.cardArtUrl ? (
-          // eslint-disable-next-line @next/next/no-img-element -- Phase-2 art URL is arbitrary/remote; plain img avoids next/image remote config for now.
-          <img src={item.cardArtUrl} alt={`${item.venueName} card art`} className="absolute inset-0 h-full w-full object-cover" />
+          // eslint-disable-next-line @next/next/no-img-element -- Phase-2 pastel art URL is arbitrary/remote; plain img avoids next/image remote config for now.
+          <img src={item.cardArtUrl} alt={`${item.venueName} — pastel art`} className="absolute inset-0 h-full w-full object-cover" />
         ) : (
           <div className="absolute inset-0 grid place-items-center px-3 text-center" style={{ backgroundImage: gradient }}>
             <span className="font-display text-lg font-black leading-tight text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.45)] md:text-xl">
@@ -154,12 +150,38 @@ function DiscoveryCard({ item, idx }: { item: HomepageVenueCard; idx: number }) 
       </div>
       <div className="flex flex-1 flex-col gap-1 p-3">
         <h3 className="font-display text-[1.05rem] font-black leading-tight text-white">
-          {item.title} <span aria-hidden className="text-white/45">{external ? '↗' : '→'}</span>
+          {item.title}
+          {hasLink ? <span aria-hidden className="text-white/45"> ↗</span> : null}
         </h3>
         <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-white/52">
           {item.neighborhood} • {item.category}
+          {hasLink ? null : (
+            <span className="ml-2 normal-case tracking-normal text-white/35">· No live link yet</span>
+          )}
         </p>
       </div>
+    </>
+  );
+
+  // Good link → external click-through with ↗. Dead/parking link removed (websiteUrl undefined) →
+  // non-clickable card, no arrow, honest "no live link yet" — never a false click-through.
+  if (!hasLink) {
+    return (
+      <div className={cardClass} aria-label={`${item.title} — ${item.neighborhood} — listed, no live link yet`}>
+        {inner}
+      </div>
+    );
+  }
+
+  return (
+    <a
+      href={item.websiteUrl}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label={`${item.title} — ${item.neighborhood} — open official website (new tab)`}
+      className={`group ${cardClass} transition hover:border-teal/40 focus-within:border-teal/40`}
+    >
+      {inner}
     </a>
   );
 }

@@ -110,7 +110,7 @@ export const HOMEPAGE_VENUE_CARDS: HomepageVenueCard[] = [
     tags: ['Live Music', 'Soul Food'],
     ctaLabel: 'See Live Music picks',
     href: '/tonight?category=live-music',
-    websiteUrl: 'https://cboysaustin.com',
+    websiteUrl: undefined, // dead link removed 2026-06-18 audit — NXDOMAIN (does not resolve)
     hasDetailPage: false,
   },
   // --- ROOFTOPS ---
@@ -143,7 +143,7 @@ export const HOMEPAGE_VENUE_CARDS: HomepageVenueCard[] = [
     tags: ['Rooftop', 'Nightclub'],
     ctaLabel: 'See Rooftops picks',
     href: '/tonight?category=rooftops',
-    websiteUrl: 'https://therooftopon6th.com',
+    websiteUrl: undefined, // dead link removed 2026-06-18 audit — NXDOMAIN (does not resolve)
     hasDetailPage: false,
   },
   {
@@ -323,7 +323,7 @@ export const HOMEPAGE_VENUE_CARDS: HomepageVenueCard[] = [
     tags: ['Honky-Tonk', 'Two-Step'],
     ctaLabel: 'See Dancing picks',
     href: '/tonight?category=dancing',
-    websiteUrl: 'https://thewhitehorsebar.com',
+    websiteUrl: undefined, // dead link removed 2026-06-18 audit — domain-parking lander (/lander redirect)
     hasDetailPage: false,
   },
   {
@@ -339,7 +339,7 @@ export const HOMEPAGE_VENUE_CARDS: HomepageVenueCard[] = [
     tags: ['Dance Club', 'Theme Nights'],
     ctaLabel: 'See Dancing picks',
     href: '/tonight?category=dancing',
-    websiteUrl: 'https://barbarellaaustin.com',
+    websiteUrl: undefined, // dead link removed 2026-06-18 audit — HTTPS/TLS handshake fails (won't load)
     hasDetailPage: false,
   },
   {
@@ -372,7 +372,7 @@ export const HOMEPAGE_VENUE_CARDS: HomepageVenueCard[] = [
     tags: ['Stand-Up', 'Headliners'],
     ctaLabel: 'See Comedy picks',
     href: '/tonight?category=comedy',
-    websiteUrl: 'https://thecomedymothership.com',
+    websiteUrl: undefined, // dead link removed 2026-06-18 audit — NXDOMAIN (does not resolve)
     hasDetailPage: false,
   },
   {

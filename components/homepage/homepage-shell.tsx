@@ -2,6 +2,7 @@
 
 import { LockedHeader } from './locked-header';
 import { HeroSkylineLogo } from './hero-skyline-logo';
+import { ViveAustinPreview } from './vive-austin-preview';
 import { FrontDoorDiscovery } from './front-door-discovery';
 import { UpcomingCalendarSection } from './upcoming-calendar-section';
 import { FooterRoutingSection } from './footer-routing-section';
@@ -35,6 +36,9 @@ export function HomepageShell({
       <main id="main" className="flex w-full flex-col gap-8 pb-24 lg:gap-9">
         {/* 1. HERO — golden, untouched. Always the first element. */}
         <HeroSkylineLogo onSignUpClick={onSignUpClick} />
+
+        {/* 2. ¡VIVE AUSTIN! — dominant honest-preview, directly under the hero. */}
+        <ViveAustinPreview />
 
         {/* 3. DISCOVERY (Option A) — curated default + optional vibe/area chips, uses the 25 venues. */}
         <FrontDoorDiscovery items={HOMEPAGE_VENUE_CARDS} />

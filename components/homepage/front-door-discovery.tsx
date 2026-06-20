@@ -144,9 +144,6 @@ function DiscoveryCard({ item, idx }: { item: HomepageVenueCard; idx: number }) 
             </span>
           </div>
         )}
-        <span className="absolute left-2.5 top-2.5 rounded-full bg-black/45 px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.14em] text-white/85 backdrop-blur-sm">
-          {item.statusBadge}
-        </span>
       </div>
       <div className="flex flex-1 flex-col gap-1 p-3">
         <h3 className="font-display text-[1.05rem] font-black leading-tight text-white">

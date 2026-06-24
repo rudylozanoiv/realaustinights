@@ -101,7 +101,8 @@ export default async function SignalPage({ searchParams }: SignalPageProps) {
                   <p className="text-[10px] font-black uppercase tracking-[0.2em] text-pink/72">District focus</p>
                   <h2 className="mt-1 font-display text-[1.65rem] font-black text-white">{panelLabel}</h2>
                   <p className="mt-1.5 text-[13px] leading-5 text-white/58">
-                    {activeSignal ? `${activeSignal.trendLabel} • ${activeSignal.categoryHint}` : 'Choose a hotspot to see the district focus and relevant cards.'}
+                    {/* HONESTY SWEEP 2026-06-24: fabricated trendLabel removed; categoryHint kept. */}
+                    {activeSignal ? activeSignal.categoryHint : 'Choose a hotspot to see the district focus and relevant cards.'}
                   </p>
                 </div>
 
@@ -153,18 +154,9 @@ export default async function SignalPage({ searchParams }: SignalPageProps) {
                         <span className="w-4 text-sm font-black text-pink">{item.rank}</span>
                         <div className="min-w-0 flex-1">
                           <p className="font-display text-[1.02rem] font-black text-white">{item.district}</p>
-                          <p className="mt-0.5 text-[12px] text-white/60">{item.trendLabel}</p>
+                          {/* HONESTY SWEEP 2026-06-24: trendLabel ("Very High Energy" etc.) is fabricated — hidden until real signal data. */}
                         </div>
-                        <span
-                          className={clsx(
-                            'rounded-full px-2 py-1 text-[9px] font-black uppercase tracking-[0.14em]',
-                            item.heatLabel === 'Hot' && 'bg-pink text-white',
-                            item.heatLabel === 'Warm' && 'bg-[#5c243f] text-[#ffd38a]',
-                            item.heatLabel === 'Steady' && 'bg-[#362447] text-[#e6d5ff]',
-                          )}
-                        >
-                          {item.heatLabel}
-                        </span>
+                        {/* HONESTY SWEEP 2026-06-24: heatLabel chip (Hot/Warm/Steady) is fabricated heat — gated off until real signal data. */}
                       </Link>
                     );
                   })}
@@ -179,12 +171,13 @@ export default async function SignalPage({ searchParams }: SignalPageProps) {
                       Preview
                     </span>
                   </div>
+                  {/* HONESTY SWEEP 2026-06-24: fabricated heatLabel ("looks hot tonight") removed from the headline. Re-add with real signal data. */}
                   <h2 className="mt-2 font-display text-2xl font-black text-white">
-                    {activeSignal ? `${activeSignal.district} looks ${activeSignal.heatLabel.toLowerCase()} tonight.` : 'Pick a district on the map to see the breakdown.'}
+                    {activeSignal ? `${activeSignal.district} — district preview` : 'Pick a district on the map to see the breakdown.'}
                   </h2>
                   <p className="mt-3 max-w-3xl text-sm leading-7 text-white/72">
                     {activeSignal
-                      ? activeSignal.vibeNote ?? `${activeSignal.district} is currently tagged ${activeSignal.heatLabel} with a ${activeSignal.trendLabel.toLowerCase()} read.`
+                      ? activeSignal.vibeNote ?? `${activeSignal.district} — live signal data is not connected yet.` /* HONESTY SWEEP: heat/trend fallback removed */
                       : 'The Signal is a district-first read on Austin nightlife — heat, anchors, and the story behind why a neighborhood is moving tonight.'}
                   </p>
 
@@ -224,9 +217,10 @@ export default async function SignalPage({ searchParams }: SignalPageProps) {
                           href={signalHrefForDistrict(item.district)}
                           className="rounded-[0.95rem] border border-white/8 bg-[rgba(255,255,255,0.03)] px-3.5 py-3 transition hover:border-pink/30 hover:bg-[rgba(255,45,135,0.06)]"
                         >
-                          <p className="text-[10px] font-black uppercase tracking-[0.16em] text-pink/70">#{item.rank} · {item.heatLabel}</p>
+                          {/* HONESTY SWEEP 2026-06-24: fabricated heatLabel + trendLabel removed; rank + categoryHint kept. Re-add with real signal data. */}
+                          <p className="text-[10px] font-black uppercase tracking-[0.16em] text-pink/70">#{item.rank}</p>
                           <p className="mt-1.5 font-display text-[1.05rem] font-black text-white">{item.district}</p>
-                          <p className="mt-1 text-[12px] leading-5 text-white/60">{item.trendLabel} · {item.categoryHint}</p>
+                          <p className="mt-1 text-[12px] leading-5 text-white/60">{item.categoryHint}</p>
                         </Link>
                       ))}
                     </div>
@@ -278,18 +272,10 @@ export default async function SignalPage({ searchParams }: SignalPageProps) {
                       <span className="w-5 text-sm font-black text-pink">{item.rank}</span>
                       <div className="min-w-0 flex-1">
                         <p className="font-display text-[1rem] font-black text-white">{item.district}</p>
-                        <p className="mt-0.5 text-[12px] text-white/58">{item.trendLabel} · {item.categoryHint}</p>
+                        {/* HONESTY SWEEP 2026-06-24: fabricated trendLabel removed; categoryHint kept. Re-add trend with real signal data. */}
+                        <p className="mt-0.5 text-[12px] text-white/58">{item.categoryHint}</p>
                       </div>
-                      <span
-                        className={clsx(
-                          'rounded-full px-2 py-1 text-[9px] font-black uppercase tracking-[0.14em]',
-                          item.heatLabel === 'Hot' && 'bg-pink text-white',
-                          item.heatLabel === 'Warm' && 'bg-[#5c243f] text-[#ffd38a]',
-                          item.heatLabel === 'Steady' && 'bg-[#362447] text-[#e6d5ff]',
-                        )}
-                      >
-                        {item.heatLabel}
-                      </span>
+                      {/* HONESTY SWEEP 2026-06-24: heatLabel chip (Hot/Warm/Steady) is fabricated heat — gated off until real signal data. */}
                     </Link>
                   );
                 })}

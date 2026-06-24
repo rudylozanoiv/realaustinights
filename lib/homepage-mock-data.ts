@@ -31,6 +31,13 @@ export const HOMEPAGE_CATEGORY_PILLS: HomepageCategoryPill[] = [
 // ratings/times/photos; unresolvable fields left empty per QA. Closed (Barracuda) and
 // quarantined-junk rows excluded. Discovery click (href) -> /tonight filter SET;
 // websiteUrl -> the venue's real, verified site (rendered as a secondary "Visit site" link).
+// HONESTY SWEEP 2026-06-24: trust/urgency labels neutralized until real data exists.
+// - availabilityLabel: emptied ('') on all venues — was hardcoded "Verified listing" with no
+//   verification behind it. RE-ENABLE when a real per-venue verification source exists.
+// - statusBadge: emptied ('') — was hardcoded "Preview pick"; render also removed in
+//   event-venue-card-grid.tsx. RE-ENABLE with a real editorial/curation signal.
+// - availabilityTone: collapsed to 'steady' (neutral) — was fake hot/warm heat. RE-ENABLE with
+//   real availability/occupancy data.
 export const HOMEPAGE_VENUE_CARDS: HomepageVenueCard[] = [
   // --- LIVE MUSIC ---
   {
@@ -41,9 +48,9 @@ export const HOMEPAGE_VENUE_CARDS: HomepageVenueCard[] = [
     venueName: 'Mohawk',
     neighborhood: 'Red River',
     category: 'Live Music',
-    statusBadge: 'Preview pick',
-    availabilityLabel: 'Verified listing',
-    availabilityTone: 'hot',
+    statusBadge: '', // HONESTY SWEEP: was 'Preview pick' — disabled (render removed); re-enable with real curation signal
+    availabilityLabel: '', // HONESTY SWEEP: was 'Verified listing' — disabled until real verification data
+    availabilityTone: 'steady', // HONESTY SWEEP: was 'hot' — neutralized; re-enable with real availability data
     tags: ['Live Music', 'Indie Club'],
     ctaLabel: 'See Live Music picks',
     href: '/tonight?category=live-music',
@@ -58,9 +65,9 @@ export const HOMEPAGE_VENUE_CARDS: HomepageVenueCard[] = [
     venueName: "Stubb's Bar-B-Q",
     neighborhood: 'Red River',
     category: 'Live Music',
-    statusBadge: 'Preview pick',
-    availabilityLabel: 'Verified listing',
-    availabilityTone: 'hot',
+    statusBadge: '', // HONESTY SWEEP: was 'Preview pick' — disabled (render removed); re-enable with real curation signal
+    availabilityLabel: '', // HONESTY SWEEP: was 'Verified listing' — disabled until real verification data
+    availabilityTone: 'steady', // HONESTY SWEEP: was 'hot' — neutralized; re-enable with real availability data
     tags: ['Live Music', 'BBQ'],
     ctaLabel: 'See Live Music picks',
     href: '/tonight?category=live-music',
@@ -75,8 +82,8 @@ export const HOMEPAGE_VENUE_CARDS: HomepageVenueCard[] = [
     venueName: 'The Continental Club',
     neighborhood: 'South Congress',
     category: 'Live Music',
-    statusBadge: 'Preview pick',
-    availabilityLabel: 'Verified listing',
+    statusBadge: '', // HONESTY SWEEP: was 'Preview pick' — disabled (render removed); re-enable with real curation signal
+    availabilityLabel: '', // HONESTY SWEEP: was 'Verified listing' — disabled until real verification data
     availabilityTone: 'steady',
     tags: ['Live Music', 'Historic'],
     ctaLabel: 'See Live Music picks',
@@ -92,8 +99,8 @@ export const HOMEPAGE_VENUE_CARDS: HomepageVenueCard[] = [
     venueName: "Antone's Nightclub",
     neighborhood: 'Downtown',
     category: 'Live Music',
-    statusBadge: 'Preview pick',
-    availabilityLabel: 'Verified listing',
+    statusBadge: '', // HONESTY SWEEP: was 'Preview pick' — disabled (render removed); re-enable with real curation signal
+    availabilityLabel: '', // HONESTY SWEEP: was 'Verified listing' — disabled until real verification data
     availabilityTone: 'steady',
     tags: ['Live Music', 'Blues'],
     ctaLabel: 'See Live Music picks',
@@ -109,8 +116,8 @@ export const HOMEPAGE_VENUE_CARDS: HomepageVenueCard[] = [
     venueName: 'C-Boys Heart & Soul',
     neighborhood: 'South Congress',
     category: 'Live Music',
-    statusBadge: 'Preview pick',
-    availabilityLabel: 'Verified listing',
+    statusBadge: '', // HONESTY SWEEP: was 'Preview pick' — disabled (render removed); re-enable with real curation signal
+    availabilityLabel: '', // HONESTY SWEEP: was 'Verified listing' — disabled until real verification data
     availabilityTone: 'steady',
     tags: ['Live Music', 'Soul Food'],
     ctaLabel: 'See Live Music picks',
@@ -127,9 +134,9 @@ export const HOMEPAGE_VENUE_CARDS: HomepageVenueCard[] = [
     venueName: 'Azul Rooftop Bar + Lounge',
     neighborhood: 'Downtown',
     category: 'Rooftops',
-    statusBadge: 'Preview pick',
-    availabilityLabel: 'Verified listing',
-    availabilityTone: 'hot',
+    statusBadge: '', // HONESTY SWEEP: was 'Preview pick' — disabled (render removed); re-enable with real curation signal
+    availabilityLabel: '', // HONESTY SWEEP: was 'Verified listing' — disabled until real verification data
+    availabilityTone: 'steady', // HONESTY SWEEP: was 'hot' — neutralized; re-enable with real availability data
     tags: ['Rooftop', 'Skyline Views'],
     ctaLabel: 'See Rooftops picks',
     href: '/tonight?category=rooftops',
@@ -144,9 +151,9 @@ export const HOMEPAGE_VENUE_CARDS: HomepageVenueCard[] = [
     venueName: 'The Rooftop on 6th',
     neighborhood: 'Downtown',
     category: 'Rooftops',
-    statusBadge: 'Preview pick',
-    availabilityLabel: 'Verified listing',
-    availabilityTone: 'hot',
+    statusBadge: '', // HONESTY SWEEP: was 'Preview pick' — disabled (render removed); re-enable with real curation signal
+    availabilityLabel: '', // HONESTY SWEEP: was 'Verified listing' — disabled until real verification data
+    availabilityTone: 'steady', // HONESTY SWEEP: was 'hot' — neutralized; re-enable with real availability data
     tags: ['Rooftop', 'Nightclub'],
     ctaLabel: 'See Rooftops picks',
     href: '/tonight?category=rooftops',
@@ -161,9 +168,9 @@ export const HOMEPAGE_VENUE_CARDS: HomepageVenueCard[] = [
     venueName: 'Luna Rooftop',
     neighborhood: 'Downtown',
     category: 'Rooftops',
-    statusBadge: 'Preview pick',
-    availabilityLabel: 'Verified listing',
-    availabilityTone: 'warm',
+    statusBadge: '', // HONESTY SWEEP: was 'Preview pick' — disabled (render removed); re-enable with real curation signal
+    availabilityLabel: '', // HONESTY SWEEP: was 'Verified listing' — disabled until real verification data
+    availabilityTone: 'steady', // HONESTY SWEEP: was 'warm' — neutralized; re-enable with real availability data
     tags: ['Rooftop', 'DJ Nights'],
     ctaLabel: 'See Rooftops picks',
     href: '/tonight?category=rooftops',
@@ -179,9 +186,9 @@ export const HOMEPAGE_VENUE_CARDS: HomepageVenueCard[] = [
     venueName: 'DittyDog',
     neighborhood: 'Downtown',
     category: 'Late Eats',
-    statusBadge: 'Preview pick',
-    availabilityLabel: 'Verified listing',
-    availabilityTone: 'warm',
+    statusBadge: '', // HONESTY SWEEP: was 'Preview pick' — disabled (render removed); re-enable with real curation signal
+    availabilityLabel: '', // HONESTY SWEEP: was 'Verified listing' — disabled until real verification data
+    availabilityTone: 'steady', // HONESTY SWEEP: was 'warm' — neutralized; re-enable with real availability data
     tags: ['Late Night', 'Hot Dogs'],
     ctaLabel: 'See Late Eats picks',
     href: '/tonight?category=late-eats',
@@ -196,9 +203,9 @@ export const HOMEPAGE_VENUE_CARDS: HomepageVenueCard[] = [
     venueName: 'Always Something',
     neighborhood: 'Rainey Street',
     category: 'Late Eats',
-    statusBadge: 'Preview pick',
-    availabilityLabel: 'Verified listing',
-    availabilityTone: 'warm',
+    statusBadge: '', // HONESTY SWEEP: was 'Preview pick' — disabled (render removed); re-enable with real curation signal
+    availabilityLabel: '', // HONESTY SWEEP: was 'Verified listing' — disabled until real verification data
+    availabilityTone: 'steady', // HONESTY SWEEP: was 'warm' — neutralized; re-enable with real availability data
     tags: ['Food Trucks', 'Late Night'],
     ctaLabel: 'See Late Eats picks',
     href: '/tonight?category=late-eats',
@@ -213,8 +220,8 @@ export const HOMEPAGE_VENUE_CARDS: HomepageVenueCard[] = [
     venueName: 'Veracruz All Natural',
     neighborhood: 'South Congress',
     category: 'Late Eats',
-    statusBadge: 'Preview pick',
-    availabilityLabel: 'Verified listing',
+    statusBadge: '', // HONESTY SWEEP: was 'Preview pick' — disabled (render removed); re-enable with real curation signal
+    availabilityLabel: '', // HONESTY SWEEP: was 'Verified listing' — disabled until real verification data
     availabilityTone: 'steady',
     tags: ['Tacos', 'Local Favorite'],
     ctaLabel: 'See Late Eats picks',
@@ -231,9 +238,9 @@ export const HOMEPAGE_VENUE_CARDS: HomepageVenueCard[] = [
     venueName: 'Franklin Barbecue',
     neighborhood: 'East Austin',
     category: 'Good Eats',
-    statusBadge: 'Preview pick',
-    availabilityLabel: 'Verified listing',
-    availabilityTone: 'hot',
+    statusBadge: '', // HONESTY SWEEP: was 'Preview pick' — disabled (render removed); re-enable with real curation signal
+    availabilityLabel: '', // HONESTY SWEEP: was 'Verified listing' — disabled until real verification data
+    availabilityTone: 'steady', // HONESTY SWEEP: was 'hot' — neutralized; re-enable with real availability data
     tags: ['BBQ', 'Austin Icon'],
     ctaLabel: 'See Good Eats picks',
     href: '/tonight?category=good-eats',
@@ -248,9 +255,9 @@ export const HOMEPAGE_VENUE_CARDS: HomepageVenueCard[] = [
     venueName: "Banger's Sausage House & Beer Garden",
     neighborhood: 'Rainey Street',
     category: 'Good Eats',
-    statusBadge: 'Preview pick',
-    availabilityLabel: 'Verified listing',
-    availabilityTone: 'warm',
+    statusBadge: '', // HONESTY SWEEP: was 'Preview pick' — disabled (render removed); re-enable with real curation signal
+    availabilityLabel: '', // HONESTY SWEEP: was 'Verified listing' — disabled until real verification data
+    availabilityTone: 'steady', // HONESTY SWEEP: was 'warm' — neutralized; re-enable with real availability data
     tags: ['Beer Garden', 'Sausages'],
     ctaLabel: 'See Good Eats picks',
     href: '/tonight?category=good-eats',
@@ -265,8 +272,8 @@ export const HOMEPAGE_VENUE_CARDS: HomepageVenueCard[] = [
     venueName: 'Loro (South Lamar)',
     neighborhood: 'South Lamar',
     category: 'Good Eats',
-    statusBadge: 'Preview pick',
-    availabilityLabel: 'Verified listing',
+    statusBadge: '', // HONESTY SWEEP: was 'Preview pick' — disabled (render removed); re-enable with real curation signal
+    availabilityLabel: '', // HONESTY SWEEP: was 'Verified listing' — disabled until real verification data
     availabilityTone: 'steady',
     tags: ['Asian Smokehouse', 'Patio'],
     ctaLabel: 'See Good Eats picks',
@@ -283,8 +290,8 @@ export const HOMEPAGE_VENUE_CARDS: HomepageVenueCard[] = [
     venueName: 'Here Nor There',
     neighborhood: 'Downtown',
     category: 'Cocktails',
-    statusBadge: 'Preview pick',
-    availabilityLabel: 'Verified listing',
+    statusBadge: '', // HONESTY SWEEP: was 'Preview pick' — disabled (render removed); re-enable with real curation signal
+    availabilityLabel: '', // HONESTY SWEEP: was 'Verified listing' — disabled until real verification data
     availabilityTone: 'steady',
     tags: ['Speakeasy', 'Cocktails'],
     ctaLabel: 'See Cocktails picks',
@@ -300,8 +307,8 @@ export const HOMEPAGE_VENUE_CARDS: HomepageVenueCard[] = [
     venueName: 'Garage',
     neighborhood: 'Downtown',
     category: 'Cocktails',
-    statusBadge: 'Preview pick',
-    availabilityLabel: 'Verified listing',
+    statusBadge: '', // HONESTY SWEEP: was 'Preview pick' — disabled (render removed); re-enable with real curation signal
+    availabilityLabel: '', // HONESTY SWEEP: was 'Verified listing' — disabled until real verification data
     availabilityTone: 'steady',
     tags: ['Speakeasy', 'Cocktails'],
     ctaLabel: 'See Cocktails picks',
@@ -317,8 +324,8 @@ export const HOMEPAGE_VENUE_CARDS: HomepageVenueCard[] = [
     venueName: 'Kinfolk Lounge & Library',
     neighborhood: 'Red River',
     category: 'Cocktails',
-    statusBadge: 'Preview pick',
-    availabilityLabel: 'Verified listing',
+    statusBadge: '', // HONESTY SWEEP: was 'Preview pick' — disabled (render removed); re-enable with real curation signal
+    availabilityLabel: '', // HONESTY SWEEP: was 'Verified listing' — disabled until real verification data
     availabilityTone: 'steady',
     tags: ['Cocktail Lounge', 'Spirits Library'],
     ctaLabel: 'See Cocktails picks',
@@ -335,9 +342,9 @@ export const HOMEPAGE_VENUE_CARDS: HomepageVenueCard[] = [
     venueName: 'The White Horse',
     neighborhood: 'East Austin',
     category: 'Dancing',
-    statusBadge: 'Preview pick',
-    availabilityLabel: 'Verified listing',
-    availabilityTone: 'hot',
+    statusBadge: '', // HONESTY SWEEP: was 'Preview pick' — disabled (render removed); re-enable with real curation signal
+    availabilityLabel: '', // HONESTY SWEEP: was 'Verified listing' — disabled until real verification data
+    availabilityTone: 'steady', // HONESTY SWEEP: was 'hot' — neutralized; re-enable with real availability data
     tags: ['Honky-Tonk', 'Two-Step'],
     ctaLabel: 'See Dancing picks',
     href: '/tonight?category=dancing',
@@ -352,9 +359,9 @@ export const HOMEPAGE_VENUE_CARDS: HomepageVenueCard[] = [
     venueName: 'Barbarella',
     neighborhood: 'Red River',
     category: 'Dancing',
-    statusBadge: 'Preview pick',
-    availabilityLabel: 'Verified listing',
-    availabilityTone: 'warm',
+    statusBadge: '', // HONESTY SWEEP: was 'Preview pick' — disabled (render removed); re-enable with real curation signal
+    availabilityLabel: '', // HONESTY SWEEP: was 'Verified listing' — disabled until real verification data
+    availabilityTone: 'steady', // HONESTY SWEEP: was 'warm' — neutralized; re-enable with real availability data
     tags: ['Dance Club', 'Theme Nights'],
     ctaLabel: 'See Dancing picks',
     href: '/tonight?category=dancing',
@@ -369,8 +376,8 @@ export const HOMEPAGE_VENUE_CARDS: HomepageVenueCard[] = [
     venueName: 'Broken Spoke',
     neighborhood: 'South Lamar',
     category: 'Dancing',
-    statusBadge: 'Preview pick',
-    availabilityLabel: 'Verified listing',
+    statusBadge: '', // HONESTY SWEEP: was 'Preview pick' — disabled (render removed); re-enable with real curation signal
+    availabilityLabel: '', // HONESTY SWEEP: was 'Verified listing' — disabled until real verification data
     availabilityTone: 'steady',
     tags: ['Honky-Tonk', 'Dance Hall'],
     ctaLabel: 'See Dancing picks',
@@ -387,9 +394,9 @@ export const HOMEPAGE_VENUE_CARDS: HomepageVenueCard[] = [
     venueName: 'The Comedy Mothership',
     neighborhood: 'Downtown',
     category: 'Comedy',
-    statusBadge: 'Preview pick',
-    availabilityLabel: 'Verified listing',
-    availabilityTone: 'hot',
+    statusBadge: '', // HONESTY SWEEP: was 'Preview pick' — disabled (render removed); re-enable with real curation signal
+    availabilityLabel: '', // HONESTY SWEEP: was 'Verified listing' — disabled until real verification data
+    availabilityTone: 'steady', // HONESTY SWEEP: was 'hot' — neutralized; re-enable with real availability data
     tags: ['Stand-Up', 'Headliners'],
     ctaLabel: 'See Comedy picks',
     href: '/tonight?category=comedy',
@@ -404,8 +411,8 @@ export const HOMEPAGE_VENUE_CARDS: HomepageVenueCard[] = [
     venueName: 'Cap City Comedy Club',
     neighborhood: 'North Lamar',
     category: 'Comedy',
-    statusBadge: 'Preview pick',
-    availabilityLabel: 'Verified listing',
+    statusBadge: '', // HONESTY SWEEP: was 'Preview pick' — disabled (render removed); re-enable with real curation signal
+    availabilityLabel: '', // HONESTY SWEEP: was 'Verified listing' — disabled until real verification data
     availabilityTone: 'steady',
     tags: ['Stand-Up', 'Touring Comics'],
     ctaLabel: 'See Comedy picks',
@@ -421,8 +428,8 @@ export const HOMEPAGE_VENUE_CARDS: HomepageVenueCard[] = [
     venueName: 'The Red Room at Cap City',
     neighborhood: 'North Lamar',
     category: 'Comedy',
-    statusBadge: 'Preview pick',
-    availabilityLabel: 'Verified listing',
+    statusBadge: '', // HONESTY SWEEP: was 'Preview pick' — disabled (render removed); re-enable with real curation signal
+    availabilityLabel: '', // HONESTY SWEEP: was 'Verified listing' — disabled until real verification data
     availabilityTone: 'steady',
     tags: ['Stand-Up', 'Intimate Room'],
     ctaLabel: 'See Comedy picks',
@@ -438,8 +445,8 @@ export const HOMEPAGE_VENUE_CARDS: HomepageVenueCard[] = [
     venueName: 'East Austin Comedy Club',
     neighborhood: 'East Austin',
     category: 'Comedy',
-    statusBadge: 'Preview pick',
-    availabilityLabel: 'Verified listing',
+    statusBadge: '', // HONESTY SWEEP: was 'Preview pick' — disabled (render removed); re-enable with real curation signal
+    availabilityLabel: '', // HONESTY SWEEP: was 'Verified listing' — disabled until real verification data
     availabilityTone: 'steady',
     tags: ['Stand-Up', '82-Seat Room'],
     ctaLabel: 'See Comedy picks',
@@ -455,8 +462,8 @@ export const HOMEPAGE_VENUE_CARDS: HomepageVenueCard[] = [
     venueName: 'The Creek and The Cave',
     neighborhood: 'Downtown',
     category: 'Comedy',
-    statusBadge: 'Preview pick',
-    availabilityLabel: 'Verified listing',
+    statusBadge: '', // HONESTY SWEEP: was 'Preview pick' — disabled (render removed); re-enable with real curation signal
+    availabilityLabel: '', // HONESTY SWEEP: was 'Verified listing' — disabled until real verification data
     availabilityTone: 'steady',
     tags: ['Stand-Up', '7 Nights/Week'],
     ctaLabel: 'See Comedy picks',
@@ -466,6 +473,10 @@ export const HOMEPAGE_VENUE_CARDS: HomepageVenueCard[] = [
   },
 ];
 
+// HONESTY SWEEP 2026-06-24: heatLabel (Hot/Warm/Steady) + trendLabel (Very High Energy/Rising/…)
+// are FABRICATED placeholder signal data. The render in app/signal/page.tsx now GATES these chips
+// off (hidden) so no fake heat/trend is shown. Values left here as scaffolding.
+// RE-ENABLE the chips when a real signal/heat data source is wired.
 export const HOMEPAGE_SIGNAL_ITEMS: HomepageSignalItem[] = [
   {
     id: 'signal-1',

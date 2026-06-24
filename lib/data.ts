@@ -64,7 +64,8 @@ export const HEADLINES: string[] = [
   '🌧️ Muddy Paws Advisory: showers at 10pm — patios ready',
   '🎸 Austin voted #1 Live Music City — again, obviously',
   '🎪 ACL lineup dropped — post your Day 1 picks',
-  '⏰ Only 253 Founding AustiNight spots left — claim yours',
+  // HONESTY SWEEP 2026-06-24: removed "⏰ Only 253 Founding AustiNight spots left — claim yours" —
+  // fake scarcity counter. Re-add an honest Founding/Preview-List line when real counts exist.
   "🌙 See what Austin's posting tonight — tap Austin Pulse",
 ];
 
@@ -298,7 +299,8 @@ export const FEED_CARDS: FeedCard[] = [
   },
   {
     id: '5', venueName: 'Cap City Comedy',
-    description: 'Joe Pera this weekend. Soothing existential humor. Tickets going fast — 8pm & 10pm shows. Two-drink minimum that honestly improves the set.',
+    // HONESTY SWEEP 2026-06-24: removed fake urgency "Tickets going fast — " (no real ticket data). Re-add with real availability.
+    description: 'Joe Pera this weekend. Soothing existential humor. 8pm & 10pm shows. Two-drink minimum that honestly improves the set.',
     vibeTags: ['chill', 'date night'], petFriendly: false,
     time: 'Fri & Sat 8+10pm', price: '$$', neighborhood: 'North Lamar',
     likes: 445, comments: 128, category: 'Comedy',
@@ -388,9 +390,11 @@ export const FEED_CARDS: FeedCard[] = [
   {
     id: 'barkingham',
     venueName: 'Barkingham Place',
-    description: "Austin's premier dog daycare + boarding. Indoor + outdoor play yards, trained handlers, live webcams. Pupper Weekly Featured Partner. Zeta-approved.",
+    // HONESTY SWEEP 2026-06-24: removed "Pupper Weekly Featured Partner." (fake partnership claim) from description;
+    // isFeaturedPartner set false (was true) — no real paid partnership. Re-enable when a real partner deal exists.
+    description: "Austin's premier dog daycare + boarding. Indoor + outdoor play yards, trained handlers, live webcams.",
     vibeTags: ['pet friendly', 'chill'], petFriendly: true,
-    isFeaturedPartner: true, isHiddenGem: true,
+    isFeaturedPartner: false, isHiddenGem: true,
     time: 'Mon-Sat 7am-7pm', price: '$$', neighborhood: 'North Austin',
     likes: 234, comments: 52, category: 'Hidden Gems',
     happening: ['Today', 'Tonight', 'This Weekend', 'This Week'],
@@ -408,26 +412,20 @@ export const FEED_CARD_BY_ID: Record<string, FeedCard> = Object.fromEntries(
 // ──────────────────────────────────────────────
 // LIVE POSTS (Austin Pulse)
 // ──────────────────────────────────────────────
-export const LIVE_POSTS: LivePost[] = [
-  { id: 'lp1', venue: 'Mohawk ATX', handle: '@mohawkatx', message: 'Wild Child soundcheck DONE. Doors in 45 min. First 50 get free drink tickets!', timeAgo: '2m', type: 'event', emoji: '🎸', likes: 34, isNew: true },
-  { id: 'lp2', venue: "Evangeline's", handle: '@evangelinesatx', message: 'Fresh crawfish dropped. Etouffee on the board. Walk-ins til 9:30pm.', timeAgo: '8m', type: 'update', emoji: '🦞', likes: 67, isNew: true },
-  { id: 'lp3', venue: 'AustiNights HQ', handle: '@realaustinights', message: 'MUDDY PAWS ALERT: Rain ~10pm. Rainey covered patios OPEN.', timeAgo: '12m', type: 'alert', emoji: '🌧️', likes: 112 },
-  { id: 'lp4', venue: 'Craft Pride', handle: '@craftprideatx', message: 'Happy Hour EXTENDED til 8pm — $2 off all TX craft drafts. 54 taps.', timeAgo: '19m', type: 'deal', emoji: '🍺', likes: 89 },
-  { id: 'lp5', venue: 'Spider House', handle: '@spiderhouse', message: 'Open mic NOW. Next slot 9:15. $3 drafts. Dogs welcome.', timeAgo: '23m', type: 'music', emoji: '🎤', likes: 45 },
-  { id: 'lp6', venue: 'Veracruz', handle: '@veracruzatx', message: 'Migas tacos til midnight. Line moving fast. Come hungry.', timeAgo: '31m', type: 'update', emoji: '🌮', likes: 156 },
-  { id: 'lp7', venue: 'Barton Springs', handle: '@bartonsprings', message: 'Water: 68F. Crowd: mellow. Sunset: 2 hours. $5. GO.', timeAgo: '44m', type: 'update', emoji: '💧', likes: 203 },
-];
+// HONESTY SWEEP 2026-06-24: fake placeholder live feed emptied — every entry had fabricated likes,
+// "Xm ago" timestamps, isNew flags, and urgency ("First 50 get free drink tickets"). Presenting these as
+// a real-time feed is dishonest. Array left as empty scaffolding (export + type preserved).
+// RE-ENABLE when a real venue-post ingestion source (verified posts + real timestamps/likes) is wired.
+export const LIVE_POSTS: LivePost[] = [];
 
 // ──────────────────────────────────────────────
 // COMMUNITY POSTS
 // ──────────────────────────────────────────────
-export const COMMUNITY_POSTS: CommunityPost[] = [
-  { id: 'cp1', username: '@austinvibes_512', message: 'Anyone else at Mohawk rn? This band is INSANE', timeAgo: '3m', likes: 12 },
-  { id: 'cp2', username: '@tacolife_atx', message: 'Valentinas brisket taco = life changing. Go now.', timeAgo: '11m', likes: 28 },
-  { id: 'cp3', username: '@zilker_runner', message: 'Sunrise at Zilker never gets old. 5 years in ATX and still hits different', timeAgo: '22m', likes: 45 },
-  { id: 'cp4', username: '@keepitweird', message: 'Just saw a guy playing guitar for his dog at Barton Springs. Peak Austin.', timeAgo: '38m', likes: 67 },
-  { id: 'cp5', username: '@eastside_eats', message: 'Who is going to the after-party at Whislers tonight??', timeAgo: '1h', likes: 19 },
-];
+// HONESTY SWEEP 2026-06-24: fake placeholder community feed emptied — fabricated usernames, likes, and
+// "Xm ago" timestamps presented as real user posts. Array left as empty scaffolding (export + type preserved).
+// RE-ENABLE when real user posts (real accounts + timestamps) flow through, AFTER the prompt-injection
+// guard for user-generated content is in place (see SESSION_SAVE 2026-06-23 open gaps).
+export const COMMUNITY_POSTS: CommunityPost[] = [];
 
 // ──────────────────────────────────────────────
 // ZETA / PUPPER WEEKLY
@@ -447,10 +445,12 @@ export const ZETA_POST: ZetaPost = {
 export const DEALS: Deal[] = [
   { id: 'd1', businessName: 'Jiffy Lube S. Lamar', description: '$20 off full service oil change', category: 'Auto', icon: '🚗', expiresDate: '2026-05-15', isRecurring: false, sponsorTier: 'free' },
   { id: 'd2', businessName: 'Martinizing Dry Clean', description: '20% off first dry cleaning order', category: 'Services', icon: '👕', expiresDate: '2026-06-01', isRecurring: false, sponsorTier: 'free' },
-  { id: 'd3', businessName: 'H-E-B Mueller', description: 'BOGO deli sandwiches all week', category: 'Grocery', icon: '🛒', expiresDate: '2026-04-24', isRecurring: true, sponsorTier: 'featured' },
+  // HONESTY SWEEP 2026-06-24: sponsorTier 'featured' -> 'free' (was a fake "★ Featured Partner" claim — no real paid partnership). Re-enable when a real sponsorship exists.
+  { id: 'd3', businessName: 'H-E-B Mueller', description: 'BOGO deli sandwiches all week', category: 'Grocery', icon: '🛒', expiresDate: '2026-04-24', isRecurring: true, sponsorTier: 'free' },
   { id: 'd4', businessName: 'SuperCuts Burnet', description: '$5 off any haircut', category: 'Beauty', icon: '💇', expiresDate: '2026-05-30', isRecurring: false, sponsorTier: 'free' },
   { id: 'd5', businessName: 'Pep Boys N. Lamar', description: 'Free brake inspection + 15% off pads', category: 'Auto', icon: '🚗', expiresDate: '2026-05-10', isRecurring: false, sponsorTier: 'free' },
-  { id: 'd6', businessName: 'Austin Pet Ranch', description: 'Buy 2 bags of food, get 1 free', category: 'Pets', icon: '🐶', expiresDate: '2026-04-30', isRecurring: true, sponsorTier: 'featured' },
+  // HONESTY SWEEP 2026-06-24: sponsorTier 'featured' -> 'free' (was a fake "★ Featured Partner" claim — no real paid partnership). Re-enable when a real sponsorship exists.
+  { id: 'd6', businessName: 'Austin Pet Ranch', description: 'Buy 2 bags of food, get 1 free', category: 'Pets', icon: '🐶', expiresDate: '2026-04-30', isRecurring: true, sponsorTier: 'free' },
   { id: 'd7', businessName: 'Great Clips Anderson', description: '$3 off any haircut with check-in', category: 'Beauty', icon: '💇', expiresDate: '2026-06-15', isRecurring: true, sponsorTier: 'free' },
   { id: 'd8', businessName: 'Lone Star Cleaners', description: '30% off comforters and blankets', category: 'Services', icon: '👕', expiresDate: '2026-05-20', isRecurring: false, sponsorTier: 'free' },
   { id: 'd9', businessName: 'Randalls Westlake', description: '$10 off $50 grocery order', category: 'Grocery', icon: '🛒', expiresDate: '2026-04-28', isRecurring: true, sponsorTier: 'free' },

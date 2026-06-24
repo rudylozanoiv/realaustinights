@@ -1,6 +1,5 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import clsx from 'clsx';
 import type { HomepageVenueCard } from '@/lib/homepage-types';
 
 const CATEGORY_ICONS: Record<string, string> = {
@@ -46,10 +45,8 @@ export function EventVenueCardGrid({ items }: { items: HomepageVenueCard[] }) {
                   </span>
                 </div>
               )}
-              <div className="absolute left-3 top-3 inline-flex items-center gap-1 rounded-full bg-[rgba(17,8,14,0.68)] px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.12em] text-white/92">
-                <span className="h-1.5 w-1.5 rounded-full bg-pink" />
-                {item.statusBadge}
-              </div>
+              {/* HONESTY SWEEP 2026-06-24: hardcoded "Preview pick" statusBadge pill removed
+                  (consistent with the homepage discovery cards). Re-enable with a real curation signal. */}
             </div>
 
             <div className="space-y-3 px-4 py-4 text-white">
@@ -90,14 +87,10 @@ export function EventVenueCardGrid({ items }: { items: HomepageVenueCard[] }) {
               </div>
 
               <div className="flex items-center justify-between gap-2 text-[11px]">
-                <span
-                  className={clsx(
-                    'font-semibold',
-                    item.availabilityTone === 'hot' && 'text-[#ff8bb8]',
-                    item.availabilityTone === 'warm' && 'text-[#ffd38a]',
-                    item.availabilityTone === 'steady' && 'text-[#d8c7ff]',
-                  )}
-                >
+                {/* HONESTY SWEEP 2026-06-24: availabilityTone heat tint (hot/warm/steady) neutralized to
+                    a single neutral color; availabilityLabel emptied in data ("Verified listing" removed).
+                    Renders nothing while empty. Re-enable tint + label with real availability/verification data. */}
+                <span className="font-semibold text-white/55">
                   {item.availabilityLabel}
                 </span>
                 <Link

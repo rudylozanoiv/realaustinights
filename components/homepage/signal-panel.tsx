@@ -8,23 +8,9 @@ function signalHrefForDistrict(district?: string) {
   return `/signal?district=${slug}`;
 }
 
-function heatChipClass(heat: string) {
-  return clsx(
-    'shrink-0 rounded-full px-2.5 py-1 text-[10px] font-black uppercase tracking-[0.16em]',
-    heat === 'Hot' && 'bg-pink text-white',
-    heat === 'Warm' && 'bg-[#5c243f] text-[#ffd38a]',
-    heat === 'Steady' && 'bg-[#362447] text-[#e6d5ff]',
-  );
-}
-
-function heatRowClass(heat: string) {
-  return clsx(
-    'border',
-    heat === 'Hot' && 'border-pink/30 bg-[rgba(255,45,135,0.05)]',
-    heat === 'Warm' && 'border-[#7a3552]/40 bg-[rgba(122,53,82,0.06)]',
-    heat === 'Steady' && 'border-white/8 bg-[rgba(255,255,255,0.02)]',
-  );
-}
+// HONESTY SWEEP 2026-06-27: heatChipClass + heatRowClass removed — they existed only to style the
+// fabricated heatLabel (Hot/Warm/Steady) chips and row tint. Gated off /tonight to match the befb632
+// /signal sweep (fabricated heat/trend hidden until real source-fed signal data exists).
 
 export function SignalPanel({ items }: { items: HomepageSignalItem[] }) {
   const sorted = [...items].sort((a, b) => a.rank - b.rank);
@@ -69,11 +55,12 @@ export function SignalPanel({ items }: { items: HomepageSignalItem[] }) {
           <div className="mt-3 flex items-end justify-between gap-3">
             <div className="min-w-0">
               <p className="font-display text-[1.55rem] font-black leading-tight text-white">{lead.district}</p>
+              {/* HONESTY SWEEP 2026-06-27: fabricated trendLabel ("Very High Energy" etc.) removed; categoryHint kept. */}
               <p className="mt-1 text-[12px] leading-5 text-white/64">
-                {lead.trendLabel} <span className="text-white/30">·</span> {lead.categoryHint}
+                {lead.categoryHint}
               </p>
             </div>
-            <span className={heatChipClass(lead.heatLabel)}>{lead.heatLabel}</span>
+            {/* HONESTY SWEEP 2026-06-27: heatLabel chip (Hot/Warm/Steady) is fabricated heat — gated off until real signal data. */}
           </div>
           <p className="mt-3 text-[11px] font-semibold uppercase tracking-[0.14em] text-pink/80 group-hover:text-pink">
             Open district view ↗
@@ -85,11 +72,11 @@ export function SignalPanel({ items }: { items: HomepageSignalItem[] }) {
         <ul className="mt-3 grid gap-2.5">
           {supporting.map((item) => (
             <li key={item.id}>
+              {/* HONESTY SWEEP 2026-06-27: fabricated heatLabel row tint collapsed to one neutral color. */}
               <Link
                 href={signalHrefForDistrict(item.district)}
                 className={clsx(
-                  'flex items-center gap-3 rounded-[0.85rem] px-3 py-2.5 transition hover:border-white/18 hover:bg-[rgba(255,255,255,0.04)]',
-                  heatRowClass(item.heatLabel),
+                  'flex items-center gap-3 rounded-[0.85rem] border border-white/8 bg-[rgba(255,255,255,0.02)] px-3 py-2.5 transition hover:border-white/18 hover:bg-[rgba(255,255,255,0.04)]',
                 )}
               >
                 <span className="font-display text-[1rem] font-black text-pink/80">
@@ -97,9 +84,10 @@ export function SignalPanel({ items }: { items: HomepageSignalItem[] }) {
                 </span>
                 <div className="min-w-0 flex-1">
                   <p className="font-display text-[0.98rem] font-black text-white">{item.district}</p>
-                  <p className="mt-0.5 text-[11px] text-white/56">{item.trendLabel}</p>
+                  {/* HONESTY SWEEP 2026-06-27: fabricated trendLabel removed; categoryHint kept. */}
+                  <p className="mt-0.5 text-[11px] text-white/56">{item.categoryHint}</p>
                 </div>
-                <span className={heatChipClass(item.heatLabel)}>{item.heatLabel}</span>
+                {/* HONESTY SWEEP 2026-06-27: heatLabel chip is fabricated heat — gated off until real signal data. */}
                 <span className="text-white/30">›</span>
               </Link>
             </li>
@@ -116,7 +104,7 @@ export function SignalPanel({ items }: { items: HomepageSignalItem[] }) {
       </p>
 
       <p className="mt-3 text-[10px] leading-[1.5] text-white/40">
-        Preview only — districts and heat labels are curated mock intelligence, not source-fed nightlife data yet.
+        Preview only — district rankings are a curated preview, not source-fed real-time nightlife data yet.
       </p>
     </aside>
   );
